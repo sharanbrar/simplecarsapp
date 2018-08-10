@@ -1,0 +1,15 @@
+page-singing {
+	.signing-tab-body{
+
+	}
+	.signing-tab-body .tab-container{
+		background-image: url(../../assets/imgs/drive-lic-bg.jpg);
+		background-size : 100% 100%;
+	}
+	.signing-tab-body .tab-container.singintab{
+		height: 300px;
+	}
+	.signing-tab-body .tab-container.singuptab{
+		height: 200px;
+	}
+}

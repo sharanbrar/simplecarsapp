@@ -1,0 +1,24 @@
+page-pick-testdrive-location {
+	.pick-test-drive-body{
+
+	}
+	.pick-test-drive-body .map{
+		height: 250px;
+		background-color:grey;
+	}
+	.pick-test-drive-body .user-interaction-sec{
+		padding: 20px;
+	}
+	.user-interaction-sec .current-location h3{
+		font-size: 18px;
+	}
+	.user-interaction-sec .loc-input-div p{
+		font-size: 10px;
+	}
+
+	.user-interaction-sec .loc-input-div .item{
+		border: 1px solid;
+    	border-radius: 5px;
+    	font-size: 12px;
+	}
+}

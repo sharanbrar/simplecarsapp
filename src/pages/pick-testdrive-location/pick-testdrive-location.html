@@ -1,0 +1,51 @@
+<!--
+  Generated template for the PickTestdriveLocationPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>Our Nearest Test Drive Locations</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content class="pick-test-drive-body">
+	<div class="map" #map id="map">
+	</div>
+	<div class="user-interaction-sec">
+		<div class="current-location"><h3>Your Current Location: <strong>{{userCurrentLoc.location}}</strong></h3></div>
+		<div class="loc-input-div">
+			<p>Please submit a testdrive location and we'll let you know if we can come to you.</p>
+		 <ion-item>
+			<ion-input placeholder="SUBMIT A TEST DRIVE LOCATION"></ion-input>
+			<button ion-button clear color="dark" type="button" item-right>
+				<ion-icon name="close-circle"></ion-icon>
+          	</button>
+          </ion-item>
+			<p><strong>NOTE</strong>: A rep will contact you shortly to confirm your location</p>
+		</div>
+		<div  class="loc-current-service-div">
+			<h3>Our Current Service Areas</h3>
+			<ion-grid>
+			  <ion-row>
+			    <ion-col>
+				      <ion-item>
+				      	<ion-icon name="pin"></ion-icon>
+				      	<h3>SAN</h3>
+				      	<h2>DIEGO</h2>
+				      	<p>San diego country is<br>where our primary<br> hot spots are</p>
+				      </ion-item>
+			    </ion-col>
+			    <ion-col>
+				     <ion-item class="disabled">
+				      	<ion-icon name="pin"></ion-icon>
+				      	<h3>INLAND</h3>
+				      	<h2>EMPIRE</h2>
+				      	<p>will be coming<br>very soon</p>
+				      </ion-item>
+			    </ion-col>
+			  </ion-row>
+			</ion-grid>
+		</div>
+	</div>
+</ion-content>
