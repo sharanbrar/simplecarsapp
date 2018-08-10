@@ -9,16 +9,113 @@ page-pick-testdrive-location {
 	.pick-test-drive-body .user-interaction-sec{
 		padding: 20px;
 	}
-	.user-interaction-sec .current-location h3{
-		font-size: 18px;
-	}
-	.user-interaction-sec .loc-input-div p{
-		font-size: 10px;
-	}
 
 	.user-interaction-sec .loc-input-div .item{
 		border: 1px solid;
     	border-radius: 5px;
     	font-size: 12px;
+	}
+	.button-inner{
+		color: #000;
+	}
+	.toolbar-background {
+		background: #30b7ff !important;;
+	 }
+	 .toolbar-title{
+		 color: #fff;
+		 font-size: 16px;
+		 font-family: 'Montserrat', sans-serif;
+	 }
+	 .user-interaction-sec{
+		.current-location{
+			h3{
+				color: #000;
+				font-size:20px !important;
+				margin: 0px;
+				text-align: center;
+				font-family: 'Montserrat', sans-serif;
+				strong{
+					color: #064581;
+				}
+			}
+		}
+		.loc-input-div{
+			p{
+				color: #000;
+				font-size: 14px;
+				font-weight: 500;
+				margin: 10px 0px;
+				font-family: 'Montserrat', sans-serif;
+				&:last-child{
+					color: #5c5c5c;
+					font-size: 14px;
+					font-style: italic;
+					margin: 0px;
+					font-family: 'Montserrat', sans-serif;
+				}
+			}
+		}
+		.item-input{
+			margin: 10px 0px;
+			.item-inner{
+				.input-wrapper{
+					.text-input{
+						font-size: 14px;
+					}
+				}
+			}
+		}
+		.item-button{
+			 .button-inner {
+				color: #686969;
+			}
+		}
+	}
+	.loc-current-service-div{
+		h3{
+			text-align: center;
+			color: #000;
+			font-size: 20px;
+			font-family: 'Montserrat', sans-serif;
+		}
+		.grid{
+			.item{
+				padding: 25px 0px !important;
+				background: #e7f7ff;
+				height: 100%;
+				.item-inner{
+					padding: 0px;
+					text-align: center;
+					border: none;
+					.input-wrapper{
+						.label{
+							margin: 0px;
+							h3{
+								color: #ffad40;
+								font-family: 'Montserrat', sans-serif;
+								font-size: 20px;
+								font-weight: 500;
+								margin-bottom: 0px;
+							}
+							h2{
+								color: #ff8f08;
+								font-weight: bold;
+								margin-bottom: 0px;
+							}
+							p{
+								color: #000;
+								font-size: 14px;
+								font-weight: 500;
+								margin:15px 0px 0px;
+								font-family: 'Montserrat', sans-serif;
+							}
+						}
+					}
+				}
+				&.disabled{
+					background: #f6f6f6;
+				}
+			}
+		}
 	}
 }

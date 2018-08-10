@@ -1,18 +1,24 @@
 page-slide-walk {
 	.slide-walk-body{
 		background-image: url(../../assets/imgs/screen-bg.jpg);
+		.swiper-container{
+		overflow: initial;
+		.swiper-wrapper{
 			.swiper-slide{
 			.slide-zoom{
 					img{
-						max-width: 280px;
+						max-width:80%;
 					}
 					p{
 						color:#ffffff;
-						font-size: 27.17px;
+						font-size: 20px;
+						margin: 10px 0px;
 						font-family: 'Montserrat', sans-serif;
 					}
 			}
 		}
+	}
+}
 		.swiper-pagination{
 			button{
 			&.swiper-pagination-bullet{
@@ -29,29 +35,11 @@ page-slide-walk {
 	}
 	.disable-hover{
 		color: #8a8e91;
-		font-size: 27.17px;
+		font-size: 20px;
 		background-color: #fff;
 		font-family: 'Nunito', sans-serif;
 	}
 	}
 }
-.user-interaction-sec{
-	.current-location{
-		h3{
-			color: #000;
-			font-size:21.17px !important;
-			margin: 0px;
-			font-family: 'Montserrat', sans-serif;
-			strong{
-				color: #064581;
-			}
-		}
-	}
-	.loc-input-div{
 
-	}
-}
 
-.toolbar-background {
-	background: #30b7ff !important;;
- }
