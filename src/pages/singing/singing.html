@@ -11,8 +11,12 @@
   </ion-navbar>
 
 </ion-header> -->
-<div class="tab-container" [ngClass]="(tabtype == 'singintab') ? 'signintab' : 'singuptab'"></div>
-<ion-content class="signing-tab-body" padding>
+
+<ion-content class="signing-tab-body">
+	<div class="tab-container back-image-container" [ngClass]="(tabtype == 'singintab') ? 'signintab' : 'singuptab'">
+			<img src="assets/imgs/simple-logo.png"/>
+	</div>
+	<div class="tabs-container">
 	    <div class="signing-toggle-buttons">
 		    <ion-segment [(ngModel)]="tabtype">
 		      <ion-segment-button value="singintab">
@@ -25,10 +29,30 @@
 	    </div>
 	    <div [ngSwitch]="tabtype">
 	    	<div class="singInform" *ngSwitchCase="'singintab'">
-	    		Sign In form
+	    		<form [formGroup]="signInform">
+	    			<ion-item margin-bottom>
+				         <ion-input type="text" formControlName="signinEmail" placeholder="Username (this is your email)"></ion-input>
+				    </ion-item>
+				    <ion-item margin-bottom>
+				         <ion-input type="password" formControlName="signinPassword" placeholder="Password"></ion-input>
+				    </ion-item>
+				    <button ion-button full color="light" round (click)="submitSignIn()">Sign In</button>
+	    		</form>
 	    	</div>
 	    	<div class="signUpform"  *ngSwitchCase="'singuptab'">
-	    		Sign Up form
+	    		<form [formGroup]="signUpform">
+	    			<ion-item margin-bottom>
+				         <ion-input type="text" formControlName="signupName" placeholder="Name"></ion-input>
+				    </ion-item>
+				    <ion-item margin-bottom>
+				         <ion-input type="text" formControlName="signupEmail" placeholder="Email"></ion-input>
+				    </ion-item>
+				    <ion-item margin-bottom>
+				         <ion-input type="password" formControlName="signupPassword" placeholder="Password"></ion-input>
+				    </ion-item>
+				    <button ion-button full color="light" round (click)="submitSignUp()">Sign Up</button>
+	    		</form>
 	    	</div>
 	    </div>
+	</div>
 </ion-content>

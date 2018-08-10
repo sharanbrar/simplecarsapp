@@ -17,7 +17,7 @@
 		<div class="loc-input-div">
 			<p>Please submit a testdrive location and we'll let you know if we can come to you.</p>
 		 <ion-item>
-			<ion-input placeholder="SUBMIT A TEST DRIVE LOCATION"></ion-input>
+			<ion-input #googlePlaces id="googlePlaces"  placeholder="SUBMIT A TEST DRIVE LOCATION"></ion-input>
 			<button ion-button clear color="dark" type="button" item-right>
 				<ion-icon name="close-circle"></ion-icon>
           	</button>
@@ -30,7 +30,7 @@
 			  <ion-row>
 			    <ion-col>
 				      <ion-item>
-				      	<ion-icon name="pin"></ion-icon>
+				      	<img src="assets/imgs/pin-enabled.png" />
 				      	<h3>SAN</h3>
 				      	<h2>DIEGO</h2>
 				      	<p>San diego country is<br>where our primary<br> hot spots are</p>
@@ -38,14 +38,19 @@
 			    </ion-col>
 			    <ion-col>
 				     <ion-item class="disabled">
-				      	<ion-icon name="pin"></ion-icon>
-				      	<h3>INLAND</h3>
-				      	<h2>EMPIRE</h2>
-				      	<p>will be coming<br>very soon</p>
+				      	<div class="disabled">
+					      	<img src="assets/imgs/pin-disabled.png" />
+					      	<h3>INLAND</h3>
+					      	<h2>EMPIRE</h2>
+					      	<p>will be coming<br>very soon</p>
+				        </div>
 				      </ion-item>
 			    </ion-col>
 			  </ion-row>
 			</ion-grid>
 		</div>
+	</div>
+	<div class="next-button">
+		<button ion-button full (click)="showResults()">Next</button>
 	</div>
 </ion-content>

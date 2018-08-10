@@ -12,6 +12,8 @@ import { SlideWalkPage } from '../pages/slide-walk/slide-walk';
 import { SingingPage } from '../pages/singing/singing';
 import { SignButtonsPage } from '../pages/sign-buttons/sign-buttons';
 import { PickTestdriveLocationPage } from '../pages/pick-testdrive-location/pick-testdrive-location';
+import { SearchResultPage } from '../pages/search-result/search-result';
+import { CarDetailsPage } from '../pages/car-details/car-details';
 
 @NgModule({
   declarations: [
@@ -20,7 +22,9 @@ import { PickTestdriveLocationPage } from '../pages/pick-testdrive-location/pick
     SlideWalkPage,
     SingingPage,
     SignButtonsPage,
-    PickTestdriveLocationPage
+    PickTestdriveLocationPage,
+    SearchResultPage,
+    CarDetailsPage
   ],
   imports: [
     BrowserModule,
@@ -33,7 +37,9 @@ import { PickTestdriveLocationPage } from '../pages/pick-testdrive-location/pick
     SlideWalkPage,
     SingingPage,
     SignButtonsPage,
-    PickTestdriveLocationPage
+    PickTestdriveLocationPage,
+    SearchResultPage,
+    CarDetailsPage
   ],
   providers: [
     StatusBar,
