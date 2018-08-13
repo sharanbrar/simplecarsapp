@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
+import {HttpClientModule} from '@angular/common/http';
 import { Geolocation } from '@ionic-native/geolocation';
 
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -14,6 +15,7 @@ import { SignButtonsPage } from '../pages/sign-buttons/sign-buttons';
 import { PickTestdriveLocationPage } from '../pages/pick-testdrive-location/pick-testdrive-location';
 import { SearchResultPage } from '../pages/search-result/search-result';
 import { CarDetailsPage } from '../pages/car-details/car-details';
+import { ServercallsProvider } from '../providers/servercalls/servercalls';
 
 @NgModule({
   declarations: [
@@ -28,6 +30,7 @@ import { CarDetailsPage } from '../pages/car-details/car-details';
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     IonicModule.forRoot(MyApp)
   ],
   bootstrap: [IonicApp],
@@ -45,7 +48,8 @@ import { CarDetailsPage } from '../pages/car-details/car-details';
     StatusBar,
     SplashScreen,
     Geolocation,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    ServercallsProvider
   ]
 })
 export class AppModule {}

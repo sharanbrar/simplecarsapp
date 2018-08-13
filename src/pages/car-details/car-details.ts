@@ -25,23 +25,34 @@ export class CarDetailsPage {
   }
   updatecardata(){
   	this.carsData = {
-  			'id':1,'name':'Pontiac',
-  			'miles':'34,382 miles',
-  			'price':'$73',
-  			'desc':'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the 1500s',
-  			'image':['assets/imgs/car-1.png','assets/imgs/car-2.png'],
-  			'routes':['assets/imgs/drive-test-1.png',
-  					  'assets/imgs/drive-test-1.png',
-  					  'assets/imgs/drive-test-1.png',
-  					  'assets/imgs/drive-test-1.png',
-  					  'assets/imgs/drive-test-1.png',
-  					  'assets/imgs/drive-test-1.png',
-  					  'assets/imgs/drive-test-1.png',
-  					  'assets/imgs/drive-test-1.png',
-  					  'assets/imgs/drive-test-1.png',
-  					  'assets/imgs/drive-test-1.png'
-  					],
-  		};
+        'id':1,'name':'Pontiac',
+        'miles':'34,382 miles',
+        'price':'$73',
+        'desc':'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the 1500s',
+        'image':['assets/imgs/car-1.png','assets/imgs/car-2.png'],
+        'routes':['assets/imgs/drive-test-1.png',
+              'assets/imgs/drive-test-1.png',
+              'assets/imgs/drive-test-1.png',
+              'assets/imgs/drive-test-1.png',
+              'assets/imgs/drive-test-1.png',
+              'assets/imgs/drive-test-1.png',
+              'assets/imgs/drive-test-1.png',
+              'assets/imgs/drive-test-1.png',
+              'assets/imgs/drive-test-1.png',
+              'assets/imgs/drive-test-1.png'
+            ],
+          'additionalf':['Cruise Control',
+                         '4 Wheeled Drive',
+                         'Heated Seats',
+                         'A/C',
+                         'Leather Seats',
+                         'Tinted Windows',
+                         'Auto Transmission',
+                         'Movie Screens',
+                         'Sun Roof',
+                         'Moon Roof',
+                         'Navigation System']
+      };
   }
 
   showSignIn(){

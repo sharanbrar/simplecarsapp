@@ -43,7 +43,7 @@ export class PickTestdriveLocationPage {
         mapTypeId: google.maps.MapTypeId.ROADMAP
       } 
       this.map = new google.maps.Map(document.getElementById("map"), mapOptions);
-      setTimeout(()=>{ this.addMarker(this.map.getCenter(),"<h4>Your Location</h4>"); },300);
+      setTimeout(()=>{ this.addMarker(this.map.getCenter(),"<h4>Your Location</h4>"); this.autoComplete(); },300);
     }, (err) => {
       console.log(err);
     });

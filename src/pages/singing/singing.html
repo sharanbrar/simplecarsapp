@@ -20,10 +20,10 @@
 	    <div class="signing-toggle-buttons">
 		    <ion-segment [(ngModel)]="tabtype">
 		      <ion-segment-button value="singintab">
-		      	Sing In
+		      	Sign In
 		      </ion-segment-button>
 		      <ion-segment-button value="singuptab">
-		      	Sing Up
+		      	Sign Up
 		      </ion-segment-button>
 		    </ion-segment>
 	    </div>
@@ -38,6 +38,7 @@
 				    </ion-item>
 				    <button ion-button full color="light" round (click)="submitSignIn()">Sign In</button>
 	    		</form>
+	    		<p class="forget-password">Did you forget your password?<br><a>Click here</a></p>
 	    	</div>
 	    	<div class="signUpform"  *ngSwitchCase="'singuptab'">
 	    		<form [formGroup]="signUpform">
@@ -52,6 +53,7 @@
 				    </ion-item>
 				    <button ion-button full color="light" round (click)="submitSignUp()">Sign Up</button>
 	    		</form>
+	    		<p class="forget-password">By clicking Sign Up you agree to our <a>Term of Service</a></p>
 	    	</div>
 	    </div>
 	</div>
