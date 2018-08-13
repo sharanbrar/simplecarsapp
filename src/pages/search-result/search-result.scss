@@ -1,3 +1,81 @@
 page-search-result {
+    
+        .header {
+            background: #30b7ff !important;  
+            box-shadow: 0 2px 2px 0 rgba(0,0,0,0.16), 0 0 0 1px rgba(0,0,0,0.08);
+            .toolbar-background {
+                background: #30b7ff !important;
+          }
+          .toolbar-title{
+            color: #fff;
+            font-weight: normal;
+        }
+        .back-button{
+            .button-inner{
+                color: #000;
+            }
+            span.back-button-text {
+                font-size: 0px;
+             }
+        }
+          .result-suggested-buttons{
+              .segment{
+                max-width: 100%;
+                margin: 0 auto;
+                  .segment-button{
+                      border: none;
+                      color: #fff;
+                      border-radius: 0px;
+                      span{
+                          display: inline-block;
+                      }
+                      &.segment-activated{
+                        background-color:transparent;
+                        span{
+                            border-bottom:4px solid #fff; 
+                        }
+                      }
+                  }
+              }
+          }
+     }
+     .result-content-div{
+         .grid{
+             .row{
+                 .col{
+                     width: 50%;
+                     .item{
+                         &.item-block{
+                             padding: 0px;
+                             box-shadow: 0 10px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+                             border-radius: 2px;
+                             .item-inner{
+                                 padding: 0px;
+                                 border: none;
+                                 .input-wrapper{
+                                    .label{
+                                        margin: 0px;
+                                        .car-info{
+                                            text-align: center;
+                                            padding: 10px 10px;
+                                            P{
+                                                color: #8a8e91;
+                                                font-size: 12px;
+                                                &.car-name{
 
+                                                }
+                                                &.miles{
+
+                                                }
+                                            }
+                                        }
+                                    }
+                                 }
+                             }
+                         }
+                     }
+                 }
+             }
+         }
+     }
 }

@@ -15,11 +15,16 @@ page-pick-testdrive-location {
     	border-radius: 5px;
     	font-size: 12px;
 	}
-	.button-inner{
-		color: #000;
+	.back-button{
+		.button-inner{
+			color: #000;
+		}
 	}
 	.toolbar-background {
-		background: #30b7ff !important;;
+		background: #30b7ff !important;
+	 }
+	 span.back-button-text {
+		font-size: 0px;
 	 }
 	 .toolbar-title{
 		 color: #fff;
@@ -30,7 +35,7 @@ page-pick-testdrive-location {
 		.current-location{
 			h3{
 				color: #000;
-				font-size:20px !important;
+				font-size:16px !important;
 				margin: 0px;
 				text-align: center;
 				font-family: 'Montserrat', sans-serif;
@@ -42,13 +47,13 @@ page-pick-testdrive-location {
 		.loc-input-div{
 			p{
 				color: #000;
-				font-size: 14px;
+				font-size: 12px;
 				font-weight: 500;
 				margin: 10px 0px;
 				font-family: 'Montserrat', sans-serif;
 				&:last-child{
 					color: #5c5c5c;
-					font-size: 14px;
+					font-size: 12px;
 					font-style: italic;
 					margin: 0px;
 					font-family: 'Montserrat', sans-serif;
@@ -58,9 +63,10 @@ page-pick-testdrive-location {
 		.item-input{
 			margin: 10px 0px;
 			.item-inner{
+				border: none;
 				.input-wrapper{
 					.text-input{
-						font-size: 14px;
+						font-size: 12px;
 					}
 				}
 			}
@@ -75,17 +81,46 @@ page-pick-testdrive-location {
 		h3{
 			text-align: center;
 			color: #000;
-			font-size: 20px;
+			font-size: 18px;
 			font-family: 'Montserrat', sans-serif;
 		}
 		.grid{
+			.row{
+				margin: 0px -8px;
+			.enabled{
+				.item{
+					padding: 25px 0px !important;
+					background: #e7f7ff;
+				}
+			}
+			.disabled{
+				height: 100%;
+				.item{
+					background: #f6f6f6;
+					.item-inner{
+						.input-wrapper{
+							.label{
+								h3{
+									color: #b0b0b0;
+								}
+								h2{
+									color: #b0b0b0;
+								}
+								p{
+									color: #b0b0b0;
+								}
+							}
+						}
+					}
+				}
+			}
 			.item{
 				padding: 25px 0px !important;
-				background: #e7f7ff;
 				height: 100%;
 				.item-inner{
 					padding: 0px;
 					text-align: center;
+					border: none;
 					border: none;
 					.input-wrapper{
 						.label{
@@ -104,7 +139,7 @@ page-pick-testdrive-location {
 							}
 							p{
 								color: #000;
-								font-size: 14px;
+								font-size: 10px;
 								font-weight: 500;
 								margin:15px 0px 0px;
 								font-family: 'Montserrat', sans-serif;
@@ -112,10 +147,15 @@ page-pick-testdrive-location {
 						}
 					}
 				}
-				&.disabled{
-					background: #f6f6f6;
-				}
 			}
+		}
+		}
+	}
+	.next-button{
+		button{
+			background: #30b7ff !important;
+			font-size: 1.8rem;
+			color: #fff;
 		}
 	}
 }
