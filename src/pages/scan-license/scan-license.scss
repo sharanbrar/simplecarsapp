@@ -2,5 +2,39 @@ page-scan-license {
 	.scanner-license-body{
 		background-image: url(../../assets/imgs/drive-lic-bg.jpg);
 		background-size : 100% 100%;
+		.scanner-desc-div{
+			text-align: center;
+			h3{
+				color: #fff;
+				font-family: 'Montserrat';
+				margin: 0px;
+				font-size: 20px;
+			}
+			p{
+				color: #fff;
+				font-family: 'Montserrat';
+				margin: 20px 0px 0px;
+				font-size: 14px;
+				font-weight: 300;
+			}
+		}
+	}
+	.scanner-action-buttons{
+		text-align: center;
+		.camera-icon{
+			ion-icon {
+				display: inline-block;
+				font-size: 10em;
+				color: #fff;
+				line-height: 0.6em;
+			}
+		}
+		.scan-button{
+			button{
+				color: #85888b;
+				font-family: 'Nunito';
+				padding: 0 2.5em;
+			}
+		}
 	}
 }
