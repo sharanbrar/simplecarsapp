@@ -28,6 +28,7 @@
 			<p class="car-desc">
 				{{carsData.desc}}
 			</p>
+		<button ion-button (click)="showSignIn()">Book a Test Drive</button>	
 			<div class="car-routes">
 				<ion-grid class="car-route-slider">
 			        <ion-row nowrap class="route-div">
@@ -37,7 +38,16 @@
 			        </ion-row>
 			    </ion-grid>
 			</div>
+			<div class="car-details-additional-features" *ngIf="carsData.additionalf">
+				<h3 class="addtional-heading">ADDITIONAL FEATURES</h3>
+				<ion-list no-lines>
+				  <ion-item *ngFor="let adFeature of carsData.additionalf">
+				  	<ion-icon name="square-outline" item-start></ion-icon>
+				  	{{adFeature}}
+				  </ion-item>
+				</ion-list>
+				<button ion-button (click)="showSignIn()">Book a Test Drive</button>	
+			</div>
 		</div>
-		<button ion-button (click)="showSignIn()">Book a Test Drive</button>	
 	</div>
 </ion-content>
