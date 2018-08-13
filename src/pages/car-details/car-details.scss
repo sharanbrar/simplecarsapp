@@ -1,9 +1,113 @@
 page-car-details {
+    .header{
+        background: #30b7ff;
+        box-shadow: 0 2px 2px 0 rgba(0,0,0,0.16), 0 0 0 1px rgba(0,0,0,0.08);
+        .toolbar-background {
+            background: #30b7ff !important;
+         }
+         .toolbar-title{
+             color: #fff;
+             font-weight: normal;
+         }
+         .back-button{
+             .button-inner{
+                 color: #000;
+                 span.back-button-text {
+                    font-size: 0px;
+                    background: #30b7ff !important;;
+                 }
+             }
+         }
+    }
 	.car-route-slider{
 		overflow-x: scroll!important;
         overflow-y: hidden;
         word-wrap: break-word;
         font-size:0.8em;
         font-weight:300;
+    }
+    .car-images-slider{
+        .swiper-pagination{
+			button{
+			&.swiper-pagination-bullet{
+				width: 14px;
+				height: 14px;
+				background: #fff;
+				opacity: 1;
+				&.swiper-pagination-bullet-active{
+					width: 40px;
+					border-radius: 10px 10px;
+				}
+			}
+		}
 	}
+    }
+    .car-details-div{
+        padding: 20px;
+        .name-price{
+            h3{
+                margin: 0px;
+                color: #202020;
+                &.car-name{
+                    font-size: 36px;
+                }
+                &.car-price{
+                    font-size: 26px;
+                }
+            }
+        }
+        .car-details-desc{
+            p{
+                &.car-desc{
+                   color: #231f20;
+                   font-size: 16px;
+                   margin: 15px 0px;
+                }
+            }
+            button{
+                &.button{
+                    width: 100%;
+                    float: left;
+                    text-align: center;
+                    border-radius: 50px;
+                    color: #fff;
+                    font-size: 20px;
+                    font-family: 'Montserrat', sans-serif;
+                    font-weight: 500;
+                    background: linear-gradient(#1c93f8, #1e8dce, #2288a4);
+                    margin-bottom: 20px;
+                }
+            }
+        }
+    }
+    .car-details-additional-features{
+        padding: 20px 0px;
+        h3{
+        &.addtional-heading{
+            margin: 0 auto 20px;
+            color: #202020;
+            font-size: 22px;
+            text-align: center;
+        }
+    }
+    .list {
+        .item {
+            &.item-block{
+                padding: 0px;
+                .icon{
+                    margin: 8px 10px 8px 0;
+                }
+                .item-inner{
+                    .input-wrapper{
+                        .label{
+                            margin: 8px 4px 8px 0;
+                            color: #202020;
+                            font-size: 20px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    }
 }

@@ -1,15 +1,128 @@
 page-singing {
 	.signing-tab-body{
+		.tab-container{
+			background-image: url(../../assets/imgs/drive-lic-bg.jpg);
+			background-size : 100% 100%;
+			&.signintab{
+				text-align: center;
+				padding: 40% 0px;
+				img{
+					max-width: 80%;
+				}
+			}
+			&.singuptab{
+				text-align: center;
+				padding: 40% 0px;
+				img{
+					max-width: 80%;
+				}
+			}
+		}
+		.tabs-container{
+			position: relative;
+			top: -20px;
+			padding: 0px 20px 0px;
+			.segment{
+				max-width: 100%;
+				margin: 0 auto;
+				.segment-button{
+					border: none;
+					color: #959595;
+					border-radius: 4px;
+					max-width: 50%;
+					margin: 0px 4px;
+					background: #fff;
+					box-shadow: 0 10px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+					&.segment-activated{
+						color: #4fa3eb;
+						border-bottom:4px solid #4fa3eb; 
+					}
+				}
+			}
+		}
+		.singInform{
+			margin: 20px 0px 0px;
+			form{
+				.item{
+					&.item-block {
+						padding: 0px;
+						.item-inner{
+							border: 0.55px solid #c8c7cc;
+							background: #eff4f8;
+							padding: 0px 10px;
+							border-radius: 5px;
+						}
+					}
 
+					&.has-danger{
+						&.item-block {
+							.item-inner{
+							border: 0.55px solid red;
+							}
+						}
+					}
+				}
+				button{
+					&.button{
+						background-color: #eff4f8;
+						font-family: 'Montserrat';
+						font-weight: bold;
+						color: #8a8e91;
+						font-size: 20px;
+						box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+						
+					}
+				}
+			}
+		}
+		.signUpform{
+			margin: 20px 0px 0px;
+			form{
+				.item{
+					&.item-block {
+						padding: 0px;
+						.item-inner{
+							border: 0.55px solid #c8c7cc;
+							background: #eff4f8;
+							padding: 0px 10px;
+							border-radius: 5px;
+						}
+					}
+
+					&.has-danger{
+						&.item-block {
+							.item-inner{
+							border: 0.55px solid red;
+							}
+						}
+					}
+				}
+				button{
+					&.button{
+						background-color: #eff4f8;
+						font-family: 'Montserrat';
+						font-weight: bold;
+						color: #8a8e91;
+						font-size: 20px;
+						box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+						
+					}
+				}
+			}
+		}
+		p{
+		&.forget-password{
+			text-align: center;
+			margin: 20px auto;
+			color: #3f3f3f;
+			font-size: 16px;
+			font-family: 'Montserrat';
+			font-weight: 500;
+			a{
+				color: #3f3f3f;
+				text-decoration: underline;
+			}
+		}
 	}
-	.signing-tab-body .tab-container{
-		background-image: url(../../assets/imgs/drive-lic-bg.jpg);
-		background-size : 100% 100%;
-	}
-	.signing-tab-body .tab-container.singintab{
-		height: 300px;
-	}
-	.signing-tab-body .tab-container.singuptab{
-		height: 200px;
 	}
 }
