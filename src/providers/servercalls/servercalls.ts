@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
+import { ToastController } from 'ionic-angular';
 /*
   Generated class for the ServercallsProvider provider.
 
@@ -18,7 +19,7 @@ export class ServercallsProvider {
       'Content-Type':  'application/json',
     })
   };
-  constructor(public http: HttpClient) {
+  constructor(public http: HttpClient,private toastCtrl: ToastController) {
     console.log('Hello ServercallsProvider Provider');
   }
 
@@ -55,5 +56,17 @@ export class ServercallsProvider {
 	    return Observable.throw(errMsg);
 	  }
 /**************************************/
+	  presentToast(DispText,DispPosition = 'top',DispDuration=3000) {
+	    let toast = this.toastCtrl.create({
+	      message: DispText,
+	      duration: DispDuration,
+	      position: DispPosition
+	    });
 
+	    toast.onDidDismiss(() => {
+	      console.log('Dismissed toast');
+	    });
+
+	    toast.present();
+	 }
 }

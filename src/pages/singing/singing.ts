@@ -3,6 +3,7 @@ import { NavController, NavParams } from 'ionic-angular';
 import {FormBuilder, FormGroup,FormControl,Validators,ValidatorFn} from '@angular/forms';
 import { ScanLicensePage } from '../scan-license/scan-license';
 import { ToastController } from 'ionic-angular';
+import { ServercallsProvider } from '../../providers/servercalls/servercalls';
 /**
  * Generated class for the SingingPage page.
  *
@@ -18,7 +19,7 @@ export class SingingPage {
   tabtype;
   public signInform : FormGroup;
   public signUpform : FormGroup;
-  constructor(public navCtrl: NavController, public navParams: NavParams,private formBuilder: FormBuilder,private toastCtrl: ToastController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,private formBuilder: FormBuilder,private toastCtrl: ToastController,public servercall:ServercallsProvider) {
       this.tabtype = 'singintab';
       this.signInform = this.formBuilder.group({
                            'signinEmail'        : ['', Validators.compose([Validators.required,this.validatorEmail()])],
@@ -45,7 +46,7 @@ export class SingingPage {
       if(this.signUpform.status == 'VALID'){
         this.navCtrl.push(ScanLicensePage);
       }else{
-        this.presentToast('Invalid Name/Email/Password');
+        this.servercall.presentToast('Invalid Name/Email/Password');
       }
   }
 
@@ -57,7 +58,7 @@ export class SingingPage {
       if(this.signInform.status == 'VALID'){
         this.navCtrl.push(ScanLicensePage);
       }else{
-        this.presentToast('Invalid Email/Password');
+        this.servercall.presentToast('Invalid Email/Password');
       }
   }
 /************* Custom Validators *************/
