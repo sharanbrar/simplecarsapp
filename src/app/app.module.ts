@@ -16,6 +16,8 @@ import { PickTestdriveLocationPage } from '../pages/pick-testdrive-location/pick
 import { SearchResultPage } from '../pages/search-result/search-result';
 import { CarDetailsPage } from '../pages/car-details/car-details';
 import { ServercallsProvider } from '../providers/servercalls/servercalls';
+import { ScanLicensePage } from '../pages/scan-license/scan-license';
+import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 
 @NgModule({
   declarations: [
@@ -26,7 +28,8 @@ import { ServercallsProvider } from '../providers/servercalls/servercalls';
     SignButtonsPage,
     PickTestdriveLocationPage,
     SearchResultPage,
-    CarDetailsPage
+    CarDetailsPage,
+    ScanLicensePage
   ],
   imports: [
     BrowserModule,
@@ -42,14 +45,16 @@ import { ServercallsProvider } from '../providers/servercalls/servercalls';
     SignButtonsPage,
     PickTestdriveLocationPage,
     SearchResultPage,
-    CarDetailsPage
+    CarDetailsPage,
+    ScanLicensePage
   ],
   providers: [
     StatusBar,
     SplashScreen,
     Geolocation,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    ServercallsProvider
+    ServercallsProvider,
+    BarcodeScanner
   ]
 })
 export class AppModule {}

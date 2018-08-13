@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import {FormBuilder, FormGroup,FormControl,Validators,ValidatorFn} from '@angular/forms';
+import { ScanLicensePage } from '../scan-license/scan-license';
+import { ToastController } from 'ionic-angular';
 /**
  * Generated class for the SingingPage page.
  *
@@ -16,7 +18,7 @@ export class SingingPage {
   tabtype;
   public signInform : FormGroup;
   public signUpform : FormGroup;
-  constructor(public navCtrl: NavController, public navParams: NavParams,private formBuilder: FormBuilder) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,private formBuilder: FormBuilder,private toastCtrl: ToastController) {
       this.tabtype = 'singintab';
       this.signInform = this.formBuilder.group({
                            'signinEmail'        : ['', Validators.compose([Validators.required,this.validatorEmail()])],
@@ -36,10 +38,27 @@ export class SingingPage {
 
   submitSignUp(){
       console.log(this.signUpform);
+      this.signUpform['controls']['signupName'].markAsDirty();
+      this.signUpform['controls']['signupEmail'].markAsDirty();
+      this.signUpform['controls']['signupPassword'].markAsDirty();
+
+      if(this.signUpform.status == 'VALID'){
+        this.navCtrl.push(ScanLicensePage);
+      }else{
+        this.presentToast('Invalid Name/Email/Password');
+      }
   }
 
   submitSignIn(){
       console.log(this.signInform);
+      this.signInform['controls']['signinEmail'].markAsDirty();
+      this.signInform['controls']['signinPassword'].markAsDirty();
+
+      if(this.signInform.status == 'VALID'){
+        this.navCtrl.push(ScanLicensePage);
+      }else{
+        this.presentToast('Invalid Email/Password');
+      }
   }
 /************* Custom Validators *************/
   validatorEmail(){
@@ -83,6 +102,20 @@ export class SingingPage {
       return val;
     };
     return validator;
+  }
+
+  presentToast(DispText,DispPosition = 'top',DispDuration=3000) {
+    let toast = this.toastCtrl.create({
+      message: DispText,
+      duration: DispDuration,
+      position: DispPosition
+    });
+
+    toast.onDidDismiss(() => {
+      console.log('Dismissed toast');
+    });
+
+    toast.present();
   }
 
 }

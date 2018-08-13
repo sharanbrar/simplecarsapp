@@ -30,10 +30,10 @@
 	    <div [ngSwitch]="tabtype">
 	    	<div class="singInform" *ngSwitchCase="'singintab'">
 	    		<form [formGroup]="signInform">
-	    			<ion-item margin-bottom>
+	    			<ion-item margin-bottom [ngClass]="{'has-danger': !signInform.controls['signinEmail'].valid && signInform.controls['signinEmail'].dirty }">
 				         <ion-input type="text" formControlName="signinEmail" placeholder="Username (this is your email)"></ion-input>
 				    </ion-item>
-				    <ion-item margin-bottom>
+				    <ion-item margin-bottom [ngClass]="{'has-danger': !signInform.controls['signinPassword'].valid && signInform.controls['signinPassword'].dirty }">
 				         <ion-input type="password" formControlName="signinPassword" placeholder="Password"></ion-input>
 				    </ion-item>
 				    <button ion-button full color="light" round (click)="submitSignIn()">Sign In</button>
@@ -42,13 +42,13 @@
 	    	</div>
 	    	<div class="signUpform"  *ngSwitchCase="'singuptab'">
 	    		<form [formGroup]="signUpform">
-	    			<ion-item margin-bottom>
+	    			<ion-item margin-bottom [ngClass]="{'has-danger': !signUpform.controls['signupName'].valid && signUpform.controls['signupName'].dirty }">
 				         <ion-input type="text" formControlName="signupName" placeholder="Name"></ion-input>
 				    </ion-item>
-				    <ion-item margin-bottom>
+				    <ion-item margin-bottom [ngClass]="{'has-danger': !signUpform.controls['signupEmail'].valid && signUpform.controls['signupEmail'].dirty }">
 				         <ion-input type="text" formControlName="signupEmail" placeholder="Email"></ion-input>
 				    </ion-item>
-				    <ion-item margin-bottom>
+				    <ion-item margin-bottom [ngClass]="{'has-danger': !signUpform.controls['signupPassword'].valid && signUpform.controls['signupPassword'].dirty }">
 				         <ion-input type="password" formControlName="signupPassword" placeholder="Password"></ion-input>
 				    </ion-item>
 				    <button ion-button full color="light" round (click)="submitSignUp()">Sign Up</button>
