@@ -1,40 +1,15 @@
 page-singing {
 	.signing-tab-body{
-		 .tab-container{
+
+	}
+	.signing-tab-body .tab-container{
 		background-image: url(../../assets/imgs/drive-lic-bg.jpg);
 		background-size : 100% 100%;
-		&.signintab{
-			text-align: center;
-			padding: 40% 0px;
-			img{
-				max-width: 80%;
-			}
-		}
-		&.singuptab{
-			text-align: center;
-			padding: 40% 0px;
-			img{
-				max-width: 80%;
-			}
-		}
 	}
-	.tabs-container{
-		position: relative;
-		top: -20px;
-		padding: 0px 20px 0px;
-		.segment-button{
-			border: none;
-			color: #fff;
-			border-radius: 0px;
-			background-color:#fff;
-			span{
-				display: inline-block;
-			}
-			&.segment-activated{
-			  color: #4fa3eb;
-			  border-bottom:4px solid #4fa3eb; 
-			}
-		}
+	.signing-tab-body .tab-container.singintab{
+		height: 300px;
 	}
+	.signing-tab-body .tab-container.singuptab{
+		height: 200px;
 	}
 }
