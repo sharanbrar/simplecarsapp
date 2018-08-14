@@ -42,8 +42,10 @@ page-search-result {
     .result-content-div{
         .grid{
             .row{
+                display: block;
                 .col{
                     width: 50%;
+                    float: left;
                     .item{
                         &.item-block{
                             padding: 0px;

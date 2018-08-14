@@ -18,23 +18,82 @@ page-scan-license {
 				font-weight: 300;
 			}
 		}
-	}
-	.scanner-action-buttons{
-		text-align: center;
-		.camera-icon{
-			ion-icon {
-				display: inline-block;
-				font-size: 10em;
-				color: #fff;
-				line-height: 0.6em;
+		.scanner-action-buttons{
+			text-align: center;
+			.camera-icon{
+				ion-icon {
+					display: inline-block;
+					font-size: 10em;
+					color: #fff;
+					line-height: 0.6em;
+				}
+			}
+			.scan-button{
+				button{
+					color: #85888b;
+					font-family: 'Nunito';
+					padding: 0 2.5em;
+				}
 			}
 		}
-		.scan-button{
-			button{
-				color: #85888b;
-				font-family: 'Nunito';
-				padding: 0 2.5em;
-			}
+
+		.scanner-disp-img-div {
+			position: relative;
+			width: 100%;
+    		height: 300px;
+			float: left;
 		}
+		.scanner-disp-img-div:before {
+			display: block;
+			content: "";
+			width: 20px;
+			height: 20px;
+			position: absolute;
+			top: 30px;
+			left: 30px;
+			border-top: 2px solid #fff;
+			border-left: 2px solid #fff;
+		}
+		.scanner-disp-img-div:after {
+			display: block;
+			content: "";
+			width: 20px;
+			height: 20px;
+			position: absolute;
+			top: 30px;
+			right: 30px;
+			border-top: 2px solid #fff;
+			border-right: 2px solid #fff;
+		}
+		.scanner-disp-img-div span:before {
+			display: block;
+			content: "";
+			width: 20px;
+			height: 20px;
+			position: absolute;
+			bottom: 30px;
+			left: 30px;
+			border-bottom: 2px solid #fff;
+			border-left:2px solid #fff;
+		}
+		.scanner-disp-img-div span:after {
+			display: block;
+			content: "";
+			width: 20px;
+			height: 20px;
+			position: absolute;
+			bottom: 30px;
+			right: 30px;
+			border-bottom:2px solid #fff;
+			border-right:2px solid #fff;
+		}
+
+
+
+
+
+
+
+
 	}
 }

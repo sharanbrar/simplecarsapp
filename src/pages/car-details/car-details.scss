@@ -26,6 +26,14 @@ page-car-details {
         font-size:0.8em;
         font-weight:300;
     }
+    .swiper-slide{
+        .slide-zoom{
+           img{
+               width: 100%;
+           }
+        }
+
+    }
     .car-images-slider{
         .swiper-pagination{
 			button{
