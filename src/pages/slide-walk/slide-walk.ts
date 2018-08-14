@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 // import { SingingPage } from '../singing/singing';
 import { PickTestdriveLocationPage } from '../pick-testdrive-location/pick-testdrive-location';
-
+import { ServercallsProvider } from '../../providers/servercalls/servercalls';
 
 /**
  * Generated class for the SlideWalkPage page.
@@ -17,7 +17,8 @@ import { PickTestdriveLocationPage } from '../pick-testdrive-location/pick-testd
 })
 export class SlideWalkPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,public servercall:ServercallsProvider) {
+      this.servercall.setLocalStorage('SimpleCarsApplaunched',true);
   }
 
   ionViewDidLoad() {
@@ -25,6 +26,6 @@ export class SlideWalkPage {
   }
 
   letsGo(){
-  	this.navCtrl.push(PickTestdriveLocationPage);
+  	this.navCtrl.setRoot(PickTestdriveLocationPage);
   }
 }

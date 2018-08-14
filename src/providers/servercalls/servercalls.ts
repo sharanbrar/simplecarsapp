@@ -12,7 +12,8 @@ import { ToastController } from 'ionic-angular';
 */
 @Injectable()
 export class ServercallsProvider {
-  public baseUrl : string = '';
+  public loginState :boolean = false;
+  public baseUrl : string = 'http://www.simplecarapp.com/api/';
   public loginChange: Subject<boolean> = new Subject<boolean>();
   public httpOptions = {
     headers: new HttpHeaders({
@@ -21,6 +22,42 @@ export class ServercallsProvider {
   };
   constructor(public http: HttpClient,private toastCtrl: ToastController) {
     console.log('Hello ServercallsProvider Provider');
+    this.loginChange.subscribe((value) => {
+            this.loginState = value;
+    });
+  }
+
+/*************LocalStorage Functions****************/
+  public setLocalStorage(item,value){
+	  localStorage.setItem(item, value);
+  }
+
+  public getLocalStorage(item,defaultvalue:any = ''){
+	 return localStorage.getItem(item) ? localStorage.getItem(item) : defaultvalue;
+  }
+
+  public checkLogin(){
+  	console.log("checkking login");
+  	this.loginState = localStorage.getItem('SimplecarLoginState') == 'true' ? true : false;
+	  return this.loginState;
+  }
+  
+  public setLogin(value){
+	  localStorage.setItem('SimplecarLoginState', value);
+      this.loginChange.next(value);
+  }
+
+  public setUserInfo(userdata){
+  	localStorage.setItem('SimplecaruserInfo', JSON.stringify(userdata));
+  }
+
+  public getUserInfo(param?){
+	let Userinfo = JSON.parse(localStorage.getItem('SimplecaruserInfo'));
+  	if(param){
+      return (Userinfo[param]) ? Userinfo[param] : '' ;
+    }else{
+      return  Userinfo;
+    }
   }
 
 /**************************************/
