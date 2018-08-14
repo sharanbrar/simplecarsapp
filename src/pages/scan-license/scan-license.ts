@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
+import { BookingCalendarPage } from '../booking-calendar/booking-calendar';
 /**
  * Generated class for the ScanLicensePage page.
  *
@@ -22,11 +23,12 @@ export class ScanLicensePage {
   }
 
   openBarScanner(){
+    this.navCtrl.push(BookingCalendarPage);
   	console.log("Bar Scanner Launched");
-  	this.barcodeScanner.scan().then(barcodeData => {
-	 console.log('Barcode data', barcodeData);
-	}).catch(err => {
-	    console.log('Error', err);
-	});
+  	// this.barcodeScanner.scan().then(barcodeData => {
+  	//  console.log('Barcode data', barcodeData);
+  	// }).catch(err => {
+  	//     console.log('Error', err);
+  	// });
   }
 }

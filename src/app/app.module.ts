@@ -18,6 +18,8 @@ import { CarDetailsPage } from '../pages/car-details/car-details';
 import { ServercallsProvider } from '../providers/servercalls/servercalls';
 import { ScanLicensePage } from '../pages/scan-license/scan-license';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
+import { BookingCalendarPage } from '../pages/booking-calendar/booking-calendar';
+import { CalendarModule } from "ion2-calendar";
 
 @NgModule({
   declarations: [
@@ -29,11 +31,13 @@ import { BarcodeScanner } from '@ionic-native/barcode-scanner';
     PickTestdriveLocationPage,
     SearchResultPage,
     CarDetailsPage,
-    ScanLicensePage
+    ScanLicensePage,
+    BookingCalendarPage
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
+    CalendarModule,
     IonicModule.forRoot(MyApp)
   ],
   bootstrap: [IonicApp],
@@ -46,7 +50,8 @@ import { BarcodeScanner } from '@ionic-native/barcode-scanner';
     PickTestdriveLocationPage,
     SearchResultPage,
     CarDetailsPage,
-    ScanLicensePage
+    ScanLicensePage,
+    BookingCalendarPage
   ],
   providers: [
     StatusBar,
