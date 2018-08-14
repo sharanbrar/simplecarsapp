@@ -23,9 +23,10 @@ export class PickTestdriveLocationPage {
   map: any;
   userCurrentLoc;
   allLocation : any[] = [];
+  curentMarker:any;
   constructor(public navCtrl: NavController, public navParams: NavParams,public geolocation: Geolocation,public servercall:ServercallsProvider) {
-    this.userCurrentLoc = { location : '',lat:'',long:''};
-    this.fetchLoactions();
+  	this.userCurrentLoc = { location : '',lat:'',lng:''};
+  	this.fetchLoactions();
     // setTimeout( () => {;},200);
   }
 
@@ -75,7 +76,14 @@ export class PickTestdriveLocationPage {
      google.maps.event.addListener(autocomplete, 'place_changed', () => {
        // retrieve the place object for your use
        let place = autocomplete.getPlace();
-       console.log(place);
+       let markdat = { 
+          location : place.formatted_address,
+          lat:place.geometry.location.lat(),
+          lng:place.geometry.location.lng(),
+          short_address : place.formatted_address,
+          address:  place.formatted_address
+        }
+       this.addCurrentMarker(markdat,'update');
      });
   }
 
@@ -88,57 +96,59 @@ export class PickTestdriveLocationPage {
         position: pos,
         icon:'assets/imgs/map-pin.png',
         markerid: i,
-        simple_address: this.allLocation[i].short_address,
-        simple_long_address:(this.allLocation[i].address)?this.allLocation[i].address:this.allLocation[i].short_address
+        short_address: this.allLocation[i].short_address,
+        address:(this.allLocation[i].address)?this.allLocation[i].address:this.allLocation[i].short_address
       });     
       this.addInfoWindow(marker);
     }
-    setTimeout(()=>{this.addCurrentMarker(this.allLocation[0],'update')},200);
+    setTimeout(()=>{this.addCurrentMarker(this.allLocation[0],'check')},200);
   }
 
   addCurrentMarker(markdata,type='update'){
     if(type == 'update'){
+      this.curentMarker.setMap(null);
       this.userCurrentLoc = { 
                               location : markdata.short_address,
                               lat:markdata.lat,
-                              long:markdata.lng,
-                              simple_address : markdata.short_address,
-                              simple_long_address: (markdata.address)?markdata.address:markdata.short_address
+                              lng:markdata.lng,
+                              short_address : markdata.short_address,
+                              address: (markdata.address)?markdata.address:markdata.short_address
                             };
       this.servercall.setLocalStorage('SimplecarsAppCurrentLocation',JSON.stringify(this.userCurrentLoc));
     }else{
-      if(this.servercall.getLocalStorage('SimplecarsAppCurrentLocation',false)){
+      if(!this.servercall.getLocalStorage('SimplecarsAppCurrentLocation',false)){
           this.userCurrentLoc = JSON.parse(this.servercall.getLocalStorage('SimplecarsAppCurrentLocation','{}'));
       }else{
           this.userCurrentLoc = { 
                               location : markdata.short_address,
                               lat:markdata.lat,
-                              long:markdata.lng,
-                              simple_address : markdata.short_address,
-                              simple_long_address: (markdata.address)?markdata.address:markdata.short_address
+                              lng:markdata.lng,
+                              short_address : markdata.short_address,
+                              address: (markdata.address)?markdata.address:markdata.short_address
                             };
           this.servercall.setLocalStorage('SimplecarsAppCurrentLocation',JSON.stringify(this.userCurrentLoc));
       }
     }
-    let pos = new google.maps.LatLng(markdata.lat,markdata.lng);
+    console.log(this.userCurrentLoc);
+    let pos = new google.maps.LatLng(this.userCurrentLoc.lat,this.userCurrentLoc.lng);
       let marker = new google.maps.Marker({
         map: this.map,
         animation: google.maps.Animation.DROP,
         position: pos,
         markerid: this.allLocation.length,
-        simple_address: markdata.short_address,
-        simple_long_address:(markdata.address)?markdata.address:markdata.short_address
+        short_address: this.userCurrentLoc.short_address,
+        address:(this.userCurrentLoc.address)?this.userCurrentLoc.address:this.userCurrentLoc.short_address
       });        
+      this.curentMarker = marker;
       this.addInfoWindow(marker);
   }
 
   addInfoWindow(marker){
-    console.log(marker);
     let infoWindow = new google.maps.InfoWindow({
-      content: marker.simple_long_address
+      content: marker.address
     });
     google.maps.event.addListener(marker, 'click', () => {
-      infoWindow.open(this.map, marker); console.log(marker);
+      infoWindow.open(this.map, marker);
     });
   }
 }
