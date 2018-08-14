@@ -1,3 +1,58 @@
 page-booking-calendar {
+    ion-calendar{
+        padding: 0px;
+        margin: 0px -16px;
+        .toolbar-background{
+            background: #d4d4d4;
+             
+        }
+        ul{
+            &.week-title{
+                padding:10px 0px !important;
+                li{
+                    color: #4d547c;
+                    font-size: 20px;
+                }
+            }
+        }
+    }
+    .component-mode{
+        .days-box{
+            .days{
+                button{
+                    &.days-btn{
+                        p{
+                            font-size:18px;
+                        }    
+                        &.today{
+                            p{
+                                border: 2px solid #6f74ae;
+                                padding: 7px 0px;
+                                border-radius: 50%;
+                                color: #262e61;
+                            }
+                        }
+                        &.on-selected{
+                            background-color: #52adcd;
+                            border: 2px solid #6f74ae;
+                        }
+                    }
+               }
+            }
+        }
+    }
+    .selected-date{
+        background: #d4d4d4;
+        padding: 8px 10px;
+        margin: 0px -16px;
+        p{
+            margin: 0px;
+            color: #4d547c;
+            font-size: 20px;
+            span{
+                font-weight: bold;
+            }
+        }
+    }
 
 }
