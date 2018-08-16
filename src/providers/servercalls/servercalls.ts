@@ -14,6 +14,7 @@ import { ToastController } from 'ionic-angular';
 export class ServercallsProvider {
   public loginState :boolean = false;
   public baseUrl : string = 'http://www.simplecarapp.com/api/';
+  public ImagebaseUrl : string = 'http://www.simplecarapp.com/public/storage/';
   public loginChange: Subject<boolean> = new Subject<boolean>();
   public httpOptions = {
     headers: new HttpHeaders({
@@ -59,6 +60,21 @@ export class ServercallsProvider {
       return  Userinfo;
     }
   }
+
+/**************************************/
+
+formatDte(what,date){
+	if(what == 'time'){
+	    let dt = date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
+	    return dt ;
+	}else{
+		let month = date.getMonth() + 1;
+  		month = month < 10 ? '0' + month : '' + month;
+
+	    let dt = date.getFullYear()+"-"+month+"-"+date.getDate();
+	    return dt;
+	}
+}
 
 /**************************************/
 	  private extractData(res: Response) {

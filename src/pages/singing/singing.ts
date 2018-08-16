@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams,ViewController } from 'ionic-angular';
 import {FormBuilder, FormGroup,FormControl,Validators,ValidatorFn} from '@angular/forms';
 import { ScanLicensePage } from '../scan-license/scan-license';
-import { ToastController } from 'ionic-angular';
+import { BookingCalendarPage } from '../booking-calendar/booking-calendar';
 import { ServercallsProvider } from '../../providers/servercalls/servercalls';
 /**
  * Generated class for the SingingPage page.
@@ -16,10 +16,16 @@ import { ServercallsProvider } from '../../providers/servercalls/servercalls';
   templateUrl: 'singing.html',
 })
 export class SingingPage {
+  pleaseWait;
+  carID;
   tabtype;
+  loginerror;
+  SignUperror;
   public signInform : FormGroup;
   public signUpform : FormGroup;
-  constructor(public navCtrl: NavController, public navParams: NavParams,private formBuilder: FormBuilder,private toastCtrl: ToastController,public servercall:ServercallsProvider) {
+  constructor(public viewCtrl: ViewController,public navCtrl: NavController, public navParams: NavParams,private formBuilder: FormBuilder,public servercall:ServercallsProvider) {
+      this.pleaseWait = false;
+      this.carID = navParams.get("carID");
       this.tabtype = 'singintab';
       this.signInform = this.formBuilder.group({
                            'signinEmail'        : ['', Validators.compose([Validators.required,this.validatorEmail()])],
@@ -36,17 +42,60 @@ export class SingingPage {
     console.log('ionViewDidLoad SingingPage');
   }
 
+  movetocalendar(){
+    this.navCtrl.push(BookingCalendarPage,{carID: this.carID})
+     .then(() => {
+        const index = this.viewCtrl.index;
+        this.navCtrl.remove(index);
+    });
+  }
+
+  movetoaddlicense(){
+    this.navCtrl.push(ScanLicensePage,{carID: this.carID})
+     .then(() => {
+        const index = this.viewCtrl.index;
+        this.navCtrl.remove(index);
+    });
+  }
+
 
   submitSignUp(){
       console.log(this.signUpform);
       this.signUpform['controls']['signupName'].markAsDirty();
       this.signUpform['controls']['signupEmail'].markAsDirty();
       this.signUpform['controls']['signupPassword'].markAsDirty();
-
       if(this.signUpform.status == 'VALID'){
-        this.navCtrl.push(ScanLicensePage);
+        this.pleaseWait = true;
+        let cdata = {
+                      "name":this.signUpform.get('signupName').value,
+                      "email":this.signUpform.get('signupEmail').value,
+                      "password":this.signUpform.get('signupPassword').value,
+                    };
+        console.log(cdata);
+        // cdata = this.prepareSignUp();
+        this.servercall.postCall(this.servercall.baseUrl+'signup',cdata).subscribe( 
+          resp =>{
+              console.log(resp);
+              if(resp.status == "success"){
+                this.servercall.presentToast('Sign Up Successful');
+                this.servercall.setLocalStorage('SignedUpuser',JSON.stringify(resp.data));
+                this.movetoaddlicense();
+              }else{
+                if(resp.error['email'][0]){
+                  this.SignUperror = "<p>"+resp.error['email'][0]+"</p>"
+                }
+                this.servercall.presentToast('Something went wrong.');
+              }
+              this.pleaseWait = false;
+          },
+          error => {
+            console.log(error);
+            this.pleaseWait = false;
+          }  
+        );
+        // this.navCtrl.push(ScanLicensePage);
       }else{
-        this.servercall.presentToast('Invalid Name/Email/Password');
+        this.servercall.presentToast('Invalid Details');
       }
   }
 
@@ -56,10 +105,71 @@ export class SingingPage {
       this.signInform['controls']['signinPassword'].markAsDirty();
 
       if(this.signInform.status == 'VALID'){
-        this.navCtrl.push(ScanLicensePage);
+        // let cdata = this.prepareSignIn();
+        this.pleaseWait = true;
+         let cdata = {
+                      "email":this.signInform.get('signinEmail').value,
+                      "password":this.signInform.get('signinPassword').value,
+                    };
+        this.servercall.postCall(this.servercall.baseUrl+'login',cdata).subscribe( 
+          resp =>{
+              console.log(resp);
+              if(resp.status == "success"){
+                  this.servercall.setLocalStorage('SimpleAppUserToken',resp.token);
+                  this.servercall.getCall(this.servercall.baseUrl+'auth/user?token='+resp.token).subscribe(
+                      userresp =>{
+                        console.log(userresp);
+                        if(userresp.status == "success"){ 
+                          this.servercall.setUserInfo(userresp.data);
+                          this.servercall.setLogin(true);
+                          this.pleaseWait = false;
+                          if(this.servercall.getUserInfo('licenseinfo')){
+                            this.movetocalendar();
+                          }else{
+                            this.movetoaddlicense();
+                          }
+                          
+                        }else{
+                          this.servercall.presentToast('Please try again.');
+                          this.pleaseWait = false;
+                        }
+                      },
+                      usererror=>{
+                        this.servercall.presentToast('Please try again.');
+                        this.pleaseWait = false;
+                      }
+                    );
+              }else{
+                 this.signInform.get('signinEmail').setValue("");
+                 this.signInform.get('signinPassword').setValue("");
+                 this.servercall.presentToast('Invalid Email/Password');
+                 this.pleaseWait = false;
+              }
+              // this.pleaseWait = false;
+          },
+          error => {
+            console.log(error);
+            this.pleaseWait = false;
+          }  
+        );
+
       }else{
         this.servercall.presentToast('Invalid Email/Password');
       }
+  }
+
+  // private prepareSignIn(): any {
+  //   let input = new FormData();
+  //   input.append('email', this.signInform.get('signinEmail').value);
+  //   input.append('password', this.signInform.get('signinPassword').value);
+  //   return input;
+  // }
+  private prepareSignUp(): any {
+    let input = new FormData();
+    input.append('name', this.signUpform.get('signupName').value);
+    input.append('email', this.signUpform.get('signupEmail').value);
+    input.append('password', this.signUpform.get('signupPassword').value);
+    return input;
   }
 /************* Custom Validators *************/
   validatorEmail(){
@@ -104,19 +214,4 @@ export class SingingPage {
     };
     return validator;
   }
-
-  presentToast(DispText,DispPosition = 'top',DispDuration=3000) {
-    let toast = this.toastCtrl.create({
-      message: DispText,
-      duration: DispDuration,
-      position: DispPosition
-    });
-
-    toast.onDidDismiss(() => {
-      console.log('Dismissed toast');
-    });
-
-    toast.present();
-  }
-
 }

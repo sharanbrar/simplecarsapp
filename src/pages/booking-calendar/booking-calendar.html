@@ -13,6 +13,8 @@
 </ion-header> -->
 
 <ion-content padding>
+	<div *ngIf="pleaseWait" class="pleasewait-overlay">
+	</div>
 	<ion-calendar [(ngModel)]="date"
               (onChange)="onDaySelect($event)"
 	              [type]="type"
@@ -29,15 +31,26 @@
 			        <img src="">
 			      </ion-avatar>
 			      <p>
-			      	<span *ngIf="time.avaliable">Test Drive Time Available</span>
-			        <span *ngIf="!time.avaliable">Test Drive Time Already Booked</span>
+			      	<span *ngIf="time.status">Test Drive Time Available</span>
+			        <span *ngIf="!time.status">Test Drive Time Already Booked</span>
 			        <br>
-			        <ion-icon name="alarm"></ion-icon> {{time.time}}
+			        <ion-icon name="alarm"></ion-icon> {{time.show}}
 			  	  </p>
-			  	  <ion-icon name="arrow-dropright" item-end (click)="open('itemslide'+i,'item'+i)"></ion-icon>
+
+			  	  <ion-icon *ngIf="time.status && alreadybooked" name="arrow-dropright" item-end (click)="open('itemslide'+i,'item'+i)"></ion-icon>
+
+			  	  <ion-icon *ngIf="time.status && !alreadybooked" name="arrow-dropright" item-end (click)="open('itemslide'+i,'item'+i)"></ion-icon>
+
+			  	  <ion-icon *ngIf="!time.status && time.user == currentUser_id" name="arrow-dropright" item-end (click)="open('itemslide'+i,'item'+i)"></ion-icon>
+			  	  
+			  	  <ion-icon *ngIf="!time.status && time.user == !currentUser_id" name="checkmark-circle" item-end></ion-icon>
+			    
 			    </ion-item>
-			    <ion-item-options side="right">
-			      <button ion-button>Unread</button>
+			    <ion-item-options side="right" *ngIf="!time.status && time.user == currentUser_id">
+			      <button ion-button>Booked for you</button>
+			    </ion-item-options>
+			    <ion-item-options side="right" *ngIf="time.status && !alreadybooked">
+			      <button ion-button (click)="bookthistime(i)">Book</button>
 			    </ion-item-options>
 			</ion-item-sliding>
 	    </ion-list>

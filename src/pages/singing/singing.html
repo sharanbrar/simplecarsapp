@@ -13,6 +13,8 @@
 </ion-header> -->
 
 <ion-content class="signing-tab-body">
+	<div *ngIf="pleaseWait" class="pleasewait-overlay">
+	</div>
 	<div class="tab-container back-image-container" [ngClass]="(tabtype == 'singintab') ? 'signintab' : 'singuptab'">
 			<img src="assets/imgs/simple-logo.png"/>
 	</div>
@@ -29,6 +31,7 @@
 	    </div>
 	    <div [ngSwitch]="tabtype">
 	    	<div class="singInform" *ngSwitchCase="'singintab'">
+	    		<div class="error-div" [innerHTML]="loginerror"></div>
 	    		<form [formGroup]="signInform">
 	    			<ion-item margin-bottom [ngClass]="{'has-danger': !signInform.controls['signinEmail'].valid && signInform.controls['signinEmail'].dirty }">
 				         <ion-input type="text" formControlName="signinEmail" placeholder="Username (this is your email)"></ion-input>
@@ -41,6 +44,7 @@
 	    		<p class="forget-password">Did you forget your password?<br><a>Click here</a></p>
 	    	</div>
 	    	<div class="signUpform"  *ngSwitchCase="'singuptab'">
+	    		<div class="error-div" [innerHTML]="SignUperror"></div>
 	    		<form [formGroup]="signUpform">
 	    			<ion-item margin-bottom [ngClass]="{'has-danger': !signUpform.controls['signupName'].valid && signUpform.controls['signupName'].dirty }">
 				         <ion-input type="text" formControlName="signupName" placeholder="Name"></ion-input>

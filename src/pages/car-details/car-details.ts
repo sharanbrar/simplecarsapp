@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { SingingPage } from '../singing/singing';
+import { BookingCalendarPage } from '../booking-calendar/booking-calendar';
+import { ScanLicensePage } from '../scan-license/scan-license';
+import { ServercallsProvider } from '../../providers/servercalls/servercalls';
 /**
  * Generated class for the CarDetailsPage page.
  *
@@ -15,7 +18,7 @@ import { SingingPage } from '../singing/singing';
 export class CarDetailsPage {
   carID;
   carsData;
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,public servercall:ServercallsProvider) {
   	this.carID = navParams.get("carID");
   	this.updatecardata();
   }
@@ -24,39 +27,35 @@ export class CarDetailsPage {
     console.log('ionViewDidLoad CarDetailsPage');
   }
   updatecardata(){
-  	this.carsData = {
-        'id':1,'name':'Pontiac',
-        'miles':'34,382 miles',
-        'price':'$73',
-        'desc':'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the 1500s',
-        'image':['assets/imgs/car-1.png','assets/imgs/car-2.png'],
-        'routes':['assets/imgs/drive-test-1.png',
-              'assets/imgs/drive-test-1.png',
-              'assets/imgs/drive-test-1.png',
-              'assets/imgs/drive-test-1.png',
-              'assets/imgs/drive-test-1.png',
-              'assets/imgs/drive-test-1.png',
-              'assets/imgs/drive-test-1.png',
-              'assets/imgs/drive-test-1.png',
-              'assets/imgs/drive-test-1.png',
-              'assets/imgs/drive-test-1.png'
-            ],
-          'additionalf':['Cruise Control',
-                         '4 Wheeled Drive',
-                         'Heated Seats',
-                         'A/C',
-                         'Leather Seats',
-                         'Tinted Windows',
-                         'Auto Transmission',
-                         'Movie Screens',
-                         'Sun Roof',
-                         'Moon Roof',
-                         'Navigation System']
-      };
+    if(this.carID){
+      this.servercall.getCall(this.servercall.baseUrl+'car/'+this.carID).subscribe( 
+        resp =>{
+          // console.log(resp);
+          if(resp["status"] == 'success'){
+            this.carsData = resp.results;
+              console.log(this.carsData);
+          }else{
+            this.servercall.presentToast('Oops! Something went wrong.');
+          }
+        },
+        error => {
+          console.log(error);
+        }  
+      );
+    }
   }
 
   showSignIn(){
-  	this.navCtrl.push(SingingPage);
+    console.log(this.servercall.checkLogin());
+    if(this.servercall.checkLogin()){
+      if(this.servercall.getUserInfo('licenseinfo')){
+        this.navCtrl.push(BookingCalendarPage,{carID: this.carID});
+      }else{
+        this.navCtrl.push(ScanLicensePage,{carID: this.carID});
+      }
+    }else{
+    	this.navCtrl.push(SingingPage,{carID: this.carID});
+    }
   }
 
 }

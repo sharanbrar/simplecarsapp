@@ -22,10 +22,12 @@ export class PickTestdriveLocationPage {
   // @ViewChild('map', {read: ElementRef}) private mapElement: ElementRef;
   map: any;
   userCurrentLoc;
+  pickedLocation;
   allLocation : any[] = [];
   curentMarker:any;
   constructor(public navCtrl: NavController, public navParams: NavParams,public geolocation: Geolocation,public servercall:ServercallsProvider) {
   	this.userCurrentLoc = { location : '',lat:'',lng:''};
+    this.pickedLocation;
   	this.fetchLoactions();
     // setTimeout( () => {;},200);
   }
@@ -35,15 +37,24 @@ export class PickTestdriveLocationPage {
   }
 
   showResults(){
-    this.navCtrl.push(SearchResultPage);
+    if(this.servercall.getLocalStorage('SimplecarsAppCurrentLocation',false)){
+      // console.log('Found',this.servercall.getLocalStorage('SimplecarsAppCurrentLocation',false));
+      this.navCtrl.setRoot(SearchResultPage);
+    }else{
+      this.servercall.presentToast('Please Select a Location..');
+    }
   }
 
   fetchLoactions(){
     this.servercall.getCall(this.servercall.baseUrl+'drive-locations').subscribe( 
       resp =>{
           console.log(resp);
+        if(resp["status"] == 'success'){
           this.allLocation = resp.results;
           this.loadMap(this.allLocation[0].lat,this.allLocation[0].lng);
+        }else{
+          this.servercall.presentToast('Oops! Something went wrong.');
+        }
       },
       error => {
         console.log(error);
@@ -103,6 +114,16 @@ export class PickTestdriveLocationPage {
     }
     setTimeout(()=>{this.addCurrentMarker(this.allLocation[0],'check')},200);
   }
+  markthiscurrent(marker){  
+      // console.log(marker);
+      let markData = { 
+                        lat:marker.getPosition().lat(),
+                        lng:marker.getPosition().lng(),
+                        short_address : marker.short_address,
+                        address: (marker.address)?marker.address:marker.short_address
+                      };
+      this.addCurrentMarker(markData,'update');
+  }
 
   addCurrentMarker(markdata,type='update'){
     if(type == 'update'){
@@ -116,7 +137,7 @@ export class PickTestdriveLocationPage {
                             };
       this.servercall.setLocalStorage('SimplecarsAppCurrentLocation',JSON.stringify(this.userCurrentLoc));
     }else{
-      if(!this.servercall.getLocalStorage('SimplecarsAppCurrentLocation',false)){
+      if(this.servercall.getLocalStorage('SimplecarsAppCurrentLocation',false)){
           this.userCurrentLoc = JSON.parse(this.servercall.getLocalStorage('SimplecarsAppCurrentLocation','{}'));
       }else{
           this.userCurrentLoc = { 
@@ -144,11 +165,12 @@ export class PickTestdriveLocationPage {
   }
 
   addInfoWindow(marker){
-    let infoWindow = new google.maps.InfoWindow({
-      content: marker.address
-    });
+    // let infoWindow = new google.maps.InfoWindow({
+    //   content: marker.address
+    // });
     google.maps.event.addListener(marker, 'click', () => {
-      infoWindow.open(this.map, marker);
+      //infoWindow.open(this.map, marker); 
+      this.markthiscurrent(marker);
     });
   }
 }

@@ -22,31 +22,32 @@
 
 <ion-content padding>
 	<div  class="result-content-div">
-		<ion-grid *ngIf="resultTypeTab == 'resultTab'">
+		<!-- <ion-grid *ngIf="resultTypeTab == 'resultTab'"> -->
+		<ion-grid>
 		  <ion-row>
 		    <ion-col *ngFor="let carData of carsData">
-			      <ion-item (click)="carDeatials(i)">
-			      	<img src="{{carData.image}}" alt=""/>
+			      <ion-item (click)="carDeatials(carData.id)">
+			      	<img src="{{servercall.ImagebaseUrl+carData.Image}}" alt=""/>
 			      	<div  class="car-info">
-			      		<p class="car-name">{{carData.name}}</p>
-			      		<p class="miles">{{carData.miles}}</p>
+			      		<p class="car-name">{{carData.Make}} {{carData.Model}}</p>
+			      		<p class="miles">{{carData.Milage}}</p>
 			      	</div>
 			      </ion-item>
 		    </ion-col>
 		  </ion-row>
 		</ion-grid>
-		<ion-grid *ngIf="resultTypeTab == 'suggestedTab'">
+		<!-- <ion-grid *ngIf="resultTypeTab == 'suggestedTab'">
 		  <ion-row>
-		    <ion-col *ngFor="let carData of carsData; let i = index;">
-			      <ion-item (click)="carDeatials(i)">
-			      	<img src="{{carData.image}}" alt=""/>
+		    <ion-col *ngFor="let carData of carsData;">
+			      <ion-item (click)="carDeatials(carData.id)">
+			      	<img src="{{carData.Image}}" alt=""/>
 			      	<div  class="car-info">
-			      		<p class="car-name">{{carData.name}}</p>
-			      		<p class="miles">{{carData.miles}}</p>
+			      		<p class="car-name">{{carData.Make}} {{carData.Model}}</p>
+			      		<p class="miles">{{carData.Milage}}</p>
 			      	</div>
 			      </ion-item>
 		    </ion-col>
 		  </ion-row>
-		</ion-grid>
+		</ion-grid> -->
 	</div>
 </ion-content>

@@ -12,36 +12,37 @@
 
 
 <ion-content class="car-details-body">
+	<div *ngFor="let carData of carsData">
 	<div class="car-images-slider">
 		<ion-slides pager>
-		  <ion-slide *ngFor="let image of carsData.image">
-		    <img  src="{{image}}"/>
+		  <ion-slide *ngFor="let image of carData.car_slider">
+		    <img  src="{{servercall.ImagebaseUrl+image.url}}"/>
 		  </ion-slide>
 		</ion-slides>
 	</div>
 	<div class="car-details-div">
 		<div class="name-price">
-			<h3 class="car-name">{{carsData.name}}</h3>
-			<h3 class="car-price">{{carsData.price}}</h3>
+			<h3 class="car-name">{{carData.Make}} {{carData.Model}}</h3>
+			<h3 class="car-price">${{carData.Pricing}}</h3>
 		</div>
 		<div class="car-details-desc">
 			<p class="car-desc">
-				{{carsData.desc}}
+				{{carData.Description}}
 			</p>
 		<button ion-button (click)="showSignIn()">Book a Test Drive</button>	
-			<div class="car-routes">
+			<div class="car-routes" *ngIf="carData.routes">
 				<ion-grid class="car-route-slider">
 			        <ion-row nowrap class="route-div">
-			        	<ion-col col-4 class="route-item" *ngFor="let route of carsData.routes">
+			        	<ion-col col-4 class="route-item" *ngFor="let route of carData.routes">
 			        		<img src="{{route}}"/>
 			        	</ion-col>
 			        </ion-row>
 			    </ion-grid>
 			</div>
-			<div class="car-details-additional-features" *ngIf="carsData.additionalf">
+			<div class="car-details-additional-features" *ngIf="carData.Feature">
 				<h3 class="addtional-heading">ADDITIONAL FEATURES</h3>
 				<ion-list no-lines>
-				  <ion-item *ngFor="let adFeature of carsData.additionalf">
+				  <ion-item *ngFor="let adFeature of carData.Feature">
 				  	<ion-icon name="square-outline" item-start></ion-icon>
 				  	{{adFeature}}
 				  </ion-item>
@@ -49,5 +50,6 @@
 				<button ion-button (click)="showSignIn()">Book a Test Drive</button>	
 			</div>
 		</div>
+	</div>
 	</div>
 </ion-content>
