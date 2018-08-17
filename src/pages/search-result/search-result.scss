@@ -46,6 +46,7 @@ page-search-result {
                 .col{
                     width: 50%;
                     float: left;
+                    height: 200px;
                     .item{
                         &.item-block{
                             padding: 0px;
@@ -58,7 +59,8 @@ page-search-result {
                                     .label{
                                         margin: 0px;
                                         img{
-                                            min-height: 120px;
+                                            min-height: 130px;
+                                            object-fit: cover;
                                         }
                                         .car-info{
                                             text-align: center;
