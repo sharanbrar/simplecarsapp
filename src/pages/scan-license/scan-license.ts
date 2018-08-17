@@ -25,7 +25,7 @@ export class ScanLicensePage {
   imgsrc;
   constructor(public viewCtrl: ViewController,private camera: Camera,public navCtrl: NavController, public navParams: NavParams,public servercall:ServercallsProvider) {
     this.carID = navParams.get("carID");
-    this.movetocalendar();
+    // this.movetocalendar();
     if(!this.servercall.checkLogin()){
         let userData = JSON.parse(this.servercall.getLocalStorage("SignedUpuser",'{}'));
         this.currenuser_id = userData.id;

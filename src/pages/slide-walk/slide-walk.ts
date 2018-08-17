@@ -26,6 +26,7 @@ export class SlideWalkPage {
   }
 
   letsGo(){
-  	this.navCtrl.setRoot(PickTestdriveLocationPage);
+    console.log("ghe");
+    this.navCtrl.setRoot(PickTestdriveLocationPage);
   }
 }
