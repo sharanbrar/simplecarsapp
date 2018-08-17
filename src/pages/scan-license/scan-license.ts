@@ -4,6 +4,7 @@ import { NavController, NavParams,ViewController } from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { BookingCalendarPage } from '../booking-calendar/booking-calendar';
 import { ServercallsProvider } from '../../providers/servercalls/servercalls';
+import { ScanLicensePage } from '../scan-license/scan-license';
 /**
  * Generated class for the ScanLicensePage page.
  *
@@ -57,6 +58,7 @@ export class ScanLicensePage {
   resetScan(){
     this.imgsrc = null;
     this.licenseData = {
+                          user_id:this.currenuser_id,
                           front_image : null,
                           back_image  : null
                        };
@@ -84,11 +86,19 @@ export class ScanLicensePage {
   }
 
   movetocalendar(){
-    this.navCtrl.push(BookingCalendarPage,{carID: this.carID})
-     .then(() => {
-        const index = this.viewCtrl.index;
-        this.navCtrl.remove(index);
-    });
+    if(this.servercall.checkLogin()){
+        this.navCtrl.push(BookingCalendarPage,{carID: this.carID})
+         .then(() => {
+            const index = this.viewCtrl.index;
+            this.navCtrl.remove(index);
+        });
+    }else{
+        this.navCtrl.push(SingingPage,{carID: this.carID})
+         .then(() => {
+            const index = this.viewCtrl.index;
+            this.navCtrl.remove(index);
+        });
+    }
   }
 
   getImage(){
