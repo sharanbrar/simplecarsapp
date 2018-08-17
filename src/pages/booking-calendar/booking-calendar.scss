@@ -1,7 +1,7 @@
 page-booking-calendar {
     ion-calendar{
         padding: 0px;
-        margin: 0px -16px;
+        margin: 0px;
         .toolbar-background{
             background: #d4d4d4;
              
@@ -54,5 +54,42 @@ page-booking-calendar {
             }
         }
     }
+.item-wrapper{
+    .item{
+        &.item-block{
+            padding: 0px;
+            ion-avatar{
+                img{
+                    width: 60px;
+                    height: 60px;    
+                }
+            }
+            .item-inner{
+                .input-wrapper{
+                    .label{
+                        p{
+                            color: #53586c;
+                            font-size: 18px;
+                            span{
+                            font-size: 22px;
+                            color: #6d76a9;
+                        }
+                        .icon {
+                            color: #a8d1da;
+                        }
+                    }
+                    }
+                }
+            }
+        }
+    }
+}
+.time-list{
+    button{
+        &.disable-hover{
+            background-image: linear-gradient(#4aa398, #4ca7c2, #4da9d4);
 
+        }
+    }
+}
 }

@@ -28,7 +28,8 @@
 			<ion-item-sliding *ngFor="let time of timeList; let i = index;"  [attr.id]="'itemslide'+i">
 			    <ion-item [attr.id]="'item'+i">
 			      <ion-avatar item-start>
-			        <img src="">
+							<img *ngIf="!time.status" src="assets/imgs/booked.png">
+			        <img *ngIf="time.status" src="assets/imgs/available.png">							
 			      </ion-avatar>
 			      <p>
 			      	<span *ngIf="time.status">Test Drive Time Available</span>

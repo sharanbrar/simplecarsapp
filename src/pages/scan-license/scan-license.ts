@@ -4,7 +4,7 @@ import { NavController, NavParams,ViewController } from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { BookingCalendarPage } from '../booking-calendar/booking-calendar';
 import { ServercallsProvider } from '../../providers/servercalls/servercalls';
-import { ScanLicensePage } from '../scan-license/scan-license';
+import { SingingPage } from '../singing/singing';
 /**
  * Generated class for the ScanLicensePage page.
  *
@@ -25,6 +25,7 @@ export class ScanLicensePage {
   imgsrc;
   constructor(public viewCtrl: ViewController,private camera: Camera,public navCtrl: NavController, public navParams: NavParams,public servercall:ServercallsProvider) {
     this.carID = navParams.get("carID");
+    this.movetocalendar();
     if(!this.servercall.checkLogin()){
         let userData = JSON.parse(this.servercall.getLocalStorage("SignedUpuser",'{}'));
         this.currenuser_id = userData.id;
