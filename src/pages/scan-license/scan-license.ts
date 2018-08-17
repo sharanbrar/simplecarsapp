@@ -69,21 +69,27 @@ export class ScanLicensePage {
    
   sendImages(){
      this.pleaseWait = true;
-     this.servercall.postCall(this.servercall.baseUrl+'license?token='+this.servercall.getLocalStorage('SimpleAppUserToken'),this.licenseData).subscribe( 
-          resp =>{
-              console.log(resp);
-              if(resp.status == "success"){
-                this.movetocalendar();
-              }else{
-                  this.resetScan();
-              }
-            },
-          error=>{
-            console.log(error);  
-            this.resetScan();
-            this.servercall.presentToast('Try Again! Something went wrong');
-          }
-    );
+     setTimeout(()=>{
+       this.movetocalendar();
+       this.pleaseWait = false;
+     },200);
+       
+    //  this.servercall.postCall(this.servercall.baseUrl+'license?token='+this.servercall.getLocalStorage('SimpleAppUserToken'),this.licenseData).subscribe( 
+    //       resp =>{
+    //           console.log(resp);
+    //           if(resp.status == "success"){
+    //             this.movetocalendar();
+    //           }else{
+    //             this.movetocalendar(); //comment this
+    //               // this.resetScan(); //uncomment this
+    //           }
+    //         },
+    //       error=>{
+    //         console.log(error);  
+    //         this.resetScan();
+    //         this.servercall.presentToast('Try Again! Something went wrong');
+    //       }
+    // );
   }
 
   movetocalendar(){

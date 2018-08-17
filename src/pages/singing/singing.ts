@@ -126,7 +126,8 @@ export class SingingPage {
                           if(this.servercall.getUserInfo('licenseinfo')){
                             this.movetocalendar();
                           }else{
-                            this.movetoaddlicense();
+                            this.movetocalendar(); //comment this
+                            //this.movetoaddlicense(); //uncomment this
                           }
                           
                         }else{
