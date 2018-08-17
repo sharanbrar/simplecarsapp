@@ -164,13 +164,13 @@ export class SingingPage {
   //   input.append('password', this.signInform.get('signinPassword').value);
   //   return input;
   // }
-  private prepareSignUp(): any {
-    let input = new FormData();
-    input.append('name', this.signUpform.get('signupName').value);
-    input.append('email', this.signUpform.get('signupEmail').value);
-    input.append('password', this.signUpform.get('signupPassword').value);
-    return input;
-  }
+  // private prepareSignUp(): any {
+  //   let input = new FormData();
+  //   input.append('name', this.signUpform.get('signupName').value);
+  //   input.append('email', this.signUpform.get('signupEmail').value);
+  //   input.append('password', this.signUpform.get('signupPassword').value);
+  //   return input;
+  // }
 /************* Custom Validators *************/
   validatorEmail(){
     const validator: ValidatorFn = (control: FormControl) => {

@@ -14,15 +14,18 @@
  -->
 
 <ion-content padding class="scanner-license-body">
+	<div  *ngIf="pleaseWait" class="pleasewait-overlay">
+	</div>
 	<div class="scanner-desc-div">
 		<h3>Scan Your Driver’s License</h3>
 		<p class="scanner-desc">We require a valid Driver’s License for the safety of our customers. Through this License Capture screen, it allows us to identify who we are meeting up with while at the same time enabling us to verify that you are over the age of 18. This License capture allows us to add you to our insurance so that you are covered throughout our mini road trip.</p>
 	</div>
+	<div class="scanner-desc-div" [innerHTML]="scanwhat"></div>
 	<div class="scanner-disp-img-div">
-			<span></span>
+			<span><img *ngIf="imgsrc" id="clickedImage" src="imgsrc"></span>
 	</div>
 	<div class="scanner-action-buttons">
 		<div class="camera-icon"><ion-icon name="camera"></ion-icon></div>
-		<div class="scan-button"><button ion-button color="light" round (click)="openBarScanner()">Scan</button></div>
+		<div class="scan-button"><button ion-button color="light" round (click)="getImage()">Scan</button></div>
 	</div>
 </ion-content>

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
-import { BarcodeScanner } from '@ionic-native/barcode-scanner';
+import { NavController, NavParams,ViewController } from 'ionic-angular';
+// import { BarcodeScanner } from '@ionic-native/barcode-scanner';
+import { Camera, CameraOptions } from '@ionic-native/camera';
 import { BookingCalendarPage } from '../booking-calendar/booking-calendar';
 import { ServercallsProvider } from '../../providers/servercalls/servercalls';
 /**
@@ -17,33 +18,92 @@ import { ServercallsProvider } from '../../providers/servercalls/servercalls';
 export class ScanLicensePage {
   carID;
   currenuser_id;
-  constructor(public navCtrl: NavController, public navParams: NavParams,public barcodeScanner: BarcodeScanner,public servercall:ServercallsProvider) {
+  scanwhat;
+  licenseData ;
+  pleaseWait;
+  imgsrc;
+  constructor(public viewCtrl: ViewController,private camera: Camera,public navCtrl: NavController, public navParams: NavParams,public servercall:ServercallsProvider) {
     this.carID = navParams.get("carID");
     if(!this.servercall.checkLogin()){
-        let userData = jSON.parse(this.servercall.getLocalStorage("SignedUpuser",'{}'));
+        let userData = JSON.parse(this.servercall.getLocalStorage("SignedUpuser",'{}'));
         this.currenuser_id = userData.id;
     }else{
        this.currenuser_id  = this.servercall.getUserInfo('id');
     }
-
-    
+    this.resetScan();
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ScanLicensePage');
   }
 
-  openBarScanner(){
-    if(this.carID){
-      this.navCtrl.push(BookingCalendarPage,{carID:this.carID});
+  addImage(src){
+    if(src.status){
+      if(!this.licenseData.front_image){
+        this.licenseData.front_image = src.data;
+        this.imgsrc = src.data ;
+        this.scanwhat = "<p>Now scan Backside of your License</p>";
+      }else{
+        this.licenseData.back_image = src.data;
+        this.imgsrc = src.data;
+        this.sendImages();
+      }
     }else{
-      
+      console.log(src.error);
+      this.servercall.presentToast('Try Again! Something went wrong');
     }
-  	console.log("Bar Scanner Launched");
-  	// this.barcodeScanner.scan().then(barcodeData => {
-  	//  console.log('Barcode data', barcodeData);
-  	// }).catch(err => {
-  	//     console.log('Error', err);
-  	// });
+  }
+
+  resetScan(){
+    this.imgsrc = null;
+    this.licenseData = {
+                          front_image : null,
+                          back_image  : null
+                       };
+    this.scanwhat = "<p>Scan Frontside of your License</p>";
+    this.pleaseWait = false;
+  }
+   
+  sendImages(){
+     this.pleaseWait = true;
+     this.servercall.postCall(this.servercall.baseUrl+'license?token='+this.servercall.getLocalStorage('SimpleAppUserToken'),this.licenseData).subscribe( 
+          resp =>{
+              console.log(resp);
+              if(resp.status == "success"){
+                this.movetocalendar();
+              }else{
+                  this.resetScan();
+              }
+            },
+          error=>{
+            console.log(error);  
+            this.resetScan();
+            this.servercall.presentToast('Try Again! Something went wrong');
+          }
+    );
+  }
+
+  movetocalendar(){
+    this.navCtrl.push(BookingCalendarPage,{carID: this.carID})
+     .then(() => {
+        const index = this.viewCtrl.index;
+        this.navCtrl.remove(index);
+    });
+  }
+
+  getImage(){
+    const options: CameraOptions = {
+      quality: 100,
+      destinationType: this.camera.DestinationType.FILE_URI,
+      encodingType: this.camera.EncodingType.JPEG,
+      mediaType: this.camera.MediaType.PICTURE
+    }
+    this.camera.getPicture(options).then((imageData) => {
+      let  result ={status:true, data: 'data:image/jpeg;base64,' + imageData};
+       this.addImage(result);
+    }, (err) => {
+       let result = {status:false, error : err};
+       this.addImage(result);
+    });
   }
 }

@@ -7,6 +7,9 @@ import { ServercallsProvider } from '../providers/servercalls/servercalls';
 // import { HomePage } from '../pages/home/home';
 import { SlideWalkPage } from '../pages/slide-walk/slide-walk';
 import { PickTestdriveLocationPage } from '../pages/pick-testdrive-location/pick-testdrive-location';
+import { FeedbackPage } from '../pages/feedback/feedback';
+
+
 @Component({
   templateUrl: 'app.html'
 })
@@ -31,10 +34,28 @@ export class MyApp {
         console.log('detecting.');
         console.log(this.login);
     });
-
-    if(this.servercall.getLocalStorage('SimpleCarsApplaunched',false)){
-       this.rootPage = PickTestdriveLocationPage;
-    }
+    // if(this.servercall.getLocalStorage('SimpleCarsApplaunched',false)){
+    //    this.rootPage = PickTestdriveLocationPage;
+    // }
+    this.checkFeedback();
   }
+
+  checkFeedback(){
+      if(this.servercall.checkLogin()){
+        let cdate = new Date();
+        let formateddate = this.servercall.formatDte('date',cdate)+" "+this.servercall.formatDte('time',cdate);
+        this.servercall.postCall(this.servercall.baseUrl+'check-booking?token='+this.servercall.getLocalStorage('SimpleAppUserToken'),{date:formateddate}).subscribe(
+          resp=>{
+              if(resp.status){
+                  this.rootPage = FeedbackPage;
+              }
+          },
+          error=>{
+            console.log(error);
+          }
+        );
+      }
+  }
+
 }
 

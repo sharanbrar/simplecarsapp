@@ -17,9 +17,14 @@ import { SearchResultPage } from '../pages/search-result/search-result';
 import { CarDetailsPage } from '../pages/car-details/car-details';
 import { ServercallsProvider } from '../providers/servercalls/servercalls';
 import { ScanLicensePage } from '../pages/scan-license/scan-license';
-import { BarcodeScanner } from '@ionic-native/barcode-scanner';
+// import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 import { BookingCalendarPage } from '../pages/booking-calendar/booking-calendar';
+import { FeedbackPage } from '../pages/feedback/feedback';
 import { CalendarModule } from "ion2-calendar";
+
+import { IonStarsComponent } from '../components/ion-stars/ion-stars';
+import { Camera } from '@ionic-native/camera';
+
 
 @NgModule({
   declarations: [
@@ -32,7 +37,9 @@ import { CalendarModule } from "ion2-calendar";
     SearchResultPage,
     CarDetailsPage,
     ScanLicensePage,
-    BookingCalendarPage
+    BookingCalendarPage,
+    FeedbackPage,
+    IonStarsComponent
   ],
   imports: [
     BrowserModule,
@@ -51,7 +58,8 @@ import { CalendarModule } from "ion2-calendar";
     SearchResultPage,
     CarDetailsPage,
     ScanLicensePage,
-    BookingCalendarPage
+    BookingCalendarPage,
+    FeedbackPage
   ],
   providers: [
     StatusBar,
@@ -59,7 +67,7 @@ import { CalendarModule } from "ion2-calendar";
     Geolocation,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     ServercallsProvider,
-    BarcodeScanner
+    Camera
   ]
 })
 export class AppModule {}
