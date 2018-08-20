@@ -77,10 +77,20 @@ export class PickTestdriveLocationPage {
         center: latLng,
         zoom: 8,
         mapTypeId: google.maps.MapTypeId.ROADMAP
-      } 
+      } ;
+
       this.map = new google.maps.Map(document.getElementById("map"), mapOptions);
       this.autoComplete();
       this.addMarkers();
+  }
+
+  clearautoloc(){
+    if(this.pickedLocation){
+      this.addCurrentMarker(this.allLocation[0],'update')
+      this.zone.run(() => {
+        this.pickedLocation = "";
+      });
+    }
   }
 
   autoComplete(){
