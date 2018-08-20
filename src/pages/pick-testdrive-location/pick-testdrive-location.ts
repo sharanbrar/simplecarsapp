@@ -1,4 +1,4 @@
-import { Component,ViewChild, ElementRef } from '@angular/core';
+import { Component,ViewChild, ElementRef,NgZone} from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
 import { SearchResultPage } from '../search-result/search-result';
@@ -17,6 +17,7 @@ declare var google;
   selector: 'page-pick-testdrive-location',
   templateUrl: 'pick-testdrive-location.html',
 })
+
 export class PickTestdriveLocationPage {
   @ViewChild('map') mapElement: ElementRef;
   // @ViewChild('map', {read: ElementRef}) private mapElement: ElementRef;
@@ -25,7 +26,7 @@ export class PickTestdriveLocationPage {
   pickedLocation;
   allLocation : any[] = [];
   curentMarker:any;
-  constructor(public navCtrl: NavController, public navParams: NavParams,public geolocation: Geolocation,public servercall:ServercallsProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,private zone: NgZone,public geolocation: Geolocation,public servercall:ServercallsProvider) {
   	this.userCurrentLoc = { location : '',lat:'',lng:''};
     this.pickedLocation;
   	this.fetchLoactions();
@@ -38,12 +39,12 @@ export class PickTestdriveLocationPage {
 
   showResults(){
     if(this.servercall.getLocalStorage('SimplecarsAppCurrentLocation',false)){
-      // console.log('Found',this.servercall.getLocalStorage('SimplecarsAppCurrentLocation',false));
       this.navCtrl.setRoot(SearchResultPage);
     }else{
       this.servercall.presentToast('Please Select a Location..');
     }
   }
+
 
   fetchLoactions(){
     this.servercall.getCall(this.servercall.baseUrl+'drive-locations').subscribe( 
@@ -65,8 +66,12 @@ export class PickTestdriveLocationPage {
 
 
 /************Map Functions********************/
+
   loadMap(lat,lng){
-    this.geolocation.getCurrentPosition().then((position) => {
+    // this.geolocation.getCurrentPosition().then((position) => {
+    // }, (err) => {
+    //   console.log(err);
+    // });
       let latLng = new google.maps.LatLng(lat,lng);
       let mapOptions = {
         center: latLng,
@@ -76,9 +81,6 @@ export class PickTestdriveLocationPage {
       this.map = new google.maps.Map(document.getElementById("map"), mapOptions);
       this.autoComplete();
       this.addMarkers();
-    }, (err) => {
-      console.log(err);
-    });
   }
 
   autoComplete(){
@@ -94,7 +96,8 @@ export class PickTestdriveLocationPage {
           short_address : place.formatted_address,
           address:  place.formatted_address
         }
-       this.addCurrentMarker(markdat,'update');
+         this.pickedLocation = markdat.location;
+         this.addCurrentMarker(markdat,'update');
      });
   }
 
@@ -114,8 +117,8 @@ export class PickTestdriveLocationPage {
     }
     setTimeout(()=>{this.addCurrentMarker(this.allLocation[0],'check')},200);
   }
-  markthiscurrent(marker){  
-      // console.log(marker);
+
+  markthiscurrent(marker){
       let markData = { 
                         lat:marker.getPosition().lat(),
                         lng:marker.getPosition().lng(),
@@ -128,18 +131,23 @@ export class PickTestdriveLocationPage {
   addCurrentMarker(markdata,type='update'){
     if(type == 'update'){
       this.curentMarker.setMap(null);
-      this.userCurrentLoc = { 
-                              location : markdata.short_address,
-                              lat:markdata.lat,
-                              lng:markdata.lng,
-                              short_address : markdata.short_address,
-                              address: (markdata.address)?markdata.address:markdata.short_address
-                            };
+      this.zone.run(() => {
+        this.userCurrentLoc = { 
+                                location : markdata.short_address,
+                                lat:markdata.lat,
+                                lng:markdata.lng,
+                                short_address : markdata.short_address,
+                                address: (markdata.address)?markdata.address:markdata.short_address
+                              };
+      });
       this.servercall.setLocalStorage('SimplecarsAppCurrentLocation',JSON.stringify(this.userCurrentLoc));
     }else{
       if(this.servercall.getLocalStorage('SimplecarsAppCurrentLocation',false)){
-          this.userCurrentLoc = JSON.parse(this.servercall.getLocalStorage('SimplecarsAppCurrentLocation','{}'));
+         this.zone.run(() => {
+           this.userCurrentLoc = JSON.parse(this.servercall.getLocalStorage('SimplecarsAppCurrentLocation','{}'));
+         }); 
       }else{
+        this.zone.run(() => {
           this.userCurrentLoc = { 
                               location : markdata.short_address,
                               lat:markdata.lat,
@@ -147,10 +155,10 @@ export class PickTestdriveLocationPage {
                               short_address : markdata.short_address,
                               address: (markdata.address)?markdata.address:markdata.short_address
                             };
+        });
           this.servercall.setLocalStorage('SimplecarsAppCurrentLocation',JSON.stringify(this.userCurrentLoc));
       }
     }
-    console.log(this.userCurrentLoc);
     let pos = new google.maps.LatLng(this.userCurrentLoc.lat,this.userCurrentLoc.lng);
       let marker = new google.maps.Marker({
         map: this.map,
@@ -162,6 +170,7 @@ export class PickTestdriveLocationPage {
       });        
       this.curentMarker = marker;
       this.addInfoWindow(marker);
+      this.map.panTo(pos);
   }
 
   addInfoWindow(marker){
