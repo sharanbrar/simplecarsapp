@@ -56,7 +56,7 @@ export class ServercallsProvider {
   public getUserInfo(param?){
 	let Userinfo = JSON.parse(localStorage.getItem('SimplecaruserInfo'));
   	if(param){
-      return (Userinfo[param]) ? Userinfo[param] : '' ;
+      return (Userinfo[0][param]) ? Userinfo[0][param] : '' ;
     }else{
       return  Userinfo;
     }

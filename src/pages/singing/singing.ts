@@ -50,8 +50,8 @@ export class SingingPage {
     });
   }
 
-  movetoaddlicense(){
-    this.navCtrl.push(ScanLicensePage,{carID: this.carID})
+  movetoaddlicense(userID){
+    this.navCtrl.push(ScanLicensePage,{carID: this.carID,userID:userID})
      .then(() => {
         const index = this.viewCtrl.index;
         this.navCtrl.remove(index);
@@ -72,14 +72,13 @@ export class SingingPage {
                       "password":this.signUpform.get('signupPassword').value,
                     };
         console.log(cdata);
-        // cdata = this.prepareSignUp();
         this.servercall.postCall(this.servercall.baseUrl+'signup',cdata).subscribe( 
           resp =>{
               console.log(resp);
               if(resp.status == "success"){
                 this.servercall.presentToast('Sign Up Successful');
                 this.servercall.setLocalStorage('SignedUpuser',JSON.stringify(resp.data));
-                this.movetoaddlicense();
+                this.movetoaddlicense(resp['data'].id);
               }else{
                 if(resp.error['email'][0]){
                   this.SignUperror = "<p>"+resp.error['email'][0]+"</p>"
@@ -93,7 +92,6 @@ export class SingingPage {
             this.pleaseWait = false;
           }  
         );
-        // this.navCtrl.push(ScanLicensePage);
       }else{
         this.servercall.presentToast('Invalid Details');
       }
@@ -105,7 +103,6 @@ export class SingingPage {
       this.signInform['controls']['signinPassword'].markAsDirty();
 
       if(this.signInform.status == 'VALID'){
-        // let cdata = this.prepareSignIn();
         this.pleaseWait = true;
          let cdata = {
                       "email":this.signInform.get('signinEmail').value,
@@ -126,7 +123,7 @@ export class SingingPage {
                           if(this.servercall.getUserInfo('licenseinfo')){
                             this.movetocalendar();
                           }else{
-                            this.movetoaddlicense();
+                            this.movetoaddlicense(userresp.data[0].id);
                           }
                           
                         }else{
@@ -145,7 +142,6 @@ export class SingingPage {
                  this.servercall.presentToast('Invalid Email/Password');
                  this.pleaseWait = false;
               }
-              // this.pleaseWait = false;
           },
           error => {
             console.log(error);

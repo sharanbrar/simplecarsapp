@@ -51,7 +51,8 @@ export class CarDetailsPage {
       if(this.servercall.getUserInfo('licenseinfo')){
         this.navCtrl.push(BookingCalendarPage,{carID: this.carID});
       }else{
-        this.navCtrl.push(ScanLicensePage,{carID: this.carID});
+        console.log(this.servercall.getUserInfo('id'));
+        this.navCtrl.push(ScanLicensePage,{carID: this.carID,userID:this.servercall.getUserInfo('id')});
       }
     }else{
     	this.navCtrl.push(SingingPage,{carID: this.carID});

@@ -25,14 +25,10 @@ export class ScanLicensePage {
   imgsrc;
   constructor(public viewCtrl: ViewController,private camera: Camera,public navCtrl: NavController, public navParams: NavParams,public servercall:ServercallsProvider) {
     this.carID = navParams.get("carID");
-    // this.movetocalendar();
-    if(!this.servercall.checkLogin()){
-        let userData = JSON.parse(this.servercall.getLocalStorage("SignedUpuser",'{}'));
-        this.currenuser_id = userData.id;
-    }else{
-       this.currenuser_id  = this.servercall.getUserInfo('id');
-    }
+    this.currenuser_id =  navParams.get("userID");
+    console.log(this.currenuser_id);
     this.resetScan();
+
   }
 
   ionViewDidLoad() {
@@ -70,17 +66,13 @@ export class ScanLicensePage {
    
   sendImages(){
      this.pleaseWait = true;
-     // setTimeout(()=>{
-     //   this.movetocalendar();
-     //   this.pleaseWait = false;
-     // },200);
-       
      this.servercall.postCall(this.servercall.baseUrl+'license?token='+this.servercall.getLocalStorage('SimpleAppUserToken'),this.licenseData).subscribe( 
           resp =>{
               console.log(resp);
               if(resp.status == "success"){
                 this.movetocalendar();
               }else{
+                this.servercall.presentToast('Try Again! Something went wrong');
                 this.resetScan();
               }
             },

@@ -17,22 +17,23 @@ import { ServercallsProvider } from '../../providers/servercalls/servercalls';
 export class SearchResultPage {
   resultTypeTab;
   carsData;
+  pleaseWait;
   constructor(public navCtrl: NavController, public navParams: NavParams,public servercall:ServercallsProvider) {
-  	this.resultTypeTab = 'resultTab';
-  	this.updatecardata();
+    this.resultTypeTab = 'resultTab';
+    this.updatecardata();
+    this.pleaseWait=true;
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad SearchResultPage');
   }
   carDeatials(carId){
-  	this.navCtrl.push(CarDetailsPage,{carID: carId});
+    this.navCtrl.push(CarDetailsPage,{carID: carId});
   }
   updatecardata(){
-
     this.servercall.getCall(this.servercall.baseUrl+'list').subscribe( 
       resp =>{
-        console.log(resp);
+        this.pleaseWait=false;
         if(resp["status"] == 'success'){
            this.carsData = resp.results;
         }else{
@@ -40,7 +41,8 @@ export class SearchResultPage {
         }
       },
       error => {
-        console.log(error);
+        this.servercall.presentToast('Oops! Something went wrong.');
+        this.pleaseWait=false;
       }  
     );
   }
