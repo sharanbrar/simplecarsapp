@@ -25,7 +25,9 @@
 			<span><img *ngIf="imgsrc" id="clickedImage" src="imgsrc"></span>
 	</div>
 	<div class="scanner-action-buttons">
-		<div class="camera-icon"><ion-icon name="camera" (click)="getImage()"></ion-icon></div>
+		<div class="camera-icon"><img src="assets/imgs/camra.png" (click)="getImage()">
+			<!-- <ion-icon name="camera" (click)="getImage()"></ion-icon> -->
+		</div>
 		<div class="scan-button"><button ion-button color="light" round (click)="getImage()">Scan</button></div>
 	</div>
 </ion-content>
