@@ -19,11 +19,14 @@ import { ServercallsProvider } from '../providers/servercalls/servercalls';
 import { ScanLicensePage } from '../pages/scan-license/scan-license';
 // import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 import { BookingCalendarPage } from '../pages/booking-calendar/booking-calendar';
+import { BookingConfirmedPage } from '../pages/booking-confirmed/booking-confirmed';
 import { FeedbackPage } from '../pages/feedback/feedback';
 import { CalendarModule } from "ion2-calendar";
 
 import { IonStarsComponent } from '../components/ion-stars/ion-stars';
 import { Camera } from '@ionic-native/camera';
+
+import { LocationListPage } from '../pages/location-list/location-list';
 
 
 @NgModule({
@@ -39,7 +42,9 @@ import { Camera } from '@ionic-native/camera';
     ScanLicensePage,
     BookingCalendarPage,
     FeedbackPage,
-    IonStarsComponent
+    IonStarsComponent,
+    BookingConfirmedPage,
+    LocationListPage
   ],
   imports: [
     BrowserModule,
@@ -59,7 +64,9 @@ import { Camera } from '@ionic-native/camera';
     CarDetailsPage,
     ScanLicensePage,
     BookingCalendarPage,
-    FeedbackPage
+    FeedbackPage,
+    BookingConfirmedPage,
+    LocationListPage
   ],
   providers: [
     StatusBar,

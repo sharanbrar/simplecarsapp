@@ -4,6 +4,9 @@
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
 -->
+<div *ngIf="pleaseWait" class="pleasewait-overlay">
+	<div class="loading-logo"><img src="assets/imgs/simple-logo.png"></div>
+</div>
 <ion-header>
   <ion-navbar>
     <ion-title>Search Result</ion-title>
@@ -21,8 +24,6 @@
 </ion-header>
 
 <ion-content padding>
-	<div *ngIf="pleaseWait" class="pleasewait-overlay">
-	</div>
 	<div  class="result-content-div">
 		<!-- <ion-grid *ngIf="resultTypeTab == 'resultTab'"> -->
 		<ion-grid>

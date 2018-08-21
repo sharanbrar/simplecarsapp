@@ -1,0 +1,26 @@
+<!--
+  Generated template for the LocationListPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<!-- <ion-header>
+
+  <ion-navbar>
+    <ion-title>location-list</ion-title>
+  </ion-navbar>
+
+</ion-header> -->
+
+<ion-content padding>
+	<ion-list>
+	  <ion-list-header class="loc-list-head">
+	    {{area | uppercase}}
+	    <ion-icon name="close-circle" (click)="dismiss()" item-end></ion-icon>
+	  </ion-list-header>
+	  <ion-item class="loc-list-item" *ngFor="let loc of showList" (click)="selectthis(loc)">
+	  	<h4>{{loc.location_name}}</h4>
+	  	<p class="loc-text">{{loc.address}}</p>
+	  </ion-item>
+	</ion-list>
+</ion-content>

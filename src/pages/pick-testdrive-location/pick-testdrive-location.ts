@@ -1,7 +1,8 @@
 import { Component,ViewChild, ElementRef,NgZone} from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams,ModalController } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
 import { SearchResultPage } from '../search-result/search-result';
+import { LocationListPage } from '../location-list/location-list';
 import { ServercallsProvider } from '../../providers/servercalls/servercalls';
 
 declare var google;
@@ -26,11 +27,10 @@ export class PickTestdriveLocationPage {
   pickedLocation;
   allLocation : any[] = [];
   curentMarker:any;
-  constructor(public navCtrl: NavController, public navParams: NavParams,private zone: NgZone,public geolocation: Geolocation,public servercall:ServercallsProvider) {
+  constructor(public modalCtrl: ModalController,public navCtrl: NavController, public navParams: NavParams,private zone: NgZone,public geolocation: Geolocation,public servercall:ServercallsProvider) {
   	this.userCurrentLoc = { location : '',lat:'',lng:''};
     this.pickedLocation;
   	this.fetchLoactions();
-    // setTimeout( () => {;},200);
   }
 
   ionViewDidLoad() {
@@ -75,7 +75,7 @@ export class PickTestdriveLocationPage {
       let latLng = new google.maps.LatLng(lat,lng);
       let mapOptions = {
         center: latLng,
-        zoom: 8,
+        zoom: 9,
         mapTypeId: google.maps.MapTypeId.ROADMAP
       } ;
 
@@ -91,6 +91,16 @@ export class PickTestdriveLocationPage {
         this.pickedLocation = "";
       });
     }
+  }
+
+  showLocaList(area){
+      let locationListModal = this.modalCtrl.create(LocationListPage, { area: area,allLocation:this.allLocation});
+      locationListModal.onDidDismiss(data => {
+        if(data){
+          this.addCurrentMarker(data,'update');
+        }
+      });
+      locationListModal.present();
   }
 
   autoComplete(){

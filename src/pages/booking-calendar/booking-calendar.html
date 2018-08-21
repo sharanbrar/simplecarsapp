@@ -4,6 +4,10 @@
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
 -->
+<div *ngIf="pleaseWait" class="pleasewait-overlay">
+	<div class="loading-logo"><img src="assets/imgs/simple-logo.png"></div>
+</div>
+
 <!-- <ion-header>
 
   <ion-navbar>
@@ -11,10 +15,7 @@
   </ion-navbar>
 
 </ion-header> -->
-
 <ion-content padding>
-	<div *ngIf="pleaseWait" class="pleasewait-overlay">
-	</div>
 	<ion-calendar [(ngModel)]="date"
               (onChange)="onDaySelect($event)"
 	              [type]="type"
@@ -28,8 +29,8 @@
 			<ion-item-sliding *ngFor="let time of timeList; let i = index;"  [attr.id]="'itemslide'+i">
 			    <ion-item [attr.id]="'item'+i">
 			      <ion-avatar item-start>
-							<img *ngIf="!time.status" src="assets/imgs/booked.png">
-			        <img *ngIf="time.status" src="assets/imgs/available.png">							
+					<img *ngIf="!time.status" src="assets/imgs/booked.png">
+			        <img *ngIf="time.status" src="{{servercall.ImagebaseUrl+carData.Image}}">							
 			      </ion-avatar>
 			      <p>
 			      	<span *ngIf="time.status">Test Drive Time Available</span>
@@ -51,7 +52,7 @@
 			      <button ion-button>Booked for you</button>
 			    </ion-item-options>
 			    <ion-item-options side="right" *ngIf="time.status && !alreadybooked">
-			      <button ion-button (click)="bookthistime(i)">Book</button>
+			      <button ion-button (click)="presentConfirm(i)">Book</button>
 			    </ion-item-options>
 			</ion-item-sliding>
 	    </ion-list>

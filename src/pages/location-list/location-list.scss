@@ -1,0 +1,20 @@
+page-location-list {
+	.loc-list-head{
+		color: #ff8f08;
+	    font-weight: bold;
+	    margin-bottom: 0px;
+	    font-size: 16px;
+	}
+	.loc-list-item{
+		.item-inner{
+			.input-wrapper{
+				ion-label h4 {
+				    margin-top: 1px;
+				}
+				ion-label p {
+				    font-size: 12px;
+				}
+			}
+		}
+	}
+}

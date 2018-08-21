@@ -4,6 +4,10 @@
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
 -->
+<div *ngIf="pleaseWait" class="pleasewait-overlay">
+	<div class="loading-logo"><img src="assets/imgs/simple-logo.png"></div>
+</div>
+
 <!-- <ion-header>
 
   <ion-navbar>
@@ -14,8 +18,6 @@
 
 
 <ion-content class="feedback-tab-body">
-	<div *ngIf="pleaseWait" class="pleasewait-overlay">
-	</div>
 	<div class="tab-container back-image-container feedback">
 			<img src="assets/imgs/simple-logo.png"/>
 	</div>

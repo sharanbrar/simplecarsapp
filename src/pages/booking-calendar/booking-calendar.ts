@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, ViewController } from 'ionic-angular';
 import { ServercallsProvider } from '../../providers/servercalls/servercalls';
 import { SearchResultPage } from '../search-result/search-result';
+import { BookingConfirmedPage } from '../booking-confirmed/booking-confirmed';
+import { AlertController } from 'ionic-angular';
+
 /**
  * Generated class for the BookingCalendarPage page.
  *
@@ -20,7 +23,9 @@ export class BookingCalendarPage {
   pleaseWait;
   alreadybooked ;
   currentUser_id;
-  constructor(public navCtrl: NavController, public navParams: NavParams,public servercall:ServercallsProvider) {
+  carData;
+  locaddress;
+  constructor(public viewCtrl: ViewController,private alertCtrl: AlertController,public navCtrl: NavController, public navParams: NavParams,public servercall:ServercallsProvider) {
   	if(!this.servercall.checkLogin()){
       this.navCtrl.pop();
     }
@@ -29,7 +34,8 @@ export class BookingCalendarPage {
     this.pleaseWait = false;
     this.selectedDate = new Date();
   	this.carID = navParams.get("carID");
-    console.log(this.carID);
+    this.carData = JSON.parse(this.servercall.getLocalStorage("slectedCar",{'Image':null}));
+    this.locaddress = JSON.parse(this.servercall.getLocalStorage("SimplecarsAppCurrentLocation"));
     this.updatetimelist(this.servercall.formatDte('date',this.selectedDate));
   }
 
@@ -56,13 +62,11 @@ export class BookingCalendarPage {
             this.timeList = resp.results;
             this.currentUser_id = this.servercall.getUserInfo('id');
             let bookindex = this.timeList.findIndex(time => time.user == this.currentUser_id);
-            console.log(bookindex);
             if(bookindex > -1){
               this.alreadybooked = true;
             }else{
               this.alreadybooked = false;
             }
-            console.log(this.alreadybooked);
           }else{
             this.servercall.presentToast('Oops! Something went wrong.');
           }
@@ -75,13 +79,23 @@ export class BookingCalendarPage {
       );
     }
   }
+  
+  movetoConfirmed(data,slot){
+    this.navCtrl.push(BookingConfirmedPage,{data:data,slot:slot})
+     .then(() => {
+        const index = this.viewCtrl.index;
+        this.navCtrl.remove(index);
+        this.navCtrl.remove(index-1);
+    });
+  }
+
   bookthistime(i){
       let selectedslot = this.timeList[i];
-      let locaddress = JSON.parse(this.servercall.getLocalStorage("SimplecarsAppCurrentLocation"));
+      
       let bData ={
           car_id : this.carID,
           booked_time : this.servercall.formatDte('date',this.selectedDate)+' '+selectedslot.time,
-          address : locaddress.address
+          address : this.locaddress.address
       };
     this.pleaseWait = true;
     this.servercall.postCall(this.servercall.baseUrl+'booking?token='+this.servercall.getLocalStorage('SimpleAppUserToken'),bData).subscribe(
@@ -91,7 +105,8 @@ export class BookingCalendarPage {
             this.servercall.presentToast("Booking successfull");
             this.pleaseWait = false;
             this.updatetimelist(this.servercall.formatDte('date',this.selectedDate));
-            this.navCtrl.setRoot(SearchResultPage);
+            this.movetoConfirmed(bData,selectedslot);
+            // this.navCtrl.setRoot(SearchResultPage);
           }else{
             this.servercall.presentToast("Try Again! Something went wrong");
             this.pleaseWait = false;
@@ -111,4 +126,28 @@ export class BookingCalendarPage {
       document.getElementById(item).style.transform = "translate3d(-150px, 0px, 0px)";
 
   }
+
+  presentConfirm(i) {
+    let Timeinfo = this.timeList[i];
+    let alert = this.alertCtrl.create({
+      title: 'Confirm Booking',
+      message: 'Are you sure?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+          }
+        },
+        {
+          text: 'Book',
+          handler: () => {
+            this.bookthistime(i);
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+
 }

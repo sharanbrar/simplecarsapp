@@ -33,7 +33,8 @@ export class CarDetailsPage {
           // console.log(resp);
           if(resp["status"] == 'success'){
             this.carsData = resp.results;
-              console.log(this.carsData);
+            this.servercall.setLocalStorage("slectedCar",JSON.stringify(this.carsData[0]));
+              console.log(this.carsData[0]);
           }else{
             this.servercall.presentToast('Oops! Something went wrong.');
           }
@@ -46,7 +47,6 @@ export class CarDetailsPage {
   }
 
   showSignIn(){
-    console.log(this.servercall.checkLogin());
     if(this.servercall.checkLogin()){
       if(this.servercall.getUserInfo('licenseinfo')){
         this.navCtrl.push(BookingCalendarPage,{carID: this.carID});
