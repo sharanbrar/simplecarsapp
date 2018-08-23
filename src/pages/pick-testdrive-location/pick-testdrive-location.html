@@ -13,16 +13,9 @@
 	<div class="map" #map id="map">
 	</div>
 	<div class="user-interaction-sec">
-		<div class="current-location"><h3>Your Current Location: <strong>{{userCurrentLoc.location}}</strong></h3></div>
-		<div class="loc-input-div">
-			<p>Please submit a testdrive location and we'll let you know if we can come to you.</p>
-		 <ion-item>
-			<ion-input #googlePlaces id="googlePlaces" [(ngModel)]="pickedLocation" placeholder="SUBMIT A TEST DRIVE LOCATION"></ion-input>
-			<button ion-button clear color="dark" type="button" item-right>
-				<ion-icon name="close-circle" (click)="clearautoloc()"></ion-icon>
-          	</button>
-          </ion-item>
-			<p><strong>NOTE</strong>: A rep will contact you shortly to confirm your location</p>
+		<div class="current-location"><h3>The closest <strong>SimpleCar</strong> test drive location is :</h3>
+			<!-- <h3>{{userCurrentLoc.location}}</h3> -->
+			<div class="locdesc" [innerHTML]="currenLocDisp"></div>
 		</div>
 		<div  class="loc-current-service-div">
 			<h3>Our Current Service Areas</h3>
@@ -50,6 +43,16 @@
 			    </ion-col>
 			  </ion-row>
 			</ion-grid>
+		</div>
+		<div class="loc-input-div">
+			<p>Please submit a testdrive location and we'll let you know if we can come to you.</p>
+		 <ion-item>
+			<ion-input #googlePlaces id="googlePlaces" [(ngModel)]="pickedLocation" placeholder="SUBMIT A TEST DRIVE LOCATION"></ion-input>
+			<button ion-button clear color="dark" type="button" item-right>
+				<ion-icon name="close-circle" (click)="clearautoloc()"></ion-icon>
+          	</button>
+          </ion-item>
+			<p><strong>NOTE</strong>: We cannot service any location more than 10 miles from our nearest test drive spot.</p>
 		</div>
 	<div class="next-button">
 		<button ion-button full (click)="showResults()">Next</button>

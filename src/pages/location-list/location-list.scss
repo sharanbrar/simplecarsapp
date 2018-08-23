@@ -4,6 +4,12 @@ page-location-list {
 	    font-weight: bold;
 	    margin-bottom: 0px;
 	    font-size: 16px;
+	    .loc-details{
+	    	font-size: 10px;
+    		white-space: normal;
+    		font-weight: normal;
+    		margin-top: 5px;
+	    }
 	}
 	.loc-list-item{
 		.item-inner{

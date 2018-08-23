@@ -17,6 +17,7 @@
 	  <ion-list-header class="loc-list-head">
 	    {{area | uppercase}}
 	    <ion-icon name="close-circle" (click)="dismiss()" item-end></ion-icon>
+	    <p class="loc-details">San diego country is where our primary hot spots are</p>
 	  </ion-list-header>
 	  <ion-item class="loc-list-item" *ngFor="let loc of showList" (click)="selectthis(loc)">
 	  	<h4>{{loc.location_name}}</h4>

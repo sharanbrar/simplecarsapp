@@ -23,14 +23,17 @@ export class PickTestdriveLocationPage {
   @ViewChild('map') mapElement: ElementRef;
   // @ViewChild('map', {read: ElementRef}) private mapElement: ElementRef;
   map: any;
+  actualUserLoc;
   userCurrentLoc;
+  currenLocDisp;
   pickedLocation;
   allLocation : any[] = [];
   curentMarker:any;
   constructor(public modalCtrl: ModalController,public navCtrl: NavController, public navParams: NavParams,private zone: NgZone,public geolocation: Geolocation,public servercall:ServercallsProvider) {
   	this.userCurrentLoc = { location : '',lat:'',lng:''};
     this.pickedLocation;
-  	this.fetchLoactions();
+    this.getCurrentLoca();
+    this.fetchLoactions();
   }
 
   ionViewDidLoad() {
@@ -39,7 +42,7 @@ export class PickTestdriveLocationPage {
 
   showResults(){
     if(this.servercall.getLocalStorage('SimplecarsAppCurrentLocation',false)){
-      this.navCtrl.setRoot(SearchResultPage);
+      this.navCtrl.push(SearchResultPage);
     }else{
       this.servercall.presentToast('Please Select a Location..');
     }
@@ -66,12 +69,21 @@ export class PickTestdriveLocationPage {
 
 
 /************Map Functions********************/
+  getCurrentLoca(){
+    this.geolocation.getCurrentPosition().then(
+      (position) => {
+          this.actualUserLoc = {
+            lat : position.coords.latitude,
+            lng : position.coords.longitude
+          }
+      }, (err) => {
+          this.actualUserLoc = null;
+        console.log(err);
+      }
+    );
+  }
 
   loadMap(lat,lng){
-    // this.geolocation.getCurrentPosition().then((position) => {
-    // }, (err) => {
-    //   console.log(err);
-    // });
       let latLng = new google.maps.LatLng(lat,lng);
       let mapOptions = {
         center: latLng,
@@ -122,7 +134,17 @@ export class PickTestdriveLocationPage {
   }
 
   addMarkers(){
+    let minDistelement = 0;
+    let minDis = null;
+   setTimeout(()=>{ 
     for (var i = 0; i < this.allLocation.length; i++){
+      if(this.actualUserLoc){
+        let dis = this.calcCrow(this.actualUserLoc.lat, this.actualUserLoc.lng, this.allLocation[i].lat,this.allLocation[i].lng);
+        if(minDis == null || minDis > dis){
+          minDis = dis;
+          minDistelement = i;
+        }
+      }
       let pos =  new google.maps.LatLng(this.allLocation[i].lat,this.allLocation[i].lng);
       let marker = new google.maps.Marker({
         map: this.map,
@@ -130,18 +152,21 @@ export class PickTestdriveLocationPage {
         position: pos,
         icon:'assets/imgs/map-pin.png',
         markerid: i,
+        location_name : (this.allLocation[i].location_name)? this.allLocation[i].location_name: this.allLocation[i].short_address,
         short_address: this.allLocation[i].short_address,
         address:(this.allLocation[i].address)?this.allLocation[i].address:this.allLocation[i].short_address
       });     
       this.addInfoWindow(marker);
     }
-    setTimeout(()=>{this.addCurrentMarker(this.allLocation[0],'check')},200);
+    this.addCurrentMarker(this.allLocation[minDistelement],'update');
+   },200);
   }
 
   markthiscurrent(marker){
       let markData = { 
                         lat:marker.getPosition().lat(),
                         lng:marker.getPosition().lng(),
+                        location_name : (marker.location_name)? marker.location_name: marker.short_address,
                         short_address : marker.short_address,
                         address: (marker.address)?marker.address:marker.short_address
                       };
@@ -150,9 +175,12 @@ export class PickTestdriveLocationPage {
 
   addCurrentMarker(markdata,type='update'){
     if(type == 'update'){
-      this.curentMarker.setMap(null);
+      if(this.curentMarker){
+        this.curentMarker.setMap(null);
+      }
       this.zone.run(() => {
         this.userCurrentLoc = { 
+                                location_name : (markdata.location_name)? markdata.location_name: markdata.short_address,
                                 location : markdata.short_address,
                                 lat:markdata.lat,
                                 lng:markdata.lng,
@@ -169,6 +197,7 @@ export class PickTestdriveLocationPage {
       }else{
         this.zone.run(() => {
           this.userCurrentLoc = { 
+                              location_name : (markdata.location_name)? markdata.location_name: markdata.short_address,
                               location : markdata.short_address,
                               lat:markdata.lat,
                               lng:markdata.lng,
@@ -185,12 +214,24 @@ export class PickTestdriveLocationPage {
         animation: google.maps.Animation.DROP,
         position: pos,
         markerid: this.allLocation.length,
+        location_name : (this.userCurrentLoc.location_name)? this.userCurrentLoc.location_name: this.userCurrentLoc.short_address,
         short_address: this.userCurrentLoc.short_address,
         address:(this.userCurrentLoc.address)?this.userCurrentLoc.address:this.userCurrentLoc.short_address
       });        
       this.curentMarker = marker;
       this.addInfoWindow(marker);
       this.map.panTo(pos);
+
+      let dis ;
+      if(this.actualUserLoc){
+        dis = this.calcCrow(this.actualUserLoc.lat, this.actualUserLoc.lng, this.userCurrentLoc.lat, this.userCurrentLoc.lng);
+      }else{
+        dis = this.calcCrow(this.allLocation[0].lat, this.allLocation[0].lng, this.userCurrentLoc.lat, this.userCurrentLoc.lng);
+      }
+      let locname = (this.userCurrentLoc.location_name) ? this.userCurrentLoc.location_name : this.userCurrentLoc.location;
+      this.zone.run(() => {
+        this.currenLocDisp = "<h3>"+locname+"</h3><p>"+this.userCurrentLoc.address+" <br> ( "+dis+" miles away)<p>";
+      });
   }
 
   addInfoWindow(marker){
@@ -201,5 +242,25 @@ export class PickTestdriveLocationPage {
       //infoWindow.open(this.map, marker); 
       this.markthiscurrent(marker);
     });
+  }
+
+  calcCrow(lat1, lon1, lat2, lon2) {
+     if(lat1 !='' && lon1!=''){
+         var R = 3959;
+         var dLat = this.toRad(lat2-lat1);
+         var dLon = this.toRad(lon2-lon1);
+         lat1 = this.toRad(lat1);
+         lat2 = this.toRad(lat2);
+         var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+         Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(lat1) * Math.cos(lat2);
+         var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+         var d = R * c;
+         return d.toFixed(2);
+     }
+
+  }
+
+  toRad(Value){
+     return Value * Math.PI / 180;
   }
 }

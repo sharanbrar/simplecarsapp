@@ -37,24 +37,32 @@ export class MyApp {
     // if(this.servercall.getLocalStorage('SimpleCarsApplaunched',false)){
     //    this.rootPage = PickTestdriveLocationPage;
     // }
-    this.checkFeedback();
+    if(this.servercall.checkLogin()){
+      // this.servercall.getCall(this.servercall.baseUrl+'token/refresh?token='+this.servercall.getLocalStorage('SimpleAppUserToken')).subscribe(
+      //     resp=>{
+      //         console.log(resp);
+      //     },
+      //     error=>{
+      //       console.log(error);
+      //     }
+      // );
+      this.checkFeedback();
+    }
   }
 
   checkFeedback(){
-      if(this.servercall.checkLogin()){
-        let cdate = new Date();
-        let formateddate = this.servercall.formatDte('date',cdate)+" "+this.servercall.formatDte('time',cdate);
-        this.servercall.postCall(this.servercall.baseUrl+'check-booking?token='+this.servercall.getLocalStorage('SimpleAppUserToken'),{date:formateddate}).subscribe(
-          resp=>{
-              if(resp.status){
-                  this.rootPage = FeedbackPage;
-              }
-          },
-          error=>{
-            console.log(error);
-          }
-        );
-      }
+      let cdate = new Date();
+      let formateddate = this.servercall.formatDte('date',cdate)+" "+this.servercall.formatDte('time',cdate);
+      this.servercall.postCall(this.servercall.baseUrl+'check-booking?token='+this.servercall.getLocalStorage('SimpleAppUserToken'),{date:formateddate}).subscribe(
+        resp=>{
+            if(resp.status){
+                this.rootPage = FeedbackPage;
+            }
+        },
+        error=>{
+          console.log(error);
+        }
+      );
   }
 
 }

@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams,ViewController } from 'ionic-angular';
+import { NavController, NavParams,ViewController,ModalController } from 'ionic-angular';
 import {FormBuilder, FormGroup,FormControl,Validators,ValidatorFn} from '@angular/forms';
 import { ScanLicensePage } from '../scan-license/scan-license';
 import { BookingCalendarPage } from '../booking-calendar/booking-calendar';
+import { ForgetPasswordPage } from '../forget-password/forget-password';
 import { ServercallsProvider } from '../../providers/servercalls/servercalls';
 /**
  * Generated class for the SingingPage page.
@@ -23,7 +24,7 @@ export class SingingPage {
   SignUperror;
   public signInform : FormGroup;
   public signUpform : FormGroup;
-  constructor(public viewCtrl: ViewController,public navCtrl: NavController, public navParams: NavParams,private formBuilder: FormBuilder,public servercall:ServercallsProvider) {
+  constructor(public modalCtrl: ModalController,public viewCtrl: ViewController,public navCtrl: NavController, public navParams: NavParams,private formBuilder: FormBuilder,public servercall:ServercallsProvider) {
       this.pleaseWait = false;
       this.carID = navParams.get("carID");
       this.tabtype = 'singintab';
@@ -154,19 +155,10 @@ export class SingingPage {
       }
   }
 
-  // private prepareSignIn(): any {
-  //   let input = new FormData();
-  //   input.append('email', this.signInform.get('signinEmail').value);
-  //   input.append('password', this.signInform.get('signinPassword').value);
-  //   return input;
-  // }
-  // private prepareSignUp(): any {
-  //   let input = new FormData();
-  //   input.append('name', this.signUpform.get('signupName').value);
-  //   input.append('email', this.signUpform.get('signupEmail').value);
-  //   input.append('password', this.signUpform.get('signupPassword').value);
-  //   return input;
-  // }
+  forgetPassword(){
+    let forgetPasswordModal = this.modalCtrl.create(ForgetPasswordPage);
+      forgetPasswordModal.present();
+  }
 /************* Custom Validators *************/
   validatorEmail(){
     const validator: ValidatorFn = (control: FormControl) => {

@@ -34,7 +34,6 @@ export class CarDetailsPage {
           if(resp["status"] == 'success'){
             this.carsData = resp.results;
             this.servercall.setLocalStorage("slectedCar",JSON.stringify(this.carsData[0]));
-              console.log(this.carsData[0]);
           }else{
             this.servercall.presentToast('Oops! Something went wrong.');
           }

@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, ViewController } from 'ionic-angular';
 import { ServercallsProvider } from '../../providers/servercalls/servercalls';
-import { SearchResultPage } from '../search-result/search-result';
 import { BookingConfirmedPage } from '../booking-confirmed/booking-confirmed';
 import { AlertController } from 'ionic-angular';
 
@@ -128,7 +127,6 @@ export class BookingCalendarPage {
   }
 
   presentConfirm(i) {
-    let Timeinfo = this.timeList[i];
     let alert = this.alertCtrl.create({
       title: 'Confirm Booking',
       message: 'Are you sure?',

@@ -43,7 +43,7 @@
 				    </ion-item>
 				    <button ion-button full color="light" round (click)="submitSignIn()">Sign In</button>
 	    		</form>
-	    		<p class="forget-password">Did you forget your password?<br><a>Click here</a></p>
+	    		<p class="forget-password">Did you forget your password?<br><a (click)="forgetPassword()">Click here</a></p>
 	    	</div>
 	    	<div class="signUpform"  *ngSwitchCase="'singuptab'">
 	    		<div class="error-div" [innerHTML]="SignUperror"></div>

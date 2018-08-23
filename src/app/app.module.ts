@@ -27,6 +27,7 @@ import { IonStarsComponent } from '../components/ion-stars/ion-stars';
 import { Camera } from '@ionic-native/camera';
 
 import { LocationListPage } from '../pages/location-list/location-list';
+import { ForgetPasswordPage } from '../pages/forget-password/forget-password';
 
 
 @NgModule({
@@ -44,7 +45,8 @@ import { LocationListPage } from '../pages/location-list/location-list';
     FeedbackPage,
     IonStarsComponent,
     BookingConfirmedPage,
-    LocationListPage
+    LocationListPage,
+    ForgetPasswordPage
   ],
   imports: [
     BrowserModule,
@@ -66,7 +68,8 @@ import { LocationListPage } from '../pages/location-list/location-list';
     BookingCalendarPage,
     FeedbackPage,
     BookingConfirmedPage,
-    LocationListPage
+    LocationListPage,
+    ForgetPasswordPage
   ],
   providers: [
     StatusBar,
