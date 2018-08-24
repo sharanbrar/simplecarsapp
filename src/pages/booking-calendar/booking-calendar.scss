@@ -1,4 +1,25 @@
 page-booking-calendar {
+    .header{
+        background: #30b7ff;
+        box-shadow: 0 2px 2px 0 rgba(0,0,0,0.16), 0 0 0 1px rgba(0,0,0,0.08);
+        .toolbar-background {
+            background: #30b7ff !important;
+         }
+         .toolbar-title{
+             color: #fff;
+             font-weight: normal;
+            text-align: center;
+         }
+         .back-button{
+             .button-inner{
+                 color: #000;
+                 span.back-button-text {
+                    font-size: 0px;
+                    background: #30b7ff !important;;
+                 }
+             }
+         }
+    }
     ion-calendar{
         padding: 0px;
         margin: 0px;

@@ -28,6 +28,8 @@ import { Camera } from '@ionic-native/camera';
 
 import { LocationListPage } from '../pages/location-list/location-list';
 import { ForgetPasswordPage } from '../pages/forget-password/forget-password';
+import { TermPolicyPage } from '../pages/term-policy/term-policy';
+import { VerifyAccountPage } from '../pages/verify-account/verify-account';
 
 
 @NgModule({
@@ -46,7 +48,9 @@ import { ForgetPasswordPage } from '../pages/forget-password/forget-password';
     IonStarsComponent,
     BookingConfirmedPage,
     LocationListPage,
-    ForgetPasswordPage
+    ForgetPasswordPage,
+    TermPolicyPage,
+    VerifyAccountPage
   ],
   imports: [
     BrowserModule,
@@ -69,7 +73,9 @@ import { ForgetPasswordPage } from '../pages/forget-password/forget-password';
     FeedbackPage,
     BookingConfirmedPage,
     LocationListPage,
-    ForgetPasswordPage
+    ForgetPasswordPage,
+    TermPolicyPage,
+    VerifyAccountPage
   ],
   providers: [
     StatusBar,

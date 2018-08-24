@@ -26,9 +26,7 @@ export class ScanLicensePage {
   constructor(public viewCtrl: ViewController,private camera: Camera,public navCtrl: NavController, public navParams: NavParams,public servercall:ServercallsProvider) {
     this.carID = navParams.get("carID");
     this.currenuser_id =  navParams.get("userID");
-    console.log(this.currenuser_id);
     this.resetScan();
-
   }
 
   ionViewDidLoad() {
@@ -36,7 +34,6 @@ export class ScanLicensePage {
   }
 
   addImage(src){
-    console.log(src);
     if(src.status){
       if(!this.licenseData.front_image){
         this.licenseData.front_image = src.data;
@@ -48,7 +45,6 @@ export class ScanLicensePage {
         this.sendImages();
       }
     }else{
-      console.log(src.error);
       this.servercall.presentToast('Try Again! Something went wrong');
     }
   }

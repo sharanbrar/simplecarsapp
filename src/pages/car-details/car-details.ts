@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams,ViewController,ModalController } from 'ionic-angular';
 import { SingingPage } from '../singing/singing';
 import { BookingCalendarPage } from '../booking-calendar/booking-calendar';
 import { ScanLicensePage } from '../scan-license/scan-license';
 import { ServercallsProvider } from '../../providers/servercalls/servercalls';
+import { VerifyAccountPage } from '../verify-account/verify-account';
 /**
  * Generated class for the CarDetailsPage page.
  *
@@ -18,7 +19,7 @@ import { ServercallsProvider } from '../../providers/servercalls/servercalls';
 export class CarDetailsPage {
   carID;
   carsData;
-  constructor(public navCtrl: NavController, public navParams: NavParams,public servercall:ServercallsProvider) {
+  constructor(public modalCtrl: ModalController,public viewCtrl: ViewController, public navCtrl: NavController, public navParams: NavParams,public servercall:ServercallsProvider) {
   	this.carID = navParams.get("carID");
   	this.updatecardata();
   }
@@ -47,15 +48,32 @@ export class CarDetailsPage {
 
   showSignIn(){
     if(this.servercall.checkLogin()){
-      if(this.servercall.getUserInfo('licenseinfo')){
-        this.navCtrl.push(BookingCalendarPage,{carID: this.carID});
+      if(this.servercall.getUserInfo('is_verified') == "0"){
+        
       }else{
-        console.log(this.servercall.getUserInfo('id'));
-        this.navCtrl.push(ScanLicensePage,{carID: this.carID,userID:this.servercall.getUserInfo('id')});
+        this.doafterverify();
       }
     }else{
     	this.navCtrl.push(SingingPage,{carID: this.carID});
     }
   }
 
+  doafterverify(){
+    if(this.servercall.getUserInfo('licenseinfo')){
+      this.navCtrl.push(BookingCalendarPage,{carID: this.carID});
+    }else{
+      console.log(this.servercall.getUserInfo('id'));
+      this.navCtrl.push(ScanLicensePage,{carID: this.carID,userID:this.servercall.getUserInfo('id')});
+    }
+  }
+
+  showVerify(){
+    let verifyModal = this.modalCtrl.create(VerifyAccountPage);
+    verifyModal.onDidDismiss(data => {
+      if(data){
+        this.doafterverify();
+      }
+    });
+    verifyModal.present();
+  }
 }

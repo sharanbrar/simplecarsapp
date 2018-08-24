@@ -93,14 +93,10 @@ page-scan-license {
 			border-right:2px solid #fff;
 		}
 		.scanner-desc-div{
-			.scanwhat {
-					p{
-					font-size: 21px;
-					font-weight: 700;
-					padding-bottom: 10px;
-					}
-			}
 		}	
-
+	}
+	.scanwhat p{
+			    font-size: 15px!important;
+			    font-weight: bold!important;
 	}
 }

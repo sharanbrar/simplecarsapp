@@ -1,0 +1,32 @@
+<!--
+  Generated template for the VerifyAccountPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<div *ngIf="pleaseWait" class="pleasewait-overlay">
+	<div class="loading-logo"><img src="assets/imgs/simple-logo.png"></div>
+</div>
+
+<!-- <ion-header>
+  <ion-navbar>
+    <ion-title>Verify Account</ion-title>
+  </ion-navbar>
+-->
+<ion-content padding>
+	<div class="Verify-otp-main">
+		<div class="Verify-otp">
+		  <ion-list-header class="loc-list-head">
+		    Verify Your Account
+		  </ion-list-header>
+		  <div class="loc-list-item" margin-bottom>
+		  	<div class="msg-div Otp-msg"><span>OTP has been sent to your Email.</span></div>
+		  	  <div class="error-div Otp-error" [innerHTML]="otperror"></div>
+		         <ion-item [ngClass]="{'has-danger': otperror !== ''}">
+		         	<ion-input type="text" [(ngModel)]="userOTP" placeholder="Verify OTP"></ion-input>
+		         </ion-item>
+		      <button ion-button full round (click)="verifyOtp()">Verify</button>
+		  </div>
+		</div>
+	</div>
+</ion-content>

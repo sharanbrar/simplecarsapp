@@ -27,13 +27,14 @@ export class PickTestdriveLocationPage {
   userCurrentLoc;
   currenLocDisp;
   pickedLocation;
+  minDistelement;
   allLocation : any[] = [];
   curentMarker:any;
   constructor(public modalCtrl: ModalController,public navCtrl: NavController, public navParams: NavParams,private zone: NgZone,public geolocation: Geolocation,public servercall:ServercallsProvider) {
   	this.userCurrentLoc = { location : '',lat:'',lng:''};
     this.pickedLocation;
+    this.minDistelement = 0;
     this.getCurrentLoca();
-    this.fetchLoactions();
   }
 
   ionViewDidLoad() {
@@ -76,9 +77,11 @@ export class PickTestdriveLocationPage {
             lat : position.coords.latitude,
             lng : position.coords.longitude
           }
+          this.fetchLoactions();
       }, (err) => {
           this.actualUserLoc = null;
         console.log(err);
+          this.fetchLoactions();
       }
     );
   }
@@ -98,7 +101,7 @@ export class PickTestdriveLocationPage {
 
   clearautoloc(){
     if(this.pickedLocation){
-      this.addCurrentMarker(this.allLocation[0],'update')
+      this.addCurrentMarker(this.allLocation[this.minDistelement],'update')
       this.zone.run(() => {
         this.pickedLocation = "";
       });
@@ -134,7 +137,6 @@ export class PickTestdriveLocationPage {
   }
 
   addMarkers(){
-    let minDistelement = 0;
     let minDis = null;
    setTimeout(()=>{ 
     for (var i = 0; i < this.allLocation.length; i++){
@@ -142,7 +144,7 @@ export class PickTestdriveLocationPage {
         let dis = this.calcCrow(this.actualUserLoc.lat, this.actualUserLoc.lng, this.allLocation[i].lat,this.allLocation[i].lng);
         if(minDis == null || minDis > dis){
           minDis = dis;
-          minDistelement = i;
+          this.minDistelement = i;
         }
       }
       let pos =  new google.maps.LatLng(this.allLocation[i].lat,this.allLocation[i].lng);
@@ -158,7 +160,7 @@ export class PickTestdriveLocationPage {
       });     
       this.addInfoWindow(marker);
     }
-    this.addCurrentMarker(this.allLocation[minDistelement],'update');
+    this.addCurrentMarker(this.allLocation[this.minDistelement],'update');
    },200);
   }
 

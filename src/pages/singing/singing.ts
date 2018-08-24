@@ -5,6 +5,7 @@ import { ScanLicensePage } from '../scan-license/scan-license';
 import { BookingCalendarPage } from '../booking-calendar/booking-calendar';
 import { ForgetPasswordPage } from '../forget-password/forget-password';
 import { ServercallsProvider } from '../../providers/servercalls/servercalls';
+import { VerifyAccountPage } from '../verify-account/verify-account';
 /**
  * Generated class for the SingingPage page.
  *
@@ -78,8 +79,7 @@ export class SingingPage {
               console.log(resp);
               if(resp.status == "success"){
                 this.servercall.presentToast('Sign Up Successful');
-                this.servercall.setLocalStorage('SignedUpuser',JSON.stringify(resp.data));
-                this.movetoaddlicense(resp['data'].id);
+                this.showVerify('signup',resp);
               }else{
                 if(resp.error['email'][0]){
                   this.SignUperror = "<p>"+resp.error['email'][0]+"</p>"
@@ -117,16 +117,12 @@ export class SingingPage {
                   this.servercall.getCall(this.servercall.baseUrl+'auth/user?token='+resp.token).subscribe(
                       userresp =>{
                         console.log(userresp);
-                        if(userresp.status == "success"){ 
-                          this.servercall.setUserInfo(userresp.data);
-                          this.servercall.setLogin(true);
-                          this.pleaseWait = false;
-                          if(this.servercall.getUserInfo('licenseinfo')){
-                            this.movetocalendar();
+                        if(userresp.status == "success"){
+                          if(userresp['data'][0]['is_verified'] == "0"){
+                            this.showVerify('signin',userresp);
                           }else{
-                            this.movetoaddlicense(userresp.data[0].id);
+                            this.doafterSign('signin',userresp);
                           }
-                          
                         }else{
                           this.servercall.presentToast('Please try again.');
                           this.pleaseWait = false;
@@ -158,6 +154,37 @@ export class SingingPage {
   forgetPassword(){
     let forgetPasswordModal = this.modalCtrl.create(ForgetPasswordPage);
       forgetPasswordModal.present();
+  }
+
+  doafterSign(type,respData){
+    if(type == 'signup'){
+      this.servercall.setLocalStorage('SignedUpuser',JSON.stringify(respData.data));
+      this.movetoaddlicense(respData['data'].id);
+    }else{
+        this.servercall.setUserInfo(respData.data);
+        this.servercall.setLogin(true);
+        this.pleaseWait = false;
+        if(this.servercall.getUserInfo('licenseinfo')){
+          this.movetocalendar();
+        }else{
+          this.movetoaddlicense(respData.data[0].id);
+        }
+    }
+  }
+
+  showVerify(type,respData){
+      let verifyModal = this.modalCtrl.create(VerifyAccountPage);
+      verifyModal.onDidDismiss(data => {
+        if(data){
+          if(type == 'signup'){
+            this.doafterSign('signup',respData);
+          }else{
+            respData.data[0]["is_verified"] = '1';
+            this.doafterSign('signin',respData);
+          }
+        }
+      });
+      verifyModal.present();
   }
 /************* Custom Validators *************/
   validatorEmail(){
