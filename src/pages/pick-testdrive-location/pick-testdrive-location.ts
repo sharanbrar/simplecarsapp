@@ -93,8 +93,9 @@ export class PickTestdriveLocationPage {
         zoom: 9,
         mapTypeId: google.maps.MapTypeId.ROADMAP
       } ;
-
-      this.map = new google.maps.Map(document.getElementById("map"), mapOptions);
+      this.zone.run(() => {
+        this.map = new google.maps.Map(document.getElementById("map"), mapOptions);
+      });
       this.autoComplete();
       this.addMarkers();
   }

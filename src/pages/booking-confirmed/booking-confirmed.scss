@@ -44,6 +44,24 @@ page-booking-confirmed {
 				.car-info p {
     				margin: 5px 0;
     			}
+    			&.confrimed-details{
+    				.item{
+    					&.item-block{
+    						.item-inner{
+    							.input-wrapper{
+    								.label{
+    									max-width: 50%;
+									    margin: 0 auto;
+									    text-align: center;
+									    .car-info{
+									    	text-align:left;
+									    }
+    								}
+    							}
+    						}
+    					}
+    				}
+    			}
 			}
 		}
 	}

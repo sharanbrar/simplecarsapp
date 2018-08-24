@@ -45,8 +45,14 @@ page-scan-license {
 		.scanner-disp-img-div {
 			position: relative;
 			width: 100%;
-    		height: 220px;
+    		/* height: 220px; */
 			float: left;
+			span{	
+				img{
+					padding: 40px;
+					width: 100%;
+				}
+			}
 		}
 		.scanner-disp-img-div:before {
 			display: block;
