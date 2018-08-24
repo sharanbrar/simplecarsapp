@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import {FormBuilder, FormGroup,FormControl,Validators,ValidatorFn} from '@angular/forms';
+import {FormBuilder,FormControl,Validators,ValidatorFn} from '@angular/forms';
 import { ServercallsProvider } from '../../providers/servercalls/servercalls';
 import { PickTestdriveLocationPage } from '../pick-testdrive-location/pick-testdrive-location';
 
@@ -49,14 +49,16 @@ export class FeedbackPage {
             if(resp.status){
               console.log(resp);
                this.bookingId = resp.booking;
-               this.pleaseWait = false;
             }else{
               this.navCtrl.setRoot(PickTestdriveLocationPage);
             }
+          this.pleaseWait = false;
         },
         error=>{
           this.navCtrl.setRoot(PickTestdriveLocationPage);
+          this.pleaseWait = false;
           console.log(error);
+
         }
       );
   }

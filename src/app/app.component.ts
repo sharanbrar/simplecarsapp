@@ -6,7 +6,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { ServercallsProvider } from '../providers/servercalls/servercalls';
 // import { HomePage } from '../pages/home/home';
 import { SlideWalkPage } from '../pages/slide-walk/slide-walk';
-import { PickTestdriveLocationPage } from '../pages/pick-testdrive-location/pick-testdrive-location';
+// import { PickTestdriveLocationPage } from '../pages/pick-testdrive-location/pick-testdrive-location';
 import { FeedbackPage } from '../pages/feedback/feedback';
 
 

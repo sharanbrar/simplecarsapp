@@ -1,4 +1,4 @@
-import { HttpClient,HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
@@ -17,11 +17,6 @@ export class ServercallsProvider {
   public baseUrl : string = 'http://www.simplecarapp.com/api/';
   public ImagebaseUrl : string = 'http://www.simplecarapp.com/public/storage/';
   public loginChange: Subject<boolean> = new Subject<boolean>();
-  public httpOptions = {
-    headers: new HttpHeaders({
-      'Content-Type':  'application/json',
-    })
-  };
   constructor(public http: HttpClient,private toastCtrl: ToastController) {
     console.log('Hello ServercallsProvider Provider');
     this.loginChange.subscribe((value) => {
@@ -84,7 +79,7 @@ formatDte(what,date){
 	  }
 
 	  public postCall(url, data){
-	     return this.http.post(url,data, this.httpOptions).pipe(
+	     return this.http.post(url,data).pipe(
 	      map(this.extractData),
 	      catchError(this.handleError)
 	    );

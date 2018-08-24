@@ -24,7 +24,7 @@
 	</div>
 	<div class="scanner-desc-div scanwhat" [innerHTML]="scanwhat"></div>
 	<div class="scanner-disp-img-div">
-			<span><img *ngIf="imgsrc" id="clickedImage" src="imgsrc"></span>
+			<span><img *ngIf="imgsrc" id="clickedImage" src="''+imgsrc"></span>
 	</div>
 	<div class="scanner-action-buttons">
 		<div class="camera-icon"><img src="assets/imgs/camra.png" (click)="getImage()">
