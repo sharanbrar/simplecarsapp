@@ -11,8 +11,8 @@ page-pick-testdrive-location {
 	}
 
 	.user-interaction-sec .loc-input-div .item{
-		border: 1px solid;
-    	border-radius: 5px;
+		/* border: 1px solid;
+    	border-radius: 5px; */
     	font-size: 12px;
 	}
 	.back-button{
@@ -67,6 +67,24 @@ page-pick-testdrive-location {
 					margin: 0px;
 					font-family: 'Montserrat', sans-serif;
 				}
+			}
+			.item{
+					&.item-block {
+						padding: 0px;
+						.item-inner{
+							border: 0.55px solid #c8c7cc;
+							background: #eff4f8;
+							padding: 0px 10px;
+							border-radius: 5px;
+						}
+					}
+					&.has-danger{
+						&.item-block {
+							.item-inner{
+							border: 0.55px solid red;
+							}
+						}
+					}
 			}
 		}
 		.item-input{

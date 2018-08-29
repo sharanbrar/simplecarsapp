@@ -24,6 +24,7 @@ export class BookingCalendarPage {
   currentUser_id;
   carData;
   locaddress;
+  bookingError;
   constructor(public viewCtrl: ViewController,private alertCtrl: AlertController,public navCtrl: NavController, public navParams: NavParams,public servercall:ServercallsProvider) {
   	if(!this.servercall.checkLogin()){
       this.navCtrl.pop();
@@ -36,6 +37,7 @@ export class BookingCalendarPage {
     this.carData = JSON.parse(this.servercall.getLocalStorage("slectedCar",{'Image':null}));
     this.locaddress = JSON.parse(this.servercall.getLocalStorage("SimplecarsAppCurrentLocation"));
     this.updatetimelist(this.servercall.formatDte('date',this.selectedDate));
+    this.bookingError = "";
   }
 
   ionViewDidLoad() {
@@ -54,6 +56,7 @@ export class BookingCalendarPage {
         date : selecteddate
       };
       this.pleaseWait = true;
+      this.bookingError  = "";
       this.servercall.postCall(this.servercall.baseUrl+'time-slots?token='+this.servercall.getLocalStorage('SimpleAppUserToken'),ddata).subscribe(
         resp =>{
               console.log(resp);
@@ -94,20 +97,23 @@ export class BookingCalendarPage {
       let bData ={
           car_id : this.carID,
           booked_time : this.servercall.formatDte('date',this.selectedDate)+' '+selectedslot.time,
-          address : this.locaddress.address
+          address : this.locaddress.address,
+          location : this.locaddress
       };
     this.pleaseWait = true;
     this.servercall.postCall(this.servercall.baseUrl+'booking?token='+this.servercall.getLocalStorage('SimpleAppUserToken'),bData).subscribe(
         resp =>{
           console.log(resp);
-          if(resp.status == "Booking success"){
+          this.bookingError  = "";
+          if(resp.status){
             this.servercall.presentToast("Booking successfull");
             this.pleaseWait = false;
             this.updatetimelist(this.servercall.formatDte('date',this.selectedDate));
             this.movetoConfirmed(bData,selectedslot);
             // this.navCtrl.setRoot(SearchResultPage);
           }else{
-            this.servercall.presentToast("Try Again! Something went wrong");
+            this.bookingError = "<p>"+resp.error+"</p>";
+            this.servercall.presentToast(resp.error);
             this.pleaseWait = false;
           }
         },

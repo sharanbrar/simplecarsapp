@@ -23,10 +23,12 @@ export class SingingPage {
   tabtype;
   loginerror;
   SignUperror;
+  confirmInvalid;
   public signInform : FormGroup;
   public signUpform : FormGroup;
   constructor(public modalCtrl: ModalController,public viewCtrl: ViewController,public navCtrl: NavController, public navParams: NavParams,private formBuilder: FormBuilder,public servercall:ServercallsProvider) {
       this.pleaseWait = false;
+      this.confirmInvalid = false;
       this.carID = navParams.get("carID");
       this.tabtype = 'singintab';
       this.signInform = this.formBuilder.group({
@@ -34,9 +36,10 @@ export class SingingPage {
                            'signinPassword'     : ['', Validators.compose([Validators.required])]
                         });
       this.signUpform = this.formBuilder.group({
-                           'signupName'         : ['', Validators.compose([Validators.required])],
-                           'signupEmail'        : ['', Validators.compose([Validators.required,this.validatorEmail()])],
-                           'signupPassword'     : ['', Validators.compose([Validators.required])]
+                           'signupName'           : ['', Validators.compose([Validators.required])],
+                           'signupEmail'          : ['', Validators.compose([Validators.required,this.validatorEmail()])],
+                           'signupPassword'       : ['', Validators.compose([Validators.required])],
+                           'signupConfirmPassword': ['', Validators.compose([Validators.required])]
                         });  
   }
 
@@ -66,33 +69,41 @@ export class SingingPage {
       this.signUpform['controls']['signupName'].markAsDirty();
       this.signUpform['controls']['signupEmail'].markAsDirty();
       this.signUpform['controls']['signupPassword'].markAsDirty();
+      this.signUpform['controls']['signupConfirmPassword'].markAsDirty();
       if(this.signUpform.status == 'VALID'){
-        this.pleaseWait = true;
-        let cdata = {
-                      "name":this.signUpform.get('signupName').value,
-                      "email":this.signUpform.get('signupEmail').value,
-                      "password":this.signUpform.get('signupPassword').value,
-                    };
-        console.log(cdata);
-        this.servercall.postCall(this.servercall.baseUrl+'signup',cdata).subscribe( 
-          resp =>{
-              console.log(resp);
-              if(resp.status == "success"){
-                this.servercall.presentToast('Sign Up Successful');
-                this.showVerify('signup',resp);
-              }else{
-                if(resp.error['email'][0]){
-                  this.SignUperror = "<p>"+resp.error['email'][0]+"</p>"
+        if(this.signUpform.get('signupPassword').value == this.signUpform.get('signupConfirmPassword').value){
+          this.confirmInvalid = false;
+          this.pleaseWait = true;
+          let cdata = {
+                        "name":this.signUpform.get('signupName').value,
+                        "email":this.signUpform.get('signupEmail').value,
+                        "password":this.signUpform.get('signupPassword').value,
+                      };
+          console.log(cdata);
+          this.servercall.postCall(this.servercall.baseUrl+'signup',cdata).subscribe( 
+            resp =>{
+                console.log(resp);
+                if(resp.status == "success"){
+                  this.signUpform.reset();
+                  this.servercall.presentToast('Sign Up Successful');
+                  this.showVerify('signup',resp);
+                }else{
+                  if(resp.error['email'][0]){
+                    this.SignUperror = "<p>"+resp.error['email'][0]+"</p>"
+                  }
+                  this.servercall.presentToast('Something went wrong.');
                 }
-                this.servercall.presentToast('Something went wrong.');
-              }
+                this.pleaseWait = false;
+            },
+            error => {
+              console.log(error);
               this.pleaseWait = false;
-          },
-          error => {
-            console.log(error);
-            this.pleaseWait = false;
-          }  
-        );
+            }  
+          );
+        }else{
+          this.confirmInvalid = true;
+          this.servercall.presentToast('Password Not Matching');
+        }
       }else{
         this.servercall.presentToast('Invalid Details');
       }
@@ -212,9 +223,6 @@ export class SingingPage {
     };
     return validator;
   }
-
-  
-
 
   validatorPassword(){
     const validator: ValidatorFn = (control: FormControl) => {

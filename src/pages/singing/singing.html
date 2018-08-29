@@ -54,9 +54,15 @@
 				    <ion-item margin-bottom [ngClass]="{'has-danger': !signUpform.controls['signupEmail'].valid && signUpform.controls['signupEmail'].dirty }">
 				         <ion-input type="text" formControlName="signupEmail" placeholder="Email"></ion-input>
 				    </ion-item>
-				    <ion-item margin-bottom [ngClass]="{'has-danger': !signUpform.controls['signupPassword'].valid && signUpform.controls['signupPassword'].dirty }">
-				         <ion-input type="password" formControlName="signupPassword" placeholder="Password"></ion-input>
-				    </ion-item>
+				    <div class="password-div">
+				    	<p><strong>NOTE</strong>: Your password is case sensitive.</p>
+					    <ion-item margin-bottom [ngClass]="{'has-danger': !signUpform.controls['signupPassword'].valid && signUpform.controls['signupPassword'].dirty }">
+					         <ion-input type="password" formControlName="signupPassword" placeholder="Password"></ion-input>
+					    </ion-item>
+					    <ion-item margin-bottom [ngClass]="{'has-danger': (!signUpform.controls['signupConfirmPassword'].valid && signUpform.controls['signupConfirmPassword'].dirty) || confirmInvalid }">
+					         <ion-input type="password" formControlName="signupConfirmPassword" placeholder="Confirm Password"></ion-input>
+					    </ion-item>
+					</div>
 				    <button ion-button full color="light" round (click)="submitSignUp()">Sign Up</button>
 	    		</form>
 	    		<p class="forget-password">By clicking Sign Up you agree to our <a>Term of Service</a></p>

@@ -4,6 +4,11 @@
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
 -->
+<div *ngIf="pleaseWait" class="pleasewait-overlay">
+	<div class="loading-logo"><img src="assets/imgs/simple-logo.png"></div>
+</div>
+
+
 <ion-header>
   <ion-navbar>
     <ion-title>Our Nearest Test Drive Locations</ion-title>
@@ -46,7 +51,7 @@
 		</div>
 		<div class="loc-input-div">
 			<p>Please submit a testdrive location and we'll let you know if we can come to you.</p>
-		 <ion-item>
+		 <ion-item [ngClass]="{'has-danger': errorCustomPlace}">
 			<ion-input #googlePlaces id="googlePlaces" [(ngModel)]="pickedLocation" placeholder="SUBMIT A TEST DRIVE LOCATION"></ion-input>
 			<button ion-button clear color="dark" type="button" item-right>
 				<ion-icon name="close-circle" (click)="clearautoloc()"></ion-icon>

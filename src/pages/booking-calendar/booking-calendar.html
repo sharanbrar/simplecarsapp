@@ -25,6 +25,7 @@
 		<p>Test Drive times for <span>{{selectedDate | date : 'mediumDate'}}</span></p>
 	</div>
 	<div class="time-list">
+		<div class="error-div" [innerHTML]="bookingError"></div>
 		<ion-list>
 			<ion-item-sliding *ngFor="let time of timeList; let i = index;"  [attr.id]="'itemslide'+i">
 			    <ion-item [attr.id]="'item'+i">
@@ -51,7 +52,7 @@
 			    <ion-item-options side="right" *ngIf="!time.status && time.user == currentUser_id">
 			      <button ion-button>Booked for you</button>
 			    </ion-item-options>
-			    <ion-item-options side="right" *ngIf="time.status && !alreadybooked">
+			    <ion-item-options side="right" *ngIf="time.status">
 			      <button ion-button (click)="presentConfirm(i)">Book</button>
 			    </ion-item-options>
 			</ion-item-sliding>

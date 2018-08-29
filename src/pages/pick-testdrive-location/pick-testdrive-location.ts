@@ -1,5 +1,5 @@
 import { Component,ViewChild, ElementRef,NgZone} from '@angular/core';
-import { NavController, NavParams,ModalController } from 'ionic-angular';
+import { NavController, NavParams,ModalController,AlertController} from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
 import { SearchResultPage } from '../search-result/search-result';
 import { LocationListPage } from '../location-list/location-list';
@@ -30,7 +30,9 @@ export class PickTestdriveLocationPage {
   minDistelement;
   allLocation : any[] = [];
   curentMarker:any;
-  constructor(public modalCtrl: ModalController,public navCtrl: NavController, public navParams: NavParams,private zone: NgZone,public geolocation: Geolocation,public servercall:ServercallsProvider) {
+  errorCustomPlace : boolean = false;
+  pleaseWait:boolean = false;
+  constructor(public modalCtrl: ModalController,public navCtrl: NavController, public navParams: NavParams,private zone: NgZone,public geolocation: Geolocation,public servercall:ServercallsProvider,private alertCtrl: AlertController) {
   	this.userCurrentLoc = { location : '',lat:'',lng:''};
     this.pickedLocation;
     this.minDistelement = 0;
@@ -93,15 +95,16 @@ export class PickTestdriveLocationPage {
         zoom: 9,
         mapTypeId: google.maps.MapTypeId.ROADMAP
       } ;
-      // this.zone.run(() => {
+      this.zone.run(() => {
         this.map = new google.maps.Map(document.getElementById("map"), mapOptions);
-      // });
+      });
       this.autoComplete();
       this.addMarkers();
   }
 
   clearautoloc(){
     if(this.pickedLocation){
+      this.errorCustomPlace = false;
       this.addCurrentMarker(this.allLocation[this.minDistelement],'update')
       this.zone.run(() => {
         this.pickedLocation = "";
@@ -132,9 +135,94 @@ export class PickTestdriveLocationPage {
           short_address : place.formatted_address,
           address:  place.formatted_address
         }
-         this.pickedLocation = markdat.location;
-         this.addCurrentMarker(markdat,'update');
+        this.pickedLocation = markdat.location;
+        if(this.checkdist(markdat.lat,markdat.lng)){
+            this.errorCustomPlace  = false;
+           this.addCurrentMarker(markdat,'update');
+        }else{
+          this.errorCustomPlace  = true;
+          this.presentPrompt(markdat);
+          // this.servercall.presentToast('Location Not Allowed');
+        }
      });
+  }
+
+  presentPrompt(markdat) {
+      let alert = this.alertCtrl.create({
+        title: markdat.location,
+        message: 'We are sorry but we do not offer test drives in the area you entered, Please try another address thats closer to one of our locations. Or you can submit this address, enter your phone number below, and we will get back to you.',
+        inputs: [
+          {
+            name: 'fullname',
+            placeholder: 'Your Name'
+          },
+          {
+            name: 'phone',
+            placeholder: 'Your Number',
+            type: 'tel'
+          }
+        ],
+        buttons: [
+          {
+            text: 'Cancel',
+            role: 'cancel',
+            handler: data => {
+              this.clearautoloc();
+            }
+          },
+          {
+            text: 'Submit',
+            handler: data => {
+                this.SendCustomLoc(markdat,data);
+            }
+          }
+        ]
+      });
+      alert.present();
+    }
+
+  SendCustomLoc(markdat,data){
+      if(data.fullname && data.phone){
+        console.log(data,markdat);
+        this.pleaseWait = true;
+        this.servercall.getCall(this.servercall.baseUrl+'drive-locations').subscribe(
+          resp =>{
+            if(resp.status){
+              this.presentBasicAlert("Thankyou","We will get back to you soon.");
+            }else{
+
+            }
+            this.pleaseWait = false;
+            this.clearautoloc();
+          },
+          error => {
+            console.log(error);
+            this.pleaseWait = false;
+          }  
+        );
+      }else{
+        this.presentPrompt(markdat);
+      }
+  }
+
+  presentBasicAlert(title,message) {
+    let alert = this.alertCtrl.create({
+      title: title,
+      subTitle: message,
+      buttons: ['Ok']
+    });
+    alert.present();
+  }
+
+ 
+  checkdist(lat,lng){
+    for (var i = 0; i < this.allLocation.length; i++){
+        let dis : number = parseInt(this.calcCrow(lat,lng, this.allLocation[i].lat,this.allLocation[i].lng));
+        if(dis <= 10){
+          return true;
+        }
+    }
+    return false;
   }
 
   addMarkers(){

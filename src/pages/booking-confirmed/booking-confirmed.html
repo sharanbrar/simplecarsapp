@@ -36,7 +36,7 @@
 				      	<div  class="car-info">
 				      		<p class="car-name">{{carData.Make}} {{carData.Model}}</p>
 				      		<p class="miles"><ion-icon name="alarm"></ion-icon> {{slot.show}}</p>
-				      		<p class="miles"><ion-icon name="pin"></ion-icon> {{data.address}}</p>
+				      		<p class="miles" (click)="startExternalMap()"><ion-icon name="pin"></ion-icon> {{data.address}}</p>
 				      	</div>
 			      </ion-item>
 				  <button ion-button round (click)="goback()">View More Inventory</button>
