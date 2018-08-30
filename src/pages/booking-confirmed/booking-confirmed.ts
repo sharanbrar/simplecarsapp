@@ -23,9 +23,11 @@ export class BookingConfirmedPage {
   actualUserLoc;
   bookedTimeShow;
   constructor(private launchNavigator: LaunchNavigator,public platform: Platform,public geolocation: Geolocation,public navCtrl: NavController, public navParams: NavParams,public servercall:ServercallsProvider) {
-  	this.data =  navParams.get("data");
+  	console.log("confirm");
+    this.data =  navParams.get("data");
   	this.slot =  navParams.get("slot");
-    this.bookedTimeShow = new Date(this.data.booked_time);
+    let o  = this.data.booked_time.split(" ");
+    this.bookedTimeShow = o[0]; 
   	this.carData = JSON.parse(this.servercall.getLocalStorage("slectedCar",{'Image':null}));
   	this.tabtype = 'confirmed';
     this.getCurrentLoca();

@@ -83,6 +83,7 @@ export class BookingCalendarPage {
   }
   
   movetoConfirmed(data,slot){
+    console.log("move to cong");
     this.navCtrl.push(BookingConfirmedPage,{data:data,slot:slot})
      .then(() => {
         const index = this.viewCtrl.index;
@@ -108,7 +109,8 @@ export class BookingCalendarPage {
           if(resp.status){
             this.servercall.presentToast("Booking successfull");
             this.pleaseWait = false;
-            this.updatetimelist(this.servercall.formatDte('date',this.selectedDate));
+            // this.updatetimelist(this.servercall.formatDte('date',this.selectedDate));
+            console.log("booked");
             this.movetoConfirmed(bData,selectedslot);
             // this.navCtrl.setRoot(SearchResultPage);
           }else{

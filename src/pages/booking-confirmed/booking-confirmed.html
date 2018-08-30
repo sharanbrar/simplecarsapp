@@ -35,7 +35,7 @@
 				      	<img src="{{servercall.ImagebaseUrl+carData.Image}}" alt=""/>
 				      	<div  class="car-info">
 				      		<p class="car-name">{{carData.Make}} {{carData.Model}}</p>
-				      		<p class="miles"><ion-icon name="alarm"></ion-icon> {{bookedTimeShow  | date : 'mediumDate'}} {{slot.show}}</p>
+				      		<p class="miles"><ion-icon name="alarm"></ion-icon> {{bookedTimeShow}} {{slot.show}}</p>
 				      		<p class="miles locationpin" (click)="launchInMap()"><ion-icon name="pin"></ion-icon> {{data.address}}</p>
 				      	</div>
 			      </ion-item>
