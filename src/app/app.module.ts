@@ -30,7 +30,7 @@ import { LocationListPage } from '../pages/location-list/location-list';
 import { ForgetPasswordPage } from '../pages/forget-password/forget-password';
 import { TermPolicyPage } from '../pages/term-policy/term-policy';
 import { VerifyAccountPage } from '../pages/verify-account/verify-account';
-
+import { LaunchNavigator } from '@ionic-native/launch-navigator';
 
 @NgModule({
   declarations: [
@@ -83,7 +83,8 @@ import { VerifyAccountPage } from '../pages/verify-account/verify-account';
     Geolocation,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     ServercallsProvider,
-    Camera
+    Camera,
+    LaunchNavigator
   ]
 })
 export class AppModule {}

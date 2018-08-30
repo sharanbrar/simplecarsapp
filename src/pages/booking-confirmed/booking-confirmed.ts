@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams,Platform } from 'ionic-angular';
 import { ServercallsProvider } from '../../providers/servercalls/servercalls';
 import { Geolocation } from '@ionic-native/geolocation';
+import { LaunchNavigator, LaunchNavigatorOptions } from '@ionic-native/launch-navigator';
 
 /**
  * Generated class for the BookingConfirmedPage page.
@@ -20,7 +21,7 @@ export class BookingConfirmedPage {
   slot;
   tabtype;
   actualUserLoc;
-  constructor(public platform: Platform,public geolocation: Geolocation,public navCtrl: NavController, public navParams: NavParams,public servercall:ServercallsProvider) {
+  constructor(private launchNavigator: LaunchNavigator,public platform: Platform,public geolocation: Geolocation,public navCtrl: NavController, public navParams: NavParams,public servercall:ServercallsProvider) {
   	this.data =  navParams.get("data");
   	this.slot =  navParams.get("slot");
   	this.carData = JSON.parse(this.servercall.getLocalStorage("slectedCar",{'Image':null}));
@@ -53,19 +54,33 @@ export class BookingConfirmedPage {
     );
   }
 
-  startExternalMap() {
-    if (this.data.location.lat) {
-      this.platform.ready().then(() => {
-          if (this.platform.is('ios')) {
-            window.open('maps://?q=' + this.data.location.short_address + '&saddr=' + this.actualUserLoc.lat + ',' + this.actualUserLoc.lng + '&daddr=' + this.data.location.lat + ',' + this.data.location.lng, '_system');
-          }else if (this.platform.is('android')) {
-            window.open('geo://' + this.actualUserLoc.lat + ',' + this.actualUserLoc.lng + '?q=' + this.data.location.lat + ',' + this.data.location.lng + '(' + this.data.location.short_address + ')', '_system');
-          }
-          //  else{
-          //   window.open('https://www.google.com/maps/dir/?api=1&origin='+this.actualUserLoc.lat+','+this.actualUserLoc.lng+'&destination='+this.data.location.lat+','+this.data.location.lng, '_blank');
-          // }
-          ; 
-      });
+
+  launchInMap(){
+    console.log("Launching Maps");
+    let options: LaunchNavigatorOptions = {
+      start: '"'+this.actualUserLoc.lat+","+this.actualUserLoc.lng+'"',
     };
+
+    this.launchNavigator.navigate([this.data.location.lat, this.data.location.lng], options)
+      .then(
+        success => console.log('Launched navigator'),
+        error => console.log('Error launching navigator', error)
+      );
   }
+
+  // startExternalMap() {
+  //   if (this.data.location.lat) {
+  //     this.platform.ready().then(() => {
+  //         if (this.platform.is('ios')) {
+  //           window.open('maps://?q=' + this.data.location.short_address + '&saddr=' + this.actualUserLoc.lat + ',' + this.actualUserLoc.lng + '&daddr=' + this.data.location.lat + ',' + this.data.location.lng, '_system');
+  //         }else if (this.platform.is('android')) {
+  //           window.open('geo://' + this.actualUserLoc.lat + ',' + this.actualUserLoc.lng + '?q=' + this.data.location.lat + ',' + this.data.location.lng + '(' + this.data.location.short_address + ')', '_system');
+  //         }
+  //         //  else{
+  //         //   window.open('https://www.google.com/maps/dir/?api=1&origin='+this.actualUserLoc.lat+','+this.actualUserLoc.lng+'&destination='+this.data.location.lat+','+this.data.location.lng, '_blank');
+  //         // }
+  //         ; 
+  //     });
+  //   };
+  // }
 }

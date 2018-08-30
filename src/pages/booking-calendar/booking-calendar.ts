@@ -26,10 +26,10 @@ export class BookingCalendarPage {
   locaddress;
   bookingError;
   constructor(public viewCtrl: ViewController,private alertCtrl: AlertController,public navCtrl: NavController, public navParams: NavParams,public servercall:ServercallsProvider) {
-  	if(!this.servercall.checkLogin()){
+    if(!this.servercall.checkLogin()){
       this.navCtrl.pop();
     }
-    this.currentUser_id = 0;
+    this.currentUser_id = this.servercall.getUserInfo('id');
     this.alreadybooked = false;
     this.pleaseWait = false;
     this.selectedDate = new Date();
@@ -53,7 +53,8 @@ export class BookingCalendarPage {
     if(this.carID){
       let ddata = {
         car_id : this.carID,
-        date : selecteddate
+        date : selecteddate,
+        user_id : this.currentUser_id 
       };
       this.pleaseWait = true;
       this.bookingError  = "";
@@ -62,7 +63,6 @@ export class BookingCalendarPage {
               console.log(resp);
           if(resp["status"] == 'success'){
             this.timeList = resp.results;
-            this.currentUser_id = this.servercall.getUserInfo('id');
             let bookindex = this.timeList.findIndex(time => time.user == this.currentUser_id);
             if(bookindex > -1){
               this.alreadybooked = true;
@@ -98,7 +98,7 @@ export class BookingCalendarPage {
           car_id : this.carID,
           booked_time : this.servercall.formatDte('date',this.selectedDate)+' '+selectedslot.time,
           address : this.locaddress.address,
-          location : this.locaddress
+          location : this.locaddress,
       };
     this.pleaseWait = true;
     this.servercall.postCall(this.servercall.baseUrl+'booking?token='+this.servercall.getLocalStorage('SimpleAppUserToken'),bData).subscribe(
