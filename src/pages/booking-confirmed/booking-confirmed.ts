@@ -21,9 +21,11 @@ export class BookingConfirmedPage {
   slot;
   tabtype;
   actualUserLoc;
+  bookedTimeShow;
   constructor(private launchNavigator: LaunchNavigator,public platform: Platform,public geolocation: Geolocation,public navCtrl: NavController, public navParams: NavParams,public servercall:ServercallsProvider) {
   	this.data =  navParams.get("data");
   	this.slot =  navParams.get("slot");
+    this.bookedTimeShow = new Date(this.data.booked_time);
   	this.carData = JSON.parse(this.servercall.getLocalStorage("slectedCar",{'Image':null}));
   	this.tabtype = 'confirmed';
     this.getCurrentLoca();
@@ -68,19 +70,4 @@ export class BookingConfirmedPage {
       );
   }
 
-  // startExternalMap() {
-  //   if (this.data.location.lat) {
-  //     this.platform.ready().then(() => {
-  //         if (this.platform.is('ios')) {
-  //           window.open('maps://?q=' + this.data.location.short_address + '&saddr=' + this.actualUserLoc.lat + ',' + this.actualUserLoc.lng + '&daddr=' + this.data.location.lat + ',' + this.data.location.lng, '_system');
-  //         }else if (this.platform.is('android')) {
-  //           window.open('geo://' + this.actualUserLoc.lat + ',' + this.actualUserLoc.lng + '?q=' + this.data.location.lat + ',' + this.data.location.lng + '(' + this.data.location.short_address + ')', '_system');
-  //         }
-  //         //  else{
-  //         //   window.open('https://www.google.com/maps/dir/?api=1&origin='+this.actualUserLoc.lat+','+this.actualUserLoc.lng+'&destination='+this.data.location.lat+','+this.data.location.lng, '_blank');
-  //         // }
-  //         ; 
-  //     });
-  //   };
-  // }
 }

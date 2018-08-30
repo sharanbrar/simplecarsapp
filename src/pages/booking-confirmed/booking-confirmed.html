@@ -35,8 +35,8 @@
 				      	<img src="{{servercall.ImagebaseUrl+carData.Image}}" alt=""/>
 				      	<div  class="car-info">
 				      		<p class="car-name">{{carData.Make}} {{carData.Model}}</p>
-				      		<p class="miles"><ion-icon name="alarm"></ion-icon>{{data.booked_time | date : 'mediumDate'}} {{slot.show}}</p>
-				      		<p class="miles" (click)="launchInMap()"><ion-icon name="pin"></ion-icon> {{data.address}}</p>
+				      		<p class="miles"><ion-icon name="alarm"></ion-icon> {{bookedTimeShow  | date : 'mediumDate'}} {{slot.show}}</p>
+				      		<p class="miles locationpin" (click)="launchInMap()"><ion-icon name="pin"></ion-icon> {{data.address}}</p>
 				      	</div>
 			      </ion-item>
 				  <button ion-button round (click)="goback()">View More Inventory</button>
