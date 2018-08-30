@@ -183,14 +183,18 @@ export class PickTestdriveLocationPage {
 
   SendCustomLoc(markdat,data){
       if(data.fullname && data.phone){
-        console.log(data,markdat);
+        let CusData = {
+          fullname : data.fullname,
+          phone  : data.phone,
+          address : markdat.address
+        }
         this.pleaseWait = true;
-        this.servercall.getCall(this.servercall.baseUrl+'drive-locations').subscribe(
+        this.servercall.postCall(this.servercall.baseUrl+'doLocationRequest',CusData).subscribe(
           resp =>{
             if(resp.status){
               this.presentBasicAlert("Thankyou","We will get back to you soon.");
             }else{
-
+              this.servercall.presentToast("Try Again! Something went wrong.");
             }
             this.pleaseWait = false;
             this.clearautoloc();
