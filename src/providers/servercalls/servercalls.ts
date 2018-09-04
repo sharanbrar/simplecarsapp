@@ -17,6 +17,7 @@ export class ServercallsProvider {
   public baseUrl : string = 'http://www.simplecarapp.com/api/';
   public ImagebaseUrl : string = 'http://www.simplecarapp.com/public/storage/';
   public loginChange: Subject<boolean> = new Subject<boolean>();
+  public feedbackChanged: Subject<boolean> = new Subject<boolean>();
   constructor(public http: HttpClient,private toastCtrl: ToastController) {
     console.log('Hello ServercallsProvider Provider');
     this.loginChange.subscribe((value) => {

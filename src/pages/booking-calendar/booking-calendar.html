@@ -40,13 +40,7 @@
 			        <ion-icon name="alarm"></ion-icon> {{time.show}}
 			  	  </p>
 
-			  	  <ion-icon *ngIf="time.status && alreadybooked" name="arrow-dropright" item-end (click)="open('itemslide'+i,'item'+i)"></ion-icon>
-
-			  	  <ion-icon *ngIf="time.status && !alreadybooked" name="arrow-dropright" item-end (click)="open('itemslide'+i,'item'+i)"></ion-icon>
-
-			  	  <ion-icon *ngIf="!time.status && time.user == currentUser_id" name="arrow-dropright" item-end (click)="open('itemslide'+i,'item'+i)"></ion-icon>
-			  	  
-			  	  <ion-icon *ngIf="!time.status && time.user == !currentUser_id" name="checkmark-circle" item-end></ion-icon>
+			  	  <ion-icon  name="arrow-dropright" item-end></ion-icon>
 			    
 			    </ion-item>
 			    <ion-item-options side="right" *ngIf="!time.status && time.user == currentUser_id">

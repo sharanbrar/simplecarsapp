@@ -32,6 +32,7 @@ export class PickTestdriveLocationPage {
   curentMarker:any;
   errorCustomPlace : boolean = false;
   pleaseWait:boolean = false;
+  showComingsoon:boolean = false;
   constructor(public modalCtrl: ModalController,public navCtrl: NavController, public navParams: NavParams,private zone: NgZone,public geolocation: Geolocation,public servercall:ServercallsProvider,private alertCtrl: AlertController) {
   	this.userCurrentLoc = { location : '',lat:'',lng:''};
     this.pickedLocation;
@@ -357,5 +358,10 @@ export class PickTestdriveLocationPage {
 
   toRad(Value){
      return Value * Math.PI / 180;
+  }
+
+  over(){
+    if(this.showComingsoon) this.showComingsoon = false;
+    else this.showComingsoon = true;
   }
 }

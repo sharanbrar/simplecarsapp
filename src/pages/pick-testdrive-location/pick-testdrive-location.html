@@ -18,7 +18,7 @@
 	<div class="map" #map id="map">
 	</div>
 	<div class="user-interaction-sec">
-		<div class="current-location"><h3>The closest <strong>SimpleCar</strong> test drive location is :</h3>
+		<div class="current-location"><h3>Closest <strong>SimpleCar</strong> test drive location is :</h3>
 			<!-- <h3>{{userCurrentLoc.location}}</h3> -->
 			<div class="locdesc" [innerHTML]="currenLocDisp"></div>
 		</div>
@@ -38,11 +38,11 @@
 			    </ion-col>
 			    <ion-col>
 			    	<div class="disabled">
-				     <ion-item>
+				     <ion-item (mouseover)='over()'>
 					      	<img src="assets/imgs/pin-disabled.png" />
 					      	<h3>INLAND</h3>
 					      	<h2>EMPIRE</h2>
-					      	<p>will be coming<br>very soon</p>
+					      	<p class="comming-soon" *ngIf="showComingsoon">COMING<br>SOON</p>
 				      </ion-item>
 				    </div>
 			    </ion-col>
@@ -50,7 +50,7 @@
 			</ion-grid>
 		</div>
 		<div class="loc-input-div">
-			<p>Please submit a testdrive location and we'll let you know if we can come to you.</p>
+			<p>Please submit a test drive location and we'll let you know if we can come to you.</p>
 		 <ion-item [ngClass]="{'has-danger': errorCustomPlace}">
 			<ion-input #googlePlaces id="googlePlaces" [(ngModel)]="pickedLocation" placeholder="SUBMIT A TEST DRIVE LOCATION"></ion-input>
 			<button ion-button clear color="dark" type="button" item-right>

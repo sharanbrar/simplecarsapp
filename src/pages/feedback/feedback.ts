@@ -22,8 +22,9 @@ export class FeedbackPage {
   feedbackForm;
   bookingId;
   constructor(public navCtrl: NavController, public navParams: NavParams,private formBuilder: FormBuilder,public servercall:ServercallsProvider) {
+      this.servercall.feedbackChanged.next(false);
       if(!this.servercall.checkLogin()){
-        this.navCtrl.setRoot(PickTestdriveLocationPage);
+        this.popme();
       }
       this.pleaseWait = false;
       this.tabtype = 'feedback';
@@ -50,12 +51,12 @@ export class FeedbackPage {
               console.log(resp);
                this.bookingId = resp.booking;
             }else{
-              this.navCtrl.setRoot(PickTestdriveLocationPage);
+              this.popme();
             }
           this.pleaseWait = false;
         },
         error=>{
-          this.navCtrl.setRoot(PickTestdriveLocationPage);
+          this.popme();
           this.pleaseWait = false;
           console.log(error);
 
@@ -70,11 +71,8 @@ export class FeedbackPage {
       this.feedbackForm['controls']['feedbackMessage'].markAsDirty();
 
       if(this.feedbackForm.get('feedbackRating').value == 0){
-
         this.servercall.presentToast('Please select a rating.');
-
       }else if(this.feedbackForm.status == 'VALID'){
-
         this.pleaseWait = true;
          let rdata ={
                       "rating":this.feedbackForm.get('feedbackRating').value,
@@ -87,7 +85,7 @@ export class FeedbackPage {
            resp =>{  
                if(resp.status == "success"){
                  this.servercall.presentToast('Thank you! For rating us.');
-                 this.navCtrl.setRoot(PickTestdriveLocationPage);
+                 this.popme();
                }else{
                  this.servercall.presentToast('Oops! Somethong went wrong.');
                }
@@ -108,6 +106,10 @@ export class FeedbackPage {
   starClicked(rate){
     this.feedbackForm.get('feedbackRating').setValue(rate);
   }
+  popme(){
+    this.servercall.feedbackChanged.next(true);
+    this.navCtrl.pop();
+  }
   /************* Custom Validators *************/
   validatorEmail(){
     const validator: ValidatorFn = (control: FormControl) => {
@@ -121,6 +123,5 @@ export class FeedbackPage {
     };
     return validator;
   }
-
 
 }
