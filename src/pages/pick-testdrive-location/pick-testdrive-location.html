@@ -42,7 +42,7 @@
 					      	<img src="assets/imgs/pin-disabled.png" />
 					      	<h3>INLAND</h3>
 					      	<h2>EMPIRE</h2>
-					      	<p class="comming-soon" *ngIf="showComingsoon">COMING<br>SOON</p>
+					      	<p class="comming-soon" [ngClass]="{'soon-hide':showComingsoon}">COMING<br>SOON</p>
 				      </ion-item>
 				    </div>
 			    </ion-col>

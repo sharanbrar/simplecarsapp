@@ -67,8 +67,9 @@ formatDte(what,date){
 	}else{
 		let month = date.getMonth() + 1;
   		month = month < 10 ? '0' + month : '' + month;
-
-	    let dt = date.getFullYear()+"-"+month+"-"+date.getDate();
+  		let day = date.getDate();
+  		day = day < 10 ? '0' + day : '' + day;
+	    let dt = date.getFullYear()+"-"+month+"-"+day;
 	    return dt;
 	}
 }
