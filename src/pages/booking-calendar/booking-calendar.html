@@ -27,8 +27,8 @@
 	<div class="time-list">
 		<div class="error-div" [innerHTML]="bookingError"></div>
 		<ion-list>
-			<ion-item-sliding *ngFor="let time of timeList; let i = index;"  [attr.id]="'itemslide'+i">
-			    <ion-item [attr.id]="'item'+i">
+			<ion-item-sliding #slidingItem *ngFor="let time of timeList; let i = index;"  [attr.id]="'itemslide'+i">
+			    <ion-item #item [attr.id]="'item'+i">
 			      <ion-avatar item-start>
 					<img *ngIf="!time.status" src="assets/imgs/booked.png">
 			        <img *ngIf="time.status" src="{{servercall.ImagebaseUrl+carData.Image}}">							
@@ -40,7 +40,7 @@
 			        <ion-icon name="alarm"></ion-icon> {{time.show}}
 			  	  </p>
 
-			  	  <ion-icon  name="arrow-dropright" item-end></ion-icon>
+			  	  <ion-icon  (click)="openOption(slidingItem, item)" name="arrow-dropright" item-end></ion-icon>
 			    
 			    </ion-item>
 			    <ion-item-options side="right" *ngIf="!time.status && time.user == currentUser_id">

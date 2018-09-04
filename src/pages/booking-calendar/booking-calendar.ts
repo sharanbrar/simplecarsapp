@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ViewController } from 'ionic-angular';
+import { NavController, NavParams, ViewController,Item, ItemSliding} from 'ionic-angular';
 import { ServercallsProvider } from '../../providers/servercalls/servercalls';
 import { BookingConfirmedPage } from '../booking-confirmed/booking-confirmed';
 import { AlertController } from 'ionic-angular';
@@ -16,6 +16,8 @@ import { AlertController } from 'ionic-angular';
   templateUrl: 'booking-calendar.html',
 })
 export class BookingCalendarPage {
+
+  activeItemSliding: ItemSliding = null;
   carID;
   selectedDate ;
   timeList;
@@ -155,5 +157,33 @@ export class BookingCalendarPage {
     });
     alert.present();
   }
+
+
+   openOption(itemSlide: ItemSliding, item: Item) {
+     console.log('opening item slide..');
+     if(this.activeItemSliding!==null)
+      this.closeOption();
+
+     this.activeItemSliding = itemSlide;
+
+     let swipeAmount = 150;
+     itemSlide.startSliding(swipeAmount);
+     itemSlide.moveSliding(swipeAmount);
+
+     itemSlide.setElementClass('active-options-right', true);
+     itemSlide.setElementClass('active-swipe-right', true);
+
+     item.setElementStyle('transition', null);
+     item.setElementStyle('transform', 'translate3d(-'+swipeAmount+'px, 0px, 0px)');
+    }
+
+    closeOption() {
+     console.log('closing item slide..');
+
+     if(this.activeItemSliding) {
+      this.activeItemSliding.close();
+      this.activeItemSliding = null;
+     }
+    }
 
 }
