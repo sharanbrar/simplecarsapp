@@ -29,14 +29,14 @@ page-car-details {
     .swiper-slide{
         .slide-zoom{
            img{
-               width: 100%;
+               width: auto;
                height:auto;
            }
         }
 
     }
     .car-images-slider{
-        height: 180px;
+        /* height: 180px; */
         .swiper-pagination{
 			button{
 			&.swiper-pagination-bullet{

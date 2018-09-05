@@ -15,7 +15,7 @@
 <ion-content class="car-details-body">
 	<div *ngFor="let carData of carsData">
 	<div class="car-images-slider">
-		<ion-slides pager>
+		<ion-slides #slider pager  [ngStyle]="{ 'height': slidesMoving ? 'auto' : (slidesHeight + 'px') }" (ionSlideDidChange)="slideDidChange()" (ionSlideWillChange)="slideWillChange()">
 		  <ion-slide *ngFor="let image of carData.car_slider">
 		    <img  src="{{servercall.ImagebaseUrl+image.url}}"/>
 		  </ion-slide>

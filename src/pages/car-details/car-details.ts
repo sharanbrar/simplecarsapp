@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { NavController, NavParams,ViewController,ModalController } from 'ionic-angular';
+import { Component,ViewChild} from '@angular/core';
+import { NavController, NavParams,ViewController,ModalController,Slides} from 'ionic-angular';
 import { SingingPage } from '../singing/singing';
 import { BookingCalendarPage } from '../booking-calendar/booking-calendar';
 import { ScanLicensePage } from '../scan-license/scan-license';
@@ -19,6 +19,9 @@ import { VerifyAccountPage } from '../verify-account/verify-account';
 export class CarDetailsPage {
   carID;
   carsData;
+  slidesMoving: boolean = true;
+  slidesHeight: string | number;
+  @ViewChild('slider') slider: Slides;
   constructor(public modalCtrl: ModalController,public viewCtrl: ViewController, public navCtrl: NavController, public navParams: NavParams,public servercall:ServercallsProvider) {
   	this.carID = navParams.get("carID");
   	this.updatecardata();
@@ -26,7 +29,14 @@ export class CarDetailsPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad CarDetailsPage');
+      setTimeout(()=> {
+          this.slideDidChange();
+        },1000
+    );
   }
+
+
+
   updatecardata(){
     if(this.carID){
       this.servercall.getCall(this.servercall.baseUrl+'car/'+this.carID).subscribe( 
@@ -75,5 +85,20 @@ export class CarDetailsPage {
       }
     });
     verifyModal.present();
+  }
+
+  slideDidChange () {
+    try{
+      this.slidesMoving = false;
+      let slideIndex : number = this.slider.getActiveIndex();
+      let currentSlide : Element = this.slider._slides[slideIndex];
+      let slideNumerbers=this.slider.length();
+      if(slideIndex<slideNumerbers){
+        this.slidesHeight = currentSlide.clientHeight;
+      }
+    }catch(e){}
+  }
+  slideWillChange () {
+    this.slidesMoving = true;
   }
 }
