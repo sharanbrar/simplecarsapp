@@ -6,7 +6,7 @@ import {Observable} from 'rxjs';
 import { ServercallsProvider } from '../providers/servercalls/servercalls';
 // import { HomePage } from '../pages/home/home';
 import { SlideWalkPage } from '../pages/slide-walk/slide-walk';
-// import { PickTestdriveLocationPage } from '../pages/pick-testdrive-location/pick-testdrive-location';
+import { PickTestdriveLocationPage } from '../pages/pick-testdrive-location/pick-testdrive-location';
 import { FeedbackPage } from '../pages/feedback/feedback';
 
 
@@ -44,8 +44,8 @@ export class MyApp {
     this.login = this.servercall.checkLogin();
     this.servercall.loginChange.subscribe(value => {
         this.login = value;
-        console.log('detecting.');
         console.log(this.login);
+        if(!this.login) this.nav.setRoot(PickTestdriveLocationPage);
     });
     // if(this.servercall.getLocalStorage('SimpleCarsApplaunched',false)){
     //    this.rootPage = PickTestdriveLocationPage;

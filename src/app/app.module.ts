@@ -24,6 +24,7 @@ import { FeedbackPage } from '../pages/feedback/feedback';
 import { CalendarModule } from "ion2-calendar";
 
 import { IonStarsComponent } from '../components/ion-stars/ion-stars';
+import { LogoutComponent } from '../components/logout/logout';
 import { Camera } from '@ionic-native/camera';
 
 import { LocationListPage } from '../pages/location-list/location-list';
@@ -50,7 +51,8 @@ import { LaunchNavigator } from '@ionic-native/launch-navigator';
     LocationListPage,
     ForgetPasswordPage,
     TermPolicyPage,
-    VerifyAccountPage
+    VerifyAccountPage,
+    LogoutComponent
   ],
   imports: [
     BrowserModule,

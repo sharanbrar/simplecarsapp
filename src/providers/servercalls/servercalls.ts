@@ -48,7 +48,9 @@ export class ServercallsProvider {
   public setUserInfo(userdata){
   	localStorage.setItem('SimplecaruserInfo', JSON.stringify(userdata));
   }
-
+  public removeUserInfo(){
+  	localStorage.removeItem('SimplecaruserInfo');
+  }
   public getUserInfo(param?){
 	let Userinfo = JSON.parse(localStorage.getItem('SimplecaruserInfo'));
   	if(param){
