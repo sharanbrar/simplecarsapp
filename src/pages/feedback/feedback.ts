@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams,AlertController } from 'ionic-angular';
 import {FormBuilder,FormControl,Validators,ValidatorFn} from '@angular/forms';
 import { ServercallsProvider } from '../../providers/servercalls/servercalls';
-import { PickTestdriveLocationPage } from '../pick-testdrive-location/pick-testdrive-location';
+// import { PickTestdriveLocationPage } from '../pick-testdrive-location/pick-testdrive-location';
 
 /**
  * Generated class for the FeedbackPage page.
@@ -21,7 +21,7 @@ export class FeedbackPage {
   feedbackerror;
   feedbackForm;
   bookingId;
-  constructor(public navCtrl: NavController, public navParams: NavParams,private formBuilder: FormBuilder,public servercall:ServercallsProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController,private formBuilder: FormBuilder,public servercall:ServercallsProvider) {
       this.servercall.feedbackChanged.next(false);
       if(!this.servercall.checkLogin()){
         this.popme();
@@ -109,6 +109,41 @@ export class FeedbackPage {
   popme(){
     this.servercall.feedbackChanged.next(true);
     this.navCtrl.pop();
+  }
+
+  skipthis(){
+    let alert = this.alertCtrl.create({
+      title: 'Feedback',
+      message: 'Are you sure, you want to skip?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+          }
+        },
+        {
+          text: 'Skip',
+          handler: () => {
+            // let rdata ={
+            //           "rating":0,
+            //           "email":'',
+            //           "message":'',
+            //           "booking_id":this.bookingId
+            //         };
+            // this.servercall.postCall(this.servercall.baseUrl+'feedback?token='+this.servercall.getLocalStorage("SimpleAppUserToken",""),rdata).subscribe(
+            //    resp =>{  
+            //    },
+            //    error =>{  
+            //    }
+            // );
+            this.servercall.feedbackChanged.next(false);
+            this.navCtrl.pop();
+          }
+        }
+      ]
+    });
+    alert.present();
   }
   /************* Custom Validators *************/
   validatorEmail(){
