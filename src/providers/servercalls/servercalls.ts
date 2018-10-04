@@ -14,8 +14,8 @@ import { ToastController } from 'ionic-angular';
 @Injectable()
 export class ServercallsProvider {
   public loginState :boolean = false;
-  public baseUrl : string = 'http://www.simplecarapp.com/api/';
-  public ImagebaseUrl : string = 'http://www.simplecarapp.com/public/storage/';
+  public baseUrl : string = 'http://admin.simplecarapp.com/api/';
+  public ImagebaseUrl : string = 'http://admin.simplecarapp.com/public/storage/';
   public loginChange: Subject<boolean> = new Subject<boolean>();
   public feedbackChanged: Subject<boolean> = new Subject<boolean>();
   constructor(public http: HttpClient,private toastCtrl: ToastController) {
