@@ -17,26 +17,18 @@ export class LocationListPage {
   allLocations;
   showList : any[] = [];
   selected;
+  sub : string = '';
   constructor(public viewCtrl: ViewController,public navCtrl: NavController, public navParams: NavParams) {
   		this.area = navParams.get("area");
-  		this.allLocations = navParams.get("allLocation");
-  		console.log(this.area,this.allLocations);
+      this.allLocations = navParams.get("allLocation");
+  		this.showList = this.allLocations;
+      this.sub = navParams.get("sub");
   		this.selected = null;
-  		this.fetchList();
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad LocationListPage');
   }
-
-  fetchList(){
-  	for(var i = 0; i < this.allLocations.length; i++){
-  		if(this.area == this.allLocations[i].area){
-  			this.showList.push(this.allLocations[i]);
-  		}
-  	}
-  }
-
 
   dismiss() {
 	   this.viewCtrl.dismiss(this.selected);

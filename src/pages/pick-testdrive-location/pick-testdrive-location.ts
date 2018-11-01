@@ -1,6 +1,6 @@
-import { Component,ViewChild, ElementRef,NgZone} from '@angular/core';
+import { Component,NgZone} from '@angular/core';
 import { NavController, NavParams,ModalController,AlertController} from 'ionic-angular';
-import { Geolocation } from '@ionic-native/geolocation';
+// import { Geolocation } from '@ionic-native/geolocation';
 import { SearchResultPage } from '../search-result/search-result';
 import { LocationListPage } from '../location-list/location-list';
 import { ServercallsProvider } from '../../providers/servercalls/servercalls';
@@ -20,11 +20,10 @@ declare var google;
 })
 
 export class PickTestdriveLocationPage {
-  @ViewChild('map') mapElement: ElementRef;
-  // @ViewChild('map', {read: ElementRef}) private mapElement: ElementRef;
   map: any;
   actualUserLoc;
   userCurrentLoc;
+  allMapMarkersRightNow : any[] = [];
   currenLocDisp;
   pickedLocation;
   minDistelement;
@@ -33,8 +32,9 @@ export class PickTestdriveLocationPage {
   errorCustomPlace : boolean = false;
   pleaseWait:boolean = false;
   showComingsoon:boolean = true;
-  constructor(public modalCtrl: ModalController,public navCtrl: NavController, public navParams: NavParams,private zone: NgZone,public geolocation: Geolocation,public servercall:ServercallsProvider,private alertCtrl: AlertController) {
-  	this.userCurrentLoc = { location : '',lat:'',lng:''};
+  constructor(public modalCtrl: ModalController,public navCtrl: NavController, public navParams: NavParams,private zone: NgZone,public servercall:ServercallsProvider,private alertCtrl: AlertController) {
+    this.pleaseWait = true;
+    this.userCurrentLoc = { location : '',lat:'',lng:''};
     this.pickedLocation;
     this.minDistelement = 0;
     this.getCurrentLoca();
@@ -53,13 +53,22 @@ export class PickTestdriveLocationPage {
   }
 
 
+  getCurrentLoca(){
+      if(this.servercall.actualUserLoc){
+        this.actualUserLoc =  this.servercall.actualUserLoc;
+      }else{
+          this.actualUserLoc = null;
+      }
+      this.fetchLoactions();
+  }
+
   fetchLoactions(){
     this.servercall.getCall(this.servercall.baseUrl+'drive-locations').subscribe( 
       resp =>{
-          console.log(resp);
         if(resp["status"] == 'success'){
           this.allLocation = resp.results;
           this.loadMap(this.allLocation[0].lat,this.allLocation[0].lng);
+          this.pleaseWait = false;
         }else{
           this.servercall.presentToast('Oops! Something went wrong.');
         }
@@ -73,22 +82,6 @@ export class PickTestdriveLocationPage {
 
 
 /************Map Functions********************/
-  getCurrentLoca(){
-    this.geolocation.getCurrentPosition().then(
-      (position) => {
-          this.actualUserLoc = {
-            lat : position.coords.latitude,
-            lng : position.coords.longitude
-          }
-          this.fetchLoactions();
-      }, (err) => {
-          this.actualUserLoc = null;
-        console.log(err);
-          this.fetchLoactions();
-      }
-    );
-  }
-
   loadMap(lat,lng){
       let latLng = new google.maps.LatLng(lat,lng);
       let mapOptions = {
@@ -100,30 +93,15 @@ export class PickTestdriveLocationPage {
         this.map = new google.maps.Map(document.getElementById("map"), mapOptions);
       });
       this.autoComplete();
-      this.addMarkers();
+      if(this.servercall.getLocalStorage('SimplecarsAppCurrentLocation',false)){
+        let markdata = JSON.parse(this.servercall.getLocalStorage('SimplecarsAppCurrentLocation','{}'));
+          if(markdata.lat){
+            this.addCurrentMarker(markdata);
+          }  
+      }
   }
 
-  clearautoloc(){
-    if(this.pickedLocation){
-      this.errorCustomPlace = false;
-      this.addCurrentMarker(this.allLocation[this.minDistelement],'update')
-      this.zone.run(() => {
-        this.pickedLocation = "";
-      });
-    }
-  }
-
-  showLocaList(area){
-      let locationListModal = this.modalCtrl.create(LocationListPage, { area: area,allLocation:this.allLocation});
-      locationListModal.onDidDismiss(data => {
-        if(data){
-          this.addCurrentMarker(data,'update');
-        }
-      });
-      locationListModal.present();
-  }
-
-  autoComplete(){
+  autoComplete(){ /*Add Google Places Auto Complete To filed*/
      let input = document.getElementById('googlePlaces').getElementsByTagName('input')[0];
      let autocomplete = new google.maps.places.Autocomplete(input, {types: ['geocode']});
      google.maps.event.addListener(autocomplete, 'place_changed', () => {
@@ -143,9 +121,51 @@ export class PickTestdriveLocationPage {
         }else{
           this.errorCustomPlace  = true;
           this.presentPrompt(markdat);
-          // this.servercall.presentToast('Location Not Allowed');
         }
      });
+  }
+
+  // OK
+
+  clearautoloc(){
+    if(this.pickedLocation){
+      this.errorCustomPlace = false;
+      this.removeCurrentLocation();
+      // this.addCurrentMarker(this.allLocation[this.minDistelement],'update')
+      this.zone.run(() => {
+        this.pickedLocation = "";
+      });
+    }
+  }
+
+  removeCurrentLocation(){
+    this.userCurrentLoc = { location : '',lat:'',lng:''};
+    localStorage.removeItem('SimplecarsAppCurrentLocation');
+    if(this.curentMarker){
+      this.curentMarker.setMap(null);
+    }
+    this.currenLocDisp = "";
+  }
+
+  showLocaList(area,subhead){
+      let showList : any[] = [];
+      for(var i = 0; i < this.allLocation.length; i++){
+        if(area == this.allLocation[i].area){
+          showList.push(this.allLocation[i]);
+        }
+      }
+      if(showList){
+        this.addMarkers(showList);
+      }else{
+        this.addMarkers(new Array());
+      }
+      let locationListModal = this.modalCtrl.create(LocationListPage, { area: area,allLocation:showList,sub:subhead});
+      locationListModal.onDidDismiss(data => {
+        if(data){
+          this.addCurrentMarker(data,'update');
+        }
+      });
+      locationListModal.present();
   }
 
   presentPrompt(markdat) {
@@ -183,6 +203,7 @@ export class PickTestdriveLocationPage {
     }
 
   SendCustomLoc(markdat,data){
+    /*Send Message to Admin if a custom location is far then 10mile from the available locations */
       if(data.fullname && data.phone){
         let CusData = {
           fullname : data.fullname,
@@ -221,6 +242,7 @@ export class PickTestdriveLocationPage {
 
  
   checkdist(lat,lng){
+    /*Check Distance of given lat,long from all the available locations*/
     for (var i = 0; i < this.allLocation.length; i++){
         let dis : number = parseInt(this.calcCrow(lat,lng, this.allLocation[i].lat,this.allLocation[i].lng));
         if(dis <= 10){
@@ -230,43 +252,29 @@ export class PickTestdriveLocationPage {
     return false;
   }
 
-  addMarkers(){
-    let minDis = null;
-   setTimeout(()=>{ 
-    for (var i = 0; i < this.allLocation.length; i++){
-      if(this.actualUserLoc){
-        let dis = this.calcCrow(this.actualUserLoc.lat, this.actualUserLoc.lng, this.allLocation[i].lat,this.allLocation[i].lng);
-        if(minDis == null || minDis > dis){
-          minDis = dis;
-          this.minDistelement = i;
-        }
-      }
-      let pos =  new google.maps.LatLng(this.allLocation[i].lat,this.allLocation[i].lng);
+  addMarkers(locations){
+   let i : number = 0;
+   for(i = 0; i < this.allMapMarkersRightNow.length; i++){
+       this.allMapMarkersRightNow[i].setMap(null);
+   }
+   this.allMapMarkersRightNow = [];
+    for (i = 0; i < locations.length; i++){
+      let pos =  new google.maps.LatLng(locations[i].lat,locations[i].lng);
       let marker = new google.maps.Marker({
         map: this.map,
         animation: google.maps.Animation.DROP,
         position: pos,
         icon:'assets/imgs/map-pin.png',
         markerid: i,
-        location_name : (this.allLocation[i].location_name)? this.allLocation[i].location_name: this.allLocation[i].short_address,
-        short_address: this.allLocation[i].short_address,
-        address:(this.allLocation[i].address)?this.allLocation[i].address:this.allLocation[i].short_address
+        location_name : (locations[i].location_name)? locations[i].location_name: locations[i].short_address,
+        short_address: locations[i].short_address,
+        address:(locations[i].address)?locations[i].address:locations[i].short_address
       });     
+      this.allMapMarkersRightNow.push(marker);
       this.addInfoWindow(marker);
+      this.map.panTo(pos);
     }
-    this.addCurrentMarker(this.allLocation[this.minDistelement],'update');
-   },200);
-  }
 
-  markthiscurrent(marker){
-      let markData = { 
-                        lat:marker.getPosition().lat(),
-                        lng:marker.getPosition().lng(),
-                        location_name : (marker.location_name)? marker.location_name: marker.short_address,
-                        short_address : marker.short_address,
-                        address: (marker.address)?marker.address:marker.short_address
-                      };
-      this.addCurrentMarker(markData,'update');
   }
 
   addCurrentMarker(markdata,type='update'){
@@ -290,18 +298,6 @@ export class PickTestdriveLocationPage {
          this.zone.run(() => {
            this.userCurrentLoc = JSON.parse(this.servercall.getLocalStorage('SimplecarsAppCurrentLocation','{}'));
          }); 
-      }else{
-        this.zone.run(() => {
-          this.userCurrentLoc = { 
-                              location_name : (markdata.location_name)? markdata.location_name: markdata.short_address,
-                              location : markdata.short_address,
-                              lat:markdata.lat,
-                              lng:markdata.lng,
-                              short_address : markdata.short_address,
-                              address: (markdata.address)?markdata.address:markdata.short_address
-                            };
-        });
-          this.servercall.setLocalStorage('SimplecarsAppCurrentLocation',JSON.stringify(this.userCurrentLoc));
       }
     }
     let pos = new google.maps.LatLng(this.userCurrentLoc.lat,this.userCurrentLoc.lng);
@@ -331,12 +327,11 @@ export class PickTestdriveLocationPage {
   }
 
   addInfoWindow(marker){
-    // let infoWindow = new google.maps.InfoWindow({
-    //   content: marker.address
-    // });
+    let infoWindow = new google.maps.InfoWindow({
+      content: marker.address
+    });
     google.maps.event.addListener(marker, 'click', () => {
-      //infoWindow.open(this.map, marker); 
-      this.markthiscurrent(marker);
+      infoWindow.open(this.map, marker); 
     });
   }
 
@@ -362,6 +357,7 @@ export class PickTestdriveLocationPage {
 
   over(){
     if(this.showComingsoon) this.showComingsoon = false;
+    this.showLocaList('Inland Empire','Coming Soon');
     // else this.showComingsoon = true;
   }
 }

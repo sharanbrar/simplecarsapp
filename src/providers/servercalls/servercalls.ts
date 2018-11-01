@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
 import { ToastController } from 'ionic-angular';
-
+import { Geolocation } from '@ionic-native/geolocation';
 /*
   Generated class for the ServercallsProvider provider.
 
@@ -14,15 +14,18 @@ import { ToastController } from 'ionic-angular';
 @Injectable()
 export class ServercallsProvider {
   public loginState :boolean = false;
+  public actualUserLoc :  any;
   public baseUrl : string = 'http://admin.simplecarapp.com/api/';
   public ImagebaseUrl : string = 'http://admin.simplecarapp.com/public/storage/';
   public loginChange: Subject<boolean> = new Subject<boolean>();
   public feedbackChanged: Subject<boolean> = new Subject<boolean>();
-  constructor(public http: HttpClient,private toastCtrl: ToastController) {
+  constructor(public http: HttpClient,private toastCtrl: ToastController,public geolocation: Geolocation) {
     console.log('Hello ServercallsProvider Provider');
+    this.getCurrentLoca();
     this.loginChange.subscribe((value) => {
             this.loginState = value;
     });
+
   }
 
 /*************LocalStorage Functions****************/
@@ -122,4 +125,19 @@ formatDte(what,date){
 
 	    toast.present();
 	 }
+
+	/**********Current Location Details***********/
+	getCurrentLoca(){
+    	this.geolocation.getCurrentPosition().then(
+	      (position) => {
+	          this.actualUserLoc = {
+	            lat : position.coords.latitude,
+	            lng : position.coords.longitude
+		          }
+		      }, (err) => {
+		          this.actualUserLoc = null;
+		        console.log(err);
+		      }
+		);
+	}
 }
