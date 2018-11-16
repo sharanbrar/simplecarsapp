@@ -1,6 +1,6 @@
 import { Component,NgZone} from '@angular/core';
 import { NavController, NavParams,ModalController,AlertController} from 'ionic-angular';
-// import { Geolocation } from '@ionic-native/geolocation';
+import { Geolocation } from '@ionic-native/geolocation';
 import { SearchResultPage } from '../search-result/search-result';
 import { LocationListPage } from '../location-list/location-list';
 import { ServercallsProvider } from '../../providers/servercalls/servercalls';
@@ -35,7 +35,7 @@ export class PickTestdriveLocationPage {
   errorCustomPlace : boolean = false;
   pleaseWait:boolean = false;
   showComingsoon:boolean = true;
-  constructor(public modalCtrl: ModalController,public navCtrl: NavController, public navParams: NavParams,private zone: NgZone,public servercall:ServercallsProvider,private alertCtrl: AlertController) {
+  constructor(public modalCtrl: ModalController,public navCtrl: NavController, public navParams: NavParams,private zone: NgZone,public servercall:ServercallsProvider,private alertCtrl: AlertController,public geolocation: Geolocation) {
     this.pleaseWait = true;
     this.userCurrentLoc = { location : '',lat:'',lng:''};
     this.pickedLocation;
@@ -57,14 +57,21 @@ export class PickTestdriveLocationPage {
 
 
   getCurrentLoca(){
-      this.servercall.getCurrentLoca();
-      if(this.servercall.actualUserLoc){
-        this.actualUserLoc = this.servercall.actualUserLoc;
-        this.fetchLoactions();
-      }else{
-          this.actualUserLoc = null;
-          this.fetchLoactions();
-      }
+    let option =	{ timeout: 8000, enableHighAccuracy: true };
+    	this.geolocation.getCurrentPosition(option).then(
+	      (position) => {
+					  this.actualUserLoc =  {
+	            lat : position.coords.latitude,
+	            lng : position.coords.longitude
+              }
+            this.fetchLoactions();
+		      }, (err) => {
+            this.servercall.presentToast('please enable your GPS Location.');
+            this.actualUserLoc = null;
+            this.fetchLoactions();
+		        console.log(err);
+		      }
+		);
   }
 
   fetchLoactions(){

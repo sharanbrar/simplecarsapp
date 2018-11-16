@@ -21,7 +21,7 @@ export class ServercallsProvider {
   public feedbackChanged: Subject<boolean> = new Subject<boolean>();
   constructor(public http: HttpClient,private toastCtrl: ToastController,public geolocation: Geolocation) {
     console.log('Hello ServercallsProvider Provider');
-    this.getCurrentLoca();
+    // this.getCurrentLoca();
     this.loginChange.subscribe((value) => {
             this.loginState = value;
     });
