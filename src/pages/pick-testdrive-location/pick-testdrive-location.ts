@@ -23,12 +23,15 @@ export class PickTestdriveLocationPage {
   map: any;
   actualUserLoc;
   userCurrentLoc;
+  closestlocationmarker;
+  currentlocationmarker;
   allMapMarkersRightNow : any[] = [];
   currenLocDisp;
   pickedLocation;
   minDistelement;
   allLocation : any[] = [];
   curentMarker:any;
+  bounds  = new google.maps.LatLngBounds();
   errorCustomPlace : boolean = false;
   pleaseWait:boolean = false;
   showComingsoon:boolean = true;
@@ -36,7 +39,7 @@ export class PickTestdriveLocationPage {
     this.pleaseWait = true;
     this.userCurrentLoc = { location : '',lat:'',lng:''};
     this.pickedLocation;
-    this.minDistelement = 0;
+    this.minDistelement = null;
     this.getCurrentLoca();
   }
 
@@ -54,12 +57,14 @@ export class PickTestdriveLocationPage {
 
 
   getCurrentLoca(){
+      this.servercall.getCurrentLoca();
       if(this.servercall.actualUserLoc){
-        this.actualUserLoc =  this.servercall.actualUserLoc;
+        this.actualUserLoc = this.servercall.actualUserLoc;
+        this.fetchLoactions();
       }else{
           this.actualUserLoc = null;
+          this.fetchLoactions();
       }
-      this.fetchLoactions();
   }
 
   fetchLoactions(){
@@ -67,7 +72,16 @@ export class PickTestdriveLocationPage {
       resp =>{
         if(resp["status"] == 'success'){
           this.allLocation = resp.results;
-          this.loadMap(this.allLocation[0].lat,this.allLocation[0].lng);
+          if(this.actualUserLoc){
+            this.loadMap(this.actualUserLoc.lat,this.actualUserLoc.lng);
+            let  closeloc = this.findclosest(this.actualUserLoc.lat,this.actualUserLoc.lng);
+            this.minDistelement = closeloc.mindisloc;
+            this.addclosestloc(this.allLocation[closeloc.mindisloc]);
+            this.currenLocDisp = "<h3>"+this.allLocation[closeloc.mindisloc].location_name+"</h3><p>"+this.allLocation[closeloc.mindisloc].address+" <br> ( "+closeloc.mindist+" miles away) <br> <span class='newspan'>press to select</span><p>";
+          }else{
+            this.loadMap(this.allLocation[0].lat,this.allLocation[0].lng);
+            // this.minDistelement = 0;
+          }
           this.pleaseWait = false;
         }else{
           this.servercall.presentToast('Oops! Something went wrong.');
@@ -79,9 +93,60 @@ export class PickTestdriveLocationPage {
     );
   }
 
+  findclosest(lat,lng){
+    let mindist = null;
+    let mindisloc = 0;
+    for(var i = 0; i < this.allLocation.length; i++){
+      if(mindist !== null){
+        let dis : number = parseInt(this.calcCrow(lat,lng, this.allLocation[i].lat,this.allLocation[i].lng));
+        if(mindist > dis){
+            mindist = dis;
+            mindisloc = i;
+        }
+      }else{
+        mindist = parseInt(this.calcCrow(lat,lng, this.allLocation[i].lat,this.allLocation[i].lng));
+        mindisloc = i;
+      }
+    }
+    return {mindisloc,mindist};
+  }
 
-
+  pickclosest(){
+    if(this.minDistelement != null){
+      this.addCurrentMarker(this.allLocation[this.minDistelement],'update');
+    }
+  }
+  addclosestloc(location){
+    if(this.closestlocationmarker){
+      this.closestlocationmarker.setMap(null);
+      this.closestlocationmarker = null;
+    }
+    let latLng = new google.maps.LatLng(location.lat,location.lng);
+    let marker = new google.maps.Marker({
+      map: this.map,
+      animation: google.maps.Animation.DROP,
+      position: latLng,
+      icon : {
+        url: 'assets/imgs/closestloc.png',
+        scaledSize: new google.maps.Size(10, 10),
+      },
+    });
+    let infoWindow = new google.maps.InfoWindow({
+      content: 'Closest location : '+location.address,
+    });
+    marker.addListener('click', function() {
+      infoWindow.open(this.map,marker);
+    });
+    this.closestlocationmarker = marker;
+    this.AddMapbound(latLng);
+  }
 /************Map Functions********************/
+  AddMapbound(mark){
+    this.bounds.extend(mark);
+    this.map.fitBounds(this.bounds); 
+    this.map.panToBounds(this.bounds); 
+  }
+
   loadMap(lat,lng){
       let latLng = new google.maps.LatLng(lat,lng);
       let mapOptions = {
@@ -93,11 +158,24 @@ export class PickTestdriveLocationPage {
         this.map = new google.maps.Map(document.getElementById("map"), mapOptions);
       });
       this.autoComplete();
-      if(this.servercall.getLocalStorage('SimplecarsAppCurrentLocation',false)){
-        let markdata = JSON.parse(this.servercall.getLocalStorage('SimplecarsAppCurrentLocation','{}'));
-          if(markdata.lat){
-            this.addCurrentMarker(markdata);
-          }  
+      if(this.actualUserLoc){
+        let marker = new google.maps.Marker({
+          map: this.map,
+          animation: google.maps.Animation.DROP,
+          position: latLng,
+          icon : {
+            url: 'assets/imgs/currnt.png',
+            scaledSize: new google.maps.Size(10, 10),
+          },
+        });
+        let infoWindow = new google.maps.InfoWindow({
+          content: 'Your Location'
+        });
+        marker.addListener('click', function() {
+          infoWindow.open(this.map, marker);
+        });
+        this.currentlocationmarker = marker;
+        this.AddMapbound(latLng);
       }
   }
 
@@ -144,7 +222,6 @@ export class PickTestdriveLocationPage {
     if(this.curentMarker){
       this.curentMarker.setMap(null);
     }
-    this.currenLocDisp = "";
   }
 
   showLocaList(area,subhead){
@@ -154,11 +231,11 @@ export class PickTestdriveLocationPage {
           showList.push(this.allLocation[i]);
         }
       }
-      if(showList){
-        this.addMarkers(showList);
-      }else{
-        this.addMarkers(new Array());
-      }
+      // if(showList){
+      //   this.addMarkers(showList);
+      // }else{
+      //   this.addMarkers(new Array());
+      // }
       let locationListModal = this.modalCtrl.create(LocationListPage, { area: area,allLocation:showList,sub:subhead});
       locationListModal.onDidDismiss(data => {
         if(data){
@@ -304,6 +381,10 @@ export class PickTestdriveLocationPage {
       let marker = new google.maps.Marker({
         map: this.map,
         animation: google.maps.Animation.DROP,
+        icon : {
+          url: 'assets/imgs/carmapicon.png',
+            scaledSize: new google.maps.Size(30,38),
+        },
         position: pos,
         markerid: this.allLocation.length,
         location_name : (this.userCurrentLoc.location_name)? this.userCurrentLoc.location_name: this.userCurrentLoc.short_address,
@@ -312,18 +393,8 @@ export class PickTestdriveLocationPage {
       });        
       this.curentMarker = marker;
       this.addInfoWindow(marker);
-      this.map.panTo(pos);
-
-      let dis ;
-      if(this.actualUserLoc){
-        dis = this.calcCrow(this.actualUserLoc.lat, this.actualUserLoc.lng, this.userCurrentLoc.lat, this.userCurrentLoc.lng);
-      }else{
-        dis = this.calcCrow(this.allLocation[0].lat, this.allLocation[0].lng, this.userCurrentLoc.lat, this.userCurrentLoc.lng);
-      }
-      let locname = (this.userCurrentLoc.location_name) ? this.userCurrentLoc.location_name : this.userCurrentLoc.location;
-      this.zone.run(() => {
-        this.currenLocDisp = "<h3>"+locname+"</h3><p>"+this.userCurrentLoc.address+" <br> ( "+dis+" miles away)<p>";
-      });
+      this.AddMapbound(pos);
+      // this.map.panTo(pos);
   }
 
   addInfoWindow(marker){
@@ -357,7 +428,10 @@ export class PickTestdriveLocationPage {
 
   over(){
     if(this.showComingsoon) this.showComingsoon = false;
-    this.showLocaList('Inland Empire','Coming Soon');
+    // this.showLocaList('Inland Empire','Coming Soon');
     // else this.showComingsoon = true;
+  }
+  inland(){
+    this.addMarkers(new Array());
   }
 }

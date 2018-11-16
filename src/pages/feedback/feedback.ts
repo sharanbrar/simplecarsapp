@@ -21,6 +21,7 @@ export class FeedbackPage {
   feedbackerror;
   feedbackForm;
   bookingId;
+  bookingDetails:any = null;
   constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController,private formBuilder: FormBuilder,public servercall:ServercallsProvider) {
       this.servercall.feedbackChanged.next(false);
       if(!this.servercall.checkLogin()){
@@ -48,12 +49,29 @@ export class FeedbackPage {
       this.servercall.postCall(this.servercall.baseUrl+'check-booking?token='+this.servercall.getLocalStorage('SimpleAppUserToken'),{date:formateddate}).subscribe(
         resp=>{
             if(resp.status){
-              console.log(resp);
-               this.bookingId = resp.booking;
+              this.bookingDetails = resp;
+              this.bookingDetails['cardetails'] = null;
+              this.bookingId = resp.booking;
+              this.servercall.getCall(this.servercall.baseUrl+'car/'+this.bookingDetails.detail.car_id).subscribe(
+                  res =>{
+                    if(res["status"] == 'success'){
+                      this.bookingDetails['cardetails'] = res.results[0];
+                      console.log(this.bookingDetails);
+                      this.pleaseWait = false;
+                    }else{
+                      this.popme();
+                      this.pleaseWait = false;
+                    }
+                  },
+                  err =>{
+                      this.popme();
+                      this.pleaseWait = false;
+                  }
+              );
             }else{
               this.popme();
+              this.pleaseWait = false;
             }
-          this.pleaseWait = false;
         },
         error=>{
           this.popme();

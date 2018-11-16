@@ -21,10 +21,11 @@
 	<div class="user-interaction-sec">
 		<div class="current-location"><h3>Closest <strong>SimpleCar</strong> test drive location is :</h3>
 			<!-- <h3>{{userCurrentLoc.location}}</h3> -->
-			<div class="locdesc" [innerHTML]="currenLocDisp"></div>
+			<div class="locdesc" (click)="pickclosest()" [innerHTML]="currenLocDisp"></div>
 		</div>
 		<div  class="loc-current-service-div">
 			<h3>Our Current Service Areas</h3>
+			<p class="infolable">Click an area below to select test drive location</p>
 			<ion-grid>
 			  <ion-row>
 			    <ion-col (click)="showLocaList('San Diego','San diego country is where our primary hot spots are')">
@@ -39,7 +40,7 @@
 			    </ion-col>
 			    <ion-col>
 			    	<div class="disabled">
-				     <ion-item (mouseover)='over()'>
+				     <ion-item (mouseover)='over()' (click)="inland()">
 					      	<img src="assets/imgs/pin-disabled.png" />
 					      	<h3>INLAND</h3>
 					      	<h2>EMPIRE</h2>

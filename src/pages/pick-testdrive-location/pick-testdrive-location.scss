@@ -35,11 +35,18 @@ page-pick-testdrive-location {
 	 .user-interaction-sec{
 			.current-location{
 				.locdesc {
-			    margin-top: 10px;
+				margin-top: 10px;
+				border: 1px solid;
+				border-radius: 7px;
 				p {
 				    margin: 0;
 				    text-align: center;
-				    font-size: 12px;
+					font-size: 12px;
+					span{
+						&.newspan{
+							color: #064581;
+						}
+					}
 				}
 			}
 			h3{
@@ -104,6 +111,15 @@ page-pick-testdrive-location {
 		}
 	}
 	.loc-current-service-div{
+		p{
+			&.infolable{
+				color: #064581;
+				text-align: center;
+				margin: 0;
+				padding: 0;
+				font-size: 9px;
+			}
+		}
 		h3{
 			text-align: center;
 			color: #000;

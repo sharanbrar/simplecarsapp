@@ -128,14 +128,15 @@ formatDte(what,date){
 
 	/**********Current Location Details***********/
 	getCurrentLoca(){
-    	this.geolocation.getCurrentPosition().then(
+	  let option =	{ timeout: 8000, enableHighAccuracy: true };
+    	this.geolocation.getCurrentPosition(option).then(
 	      (position) => {
-	          this.actualUserLoc = {
+					this.actualUserLoc =  {
 	            lat : position.coords.latitude,
 	            lng : position.coords.longitude
-		          }
+							}
 		      }, (err) => {
-		          this.actualUserLoc = null;
+						this.presentToast('please enable your GPS Location.');
 		        console.log(err);
 		      }
 		);
