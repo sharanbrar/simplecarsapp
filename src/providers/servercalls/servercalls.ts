@@ -79,6 +79,10 @@ formatDte(what,date){
 	}
 }
 
+filterDate(date){
+    return date.replace(/[-]/g,'/');
+}
+
 /**************************************/
 	  private extractData(res: Response) {
 	    let body = res;

@@ -43,8 +43,8 @@
 				      	<div  class="car-info">
 				      		<p class="car-name">{{bookingDetails.cardetails.Make}} {{bookingDetails.cardetails.Model}}</p>
 					      	<p class="miles"><ion-icon name="alarm"></ion-icon>
-					      		{{bookingDetails.detail.booked_time | date :'mediumDate'}}
-					      		{{bookingDetails.detail.booked_time | date :'shortTime'}}
+					      		{{this.servercall.filterDate(bookingDetails.detail.booked_time) | date :'mediumDate'}}
+					      		{{this.servercall.filterDate(bookingDetails.detail.booked_time) | date :'shortTime'}}
 				      		</p>
 				      		<p class="miles locationpin"><ion-icon name="pin"></ion-icon> {{bookingDetails.detail.address}}</p>
 				      	</div>
