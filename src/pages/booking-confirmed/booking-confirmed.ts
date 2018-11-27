@@ -24,6 +24,7 @@ export class BookingConfirmedPage {
   bookedTimeShow;
   constructor(private launchNavigator: LaunchNavigator,public platform: Platform,public geolocation: Geolocation,public navCtrl: NavController, public navParams: NavParams,public servercall:ServercallsProvider) {
   	console.log("confirm");
+    this.servercall.feedbackChanged.next(false);
     this.data =  navParams.get("data");
   	this.slot =  navParams.get("slot");
     let o  = this.data.booked_time.split(" ");

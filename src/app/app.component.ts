@@ -33,7 +33,7 @@ export class MyApp {
         this.checkfeedback = value;
     });
 
-    Observable.interval(30000*3).subscribe(x => {
+    Observable.interval(20000*3).subscribe(x => {
       if(this.checkfeedback && this.servercall.checkLogin()){
         this.checkFeedback();
       }

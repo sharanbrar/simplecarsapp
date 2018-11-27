@@ -125,7 +125,7 @@ export class FeedbackPage {
     this.feedbackForm.get('feedbackRating').setValue(rate);
   }
   popme(){
-    this.servercall.feedbackChanged.next(true);
+    this.servercall.feedbackChanged.next(false);
     this.navCtrl.pop();
   }
 

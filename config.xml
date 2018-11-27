@@ -92,5 +92,11 @@
     <plugin name="uk.co.workingedge.phonegap.plugin.launchnavigator" spec="^4.2.2">
         <variable name="OKHTTP_VERSION" value="3.+" />
     </plugin>
+    <edit-config file="*-Info.plist" mode="merge" target="NSCameraUsageDescription">
+       <string>This app uses camera cor scanning purpose</string>
+   </edit-config>
+   <edit-config file="*-Info.plist" mode="merge" target="NSPhotoLibraryUsageDescription">
+       <string>This app require access to library</string>
+   </edit-config>
     <engine name="android" spec="7.0.0" />
 </widget>
